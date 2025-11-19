@@ -1,0 +1,25 @@
+<section id="gallery" class="gallery-section section-padding text-center"
+         style="background: linear-gradient(135deg, #e0f1ff 0%, #f5f1e6 100%);">
+  <div class="container">
+    <h2 class="section-title text-dark-blue mb-5">Our Gallery</h2>
+    
+    <div class="row">
+      <div class="col-lg-4 col-md-6 mb-4" *ngFor="let item of galleryItems">
+        <div class="gallery-item position-relative overflow-hidden rounded hover-scale">
+          <img [src]="item.image" 
+               [alt]="item.title"
+               class="img-fluid w-100"
+               style="height: 250px; object-fit: cover;">
+          
+          <!-- Overlay -->
+          <div class="gallery-overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center">
+            <div class="gallery-content text-white text-center">
+              <h5 class="mb-2">{{ item.title }}</h5>
+              <p class="small mb-0">{{ item.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

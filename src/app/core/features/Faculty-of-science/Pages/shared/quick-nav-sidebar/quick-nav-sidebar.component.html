@@ -1,0 +1,13 @@
+<div class="quick-nav-sidebar">
+  <div class="nav-items">
+    <div 
+      class="nav-item" 
+      *ngFor="let item of quickNavItems"
+      [routerLink]="item.route"
+      [title]="item.label"
+      [style.--item-color]="item.color">
+      <i [class]="item.icon"></i>
+      <span class="nav-label">{{ item.label }}</span>
+    </div>
+  </div>
+</div>

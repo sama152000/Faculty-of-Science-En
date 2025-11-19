@@ -1,0 +1,487 @@
+/* About Section Base */
+.about-section {
+  background: var(--light-beige);
+  min-height: 100vh;
+}
+
+.about-container {
+  display: flex;
+  gap: 40px;
+  align-items: flex-start;
+  justify-content: center;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Vertical Tabs Navigation */
+.about-tabs {
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-medium);
+  overflow: hidden;
+  min-width: 280px;
+  position: sticky;
+  top: 100px;
+}
+
+.tab-link {
+  padding: 20px 25px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--text-dark);
+  font-weight: 500;
+  transition: all var(--transition);
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+}
+
+.tab-link:last-child {
+  border-bottom: none;
+}
+
+.tab-link:hover {
+  background: rgba(13, 79, 139, 0.08);
+  color: var(--primary-blue);
+  transform: translateX(5px);
+}
+
+.tab-link.active {
+  background: var(--primary-blue);
+  color: var(--white);
+  transform: translateX(0);
+}
+
+.tab-link.active i {
+  color: var(--white);
+}
+
+/* Content Area */
+.tab-content {
+  background: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-medium);
+  flex: 1;
+  padding: 40px;
+  min-height: 600px;
+  max-width: 900px;
+}
+
+.tab-panel {
+  display: none;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+/* Content Header */
+.content-header {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--light-beige);
+}
+
+.content-title {
+  color: var(--dark-blue);
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* Content Body Styles */
+.content-body {
+  line-height: 1.8;
+}
+
+.content-body .lead {
+  font-size: 1.2rem;
+  color: var(--text-dark);
+  font-weight: 400;
+}
+
+/* Info Cards */
+.info-card {
+  background: var(--light-beige);
+  padding: 25px;
+  border-radius: var(--border-radius);
+  margin-bottom: 20px;
+  transition: var(--transition);
+}
+
+.info-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-medium);
+}
+
+.achievement-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.achievement-list li {
+  padding: 8px 0;
+  display: flex;
+  align-items: flex-start;
+}
+
+/* Vision Card */
+.vision-card {
+  background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+  color: var(--white);
+  padding: 40px;
+  border-radius: var(--border-radius);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.vision-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: float 6s ease-in-out infinite;
+}
+
+.vision-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+.vision-text {
+  font-size: 1.3rem;
+  line-height: 1.6;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* Mission Card */
+.mission-card {
+  background: linear-gradient(135deg, var(--accent-orange), var(--secondary-beige));
+  color: var(--text-dark);
+  padding: 40px;
+  border-radius: var(--border-radius);
+  text-align: center;
+  position: relative;
+}
+
+.mission-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  color: var(--dark-blue);
+}
+
+.mission-text {
+  font-size: 1.3rem;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Objectives Grid */
+.objectives-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.objective-item {
+  display: flex;
+  align-items: flex-start;
+  background: var(--light-beige);
+  padding: 20px;
+  border-radius: var(--border-radius);
+  transition: var(--transition);
+}
+
+.objective-item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-medium);
+}
+
+.objective-number {
+  background: var(--primary-blue);
+  color: var(--white);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.objective-content p {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* History Timeline */
+.history-content {
+  position: relative;
+}
+
+.history-timeline {
+  position: relative;
+  padding-left: 30px;
+}
+
+.history-timeline::before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--primary-blue);
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.timeline-marker {
+  position: absolute;
+  left: -37px;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  background: var(--primary-blue);
+  border-radius: 50%;
+  border: 3px solid var(--white);
+  box-shadow: 0 0 0 3px var(--primary-blue);
+}
+
+.timeline-content {
+  background: var(--light-beige);
+  padding: 25px;
+  border-radius: var(--border-radius);
+  margin-left: 20px;
+}
+
+.history-text {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Dean Message */
+.dean-message-container {
+  background: var(--light-beige);
+  padding: 30px;
+  border-radius: var(--border-radius);
+}
+
+.dean-image-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.dean-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid var(--white);
+  box-shadow: var(--shadow-medium);
+}
+
+.dean-info {
+  text-align: center;
+}
+
+.dean-name {
+  color: var(--dark-blue);
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.dean-title {
+  font-style: italic;
+  font-size: 1rem;
+}
+
+.dean-message {
+  position: relative;
+  background: var(--white);
+  padding: 30px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-light);
+}
+
+.quote-icon {
+  position: absolute;
+  top: -10px;
+  left: 20px;
+  background: var(--primary-blue);
+  color: var(--white);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.message-text {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--text-dark);
+  margin: 0;
+  padding-top: 10px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-20px) rotate(180deg);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .about-container {
+    max-width: 100%;
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 992px) {
+  .about-container {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .about-tabs {
+    flex-direction: row;
+    min-width: 100%;
+    position: static;
+    overflow-x: auto;
+  }
+  
+  .tab-link {
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+    padding: 15px 20px;
+  }
+  
+  .tab-link:hover {
+    transform: translateY(-2px);
+  }
+  
+  .tab-content {
+    max-width: 100%;
+  }
+  
+  .objectives-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .tab-content {
+    padding: 25px;
+  }
+  
+  .content-title {
+    font-size: 1.5rem;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .content-title i {
+    margin-bottom: 10px;
+  }
+  
+  .dean-message-container {
+    padding: 20px;
+  }
+  
+  .dean-image {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .vision-text,
+  .mission-text {
+    font-size: 1.1rem;
+  }
+  
+  .history-timeline {
+    padding-left: 20px;
+  }
+  
+  .timeline-marker {
+    left: -27px;
+  }
+}
+
+@media (max-width: 576px) {
+  .about-tabs {
+    flex-direction: column;
+  }
+  
+  .tab-link {
+    font-size: 0.9rem;
+    padding: 12px 15px;
+  }
+  
+  .tab-content {
+    padding: 20px;
+  }
+  
+  .content-title {
+    font-size: 1.3rem;
+  }
+  
+  .vision-card,
+  .mission-card {
+    padding: 25px;
+  }
+  
+  .dean-image {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .objective-number {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+}

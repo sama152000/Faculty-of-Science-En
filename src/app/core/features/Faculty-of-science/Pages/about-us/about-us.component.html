@@ -1,0 +1,244 @@
+
+
+<section class="about-section section-padding">
+  <div class="container-custom">
+    
+    <!-- Page Header -->
+    <div class="row mb-5">
+      <div class="col-12 text-center">
+        <h1 class="section-title">About Faculty of Science</h1>
+        <p class="lead text-muted">Luxor University</p>
+      </div>
+    </div>
+
+    <!-- About Content Container -->
+    <div class="about-container">
+      
+      <!-- Vertical Tabs Navigation -->
+      <div class="about-tabs">
+        <button 
+          class="tab-link" 
+          [class.active]="isActiveTab('introduction')"
+          (click)="setActiveTab('introduction')">
+          <i class="fas fa-university me-2"></i>
+          Introduction
+        </button>
+        
+        <button 
+          class="tab-link" 
+          [class.active]="isActiveTab('vision')"
+          (click)="setActiveTab('vision')">
+          <i class="fas fa-eye me-2"></i>
+          Vision
+        </button>
+        
+        <button 
+          class="tab-link" 
+          [class.active]="isActiveTab('mission')"
+          (click)="setActiveTab('mission')">
+          <i class="fas fa-flag me-2"></i>
+          Mission
+        </button>
+        
+        <button 
+          class="tab-link" 
+          [class.active]="isActiveTab('objectives')"
+          (click)="setActiveTab('objectives')">
+          <i class="fas fa-bullseye me-2"></i>
+          Objectives
+        </button>
+        
+        <button 
+          class="tab-link" 
+          [class.active]="isActiveTab('history')"
+          (click)="setActiveTab('history')">
+          <i class="fas fa-history me-2"></i>
+          History
+        </button>
+        
+        <button 
+          class="tab-link" 
+          [class.active]="isActiveTab('dean')"
+          (click)="setActiveTab('dean')">
+          <i class="fas fa-user-tie me-2"></i>
+          Dean's Message
+        </button>
+      </div>
+
+      <!-- Tab Content Area -->
+      <div class="tab-content">
+        
+        <!-- Introduction Tab -->
+        <div class="tab-panel" [class.active]="isActiveTab('introduction')" *ngIf="introduction">
+          <div class="content-header">
+            <h2 class="content-title">
+              <i class="fas fa-university text-primary-custom me-3"></i>
+              {{ introduction.title }}
+            </h2>
+          </div>
+          
+          <div class="content-body">
+            <p class="lead mb-4">{{ introduction.description }}</p>
+            
+            <div class="row mt-4" *ngIf="introduction.achievements">
+              <div class="col-md-6">
+                <div class="info-card">
+                  <h4 class="text-primary-custom">
+                    <i class="fas fa-calendar-alt me-2"></i>
+                    Established
+                  </h4>
+                  <p class="h5">{{ introduction.establishedYear }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="info-card">
+                  <h4 class="text-primary-custom">
+                    <i class="fas fa-trophy me-2"></i>
+                    Key Achievements
+                  </h4>
+                  <ul class="achievement-list">
+                    <li *ngFor="let achievement of introduction.achievements">
+                      <i class="fas fa-check-circle text-success me-2"></i>
+                      {{ achievement }}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vision Tab -->
+        <div class="tab-panel" [class.active]="isActiveTab('vision')" *ngIf="vision">
+          <div class="content-header">
+            <h2 class="content-title">
+              <i class="fas fa-eye text-primary-custom me-3"></i>
+              Our Vision
+            </h2>
+          </div>
+          
+          <div class="content-body">
+            <div class="vision-card">
+              <div class="vision-icon">
+                <i class="fas fa-lightbulb"></i>
+              </div>
+              <p class="vision-text">{{ vision.vision }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mission Tab -->
+        <div class="tab-panel" [class.active]="isActiveTab('mission')" *ngIf="mission">
+          <div class="content-header">
+            <h2 class="content-title">
+              <i class="fas fa-flag text-primary-custom me-3"></i>
+              Our Mission
+            </h2>
+          </div>
+          
+          <div class="content-body">
+            <div class="mission-card">
+              <div class="mission-icon">
+                <i class="fas fa-rocket"></i>
+              </div>
+              <p class="mission-text">{{ mission.mission }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Objectives Tab -->
+        <div class="tab-panel" [class.active]="isActiveTab('objectives')" *ngIf="objectives">
+          <div class="content-header">
+            <h2 class="content-title">
+              <i class="fas fa-bullseye text-primary-custom me-3"></i>
+              Our Objectives
+            </h2>
+          </div>
+          
+          <div class="content-body">
+            <div class="objectives-grid">
+              <div 
+                class="objective-item" 
+                *ngFor="let objective of objectives.objectives; let i = index">
+                <div class="objective-number">{{ i + 1 }}</div>
+                <div class="objective-content">
+                  <p>{{ objective }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- History Tab -->
+        <div class="tab-panel" [class.active]="isActiveTab('history')" *ngIf="history">
+          <div class="content-header">
+            <h2 class="content-title">
+              <i class="fas fa-history text-primary-custom me-3"></i>
+              Faculty History
+            </h2>
+          </div>
+          
+          <div class="content-body">
+            <div class="history-content">
+              <div class="history-timeline">
+                <div class="timeline-item">
+                  <div class="timeline-marker"></div>
+                  <div class="timeline-content">
+                    <p class="history-text">{{ history.history }}</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="history-image mt-4">
+                <img 
+                  src="https://images.pexels.com/photos/256490/pexels-photo-256490.jpeg?auto=compress&cs=tinysrgb&w=800&h=400&dpr=1" 
+                  alt="Faculty History" 
+                  class="img-responsive">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dean's Message Tab -->
+        <div class="tab-panel" [class.active]="isActiveTab('dean')" *ngIf="deanMessage">
+          <div class="content-header">
+            <h2 class="content-title">
+              <i class="fas fa-user-tie text-primary-custom me-3"></i>
+              Message from the Dean
+            </h2>
+          </div>
+          
+          <div class="content-body">
+            <div class="dean-message-container">
+              <div class="row align-items-center">
+                <div class="col-md-4 text-center mb-4 mb-md-0">
+                  <div class="dean-image-wrapper">
+                    <img 
+                      [src]="deanMessage.deanImage" 
+                      [alt]="deanMessage.deanName" 
+                      class="dean-image">
+                  </div>
+                  <div class="dean-info mt-3">
+                    <h4 class="dean-name">{{ deanMessage.deanName }}</h4>
+                    <p class="dean-title text-muted">{{ deanMessage.deanTitle }}</p>
+                  </div>
+                </div>
+                
+                <div class="col-md-8">
+                  <div class="dean-message">
+                    <div class="quote-icon">
+                      <i class="fas fa-quote-left"></i>
+                    </div>
+                    <p class="message-text">{{ deanMessage.messageFromDean }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+

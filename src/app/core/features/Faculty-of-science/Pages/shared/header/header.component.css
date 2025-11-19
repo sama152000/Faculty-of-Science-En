@@ -1,0 +1,125 @@
+.top-bar {
+  font-size: 0.9rem;
+}
+
+.contact-info span {
+  font-weight: 500;
+}
+
+.logo-img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid var(--primary-blue);
+}
+
+.site-title {
+  font-size: 1.2rem;
+  line-height: 1.2;
+}
+
+.navbar-nav .nav-link {
+  color: var(--text-dark);
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+  transition: var(--transition);
+  position: relative;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  color: var(--primary-blue);
+}
+
+.navbar-nav .nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--primary-blue);
+  transition: var(--transition);
+  transform: translateX(-50%);
+}
+
+.navbar-nav .nav-link:hover::after,
+.navbar-nav .nav-link.active::after {
+  width: 80%;
+}
+
+.dropdown-menu {
+  border: none;
+  box-shadow: var(--shadow-medium);
+  border-radius: var(--border-radius);
+  padding: 0.5rem 0;
+}
+
+.dropdown-item {
+  padding: 0.5rem 1.5rem;
+  transition: var(--transition);
+}
+
+.dropdown-item:hover {
+  background: var(--light-beige);
+  color: var(--primary-blue);
+}
+
+.navbar-toggler {
+  border: none;
+  padding: 0.25rem 0.5rem;
+}
+
+.navbar-toggler:focus {
+  box-shadow: none;
+}
+
+/* Mobile Styles */
+@media (max-width: 991px) {
+  .navbar-collapse {
+    background: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-medium);
+    margin-top: 1rem;
+    padding: 1rem;
+  }
+  
+  .navbar-nav {
+    text-align: center;
+  }
+  
+  .navbar-nav .nav-link::after {
+    display: none;
+  }
+  
+  .dropdown-menu {
+    box-shadow: none;
+    background: var(--light-beige);
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .top-bar {
+    font-size: 0.8rem;
+  }
+  
+  .contact-info {
+    justify-content: center;
+  }
+  
+  .top-links {
+    justify-content: center !important;
+    margin-top: 0.5rem;
+  }
+  
+  .site-title {
+    font-size: 1rem;
+  }
+  
+  .logo-img {
+    width: 50px;
+    height: 50px;
+  }
+}

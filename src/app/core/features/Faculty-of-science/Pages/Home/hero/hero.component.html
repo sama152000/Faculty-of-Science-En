@@ -1,0 +1,33 @@
+<section id="hero" class="hero position-relative">
+  <div class="hero-slider">
+    <!-- Slides -->
+    <div class="slide-container position-relative">
+      <div class="slide position-absolute w-100 h-100"
+           *ngFor="let slide of slides; let i = index"
+           [class.active]="i === currentSlide"
+           [style.background-image]="'url(' + slide.image + ')'">
+        <div class="overlay position-absolute w-100 h-100"></div>
+        <div class="hero-content position-absolute w-100 h-100 d-flex align-items-center">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-lg-8 text-center text-white">
+                <h1 class="hero-title display-3 fw-bold mb-4 fade-in">{{ slide.title }}</h1>
+                <p class="hero-subtitle lead mb-0 fade-in">{{ slide.subtitle }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Vertical Navigation Dots -->
+    <div class="slider-nav position-absolute d-flex flex-column">
+      <button class="dot rounded-circle border-0"
+              *ngFor="let slide of slides; let i = index"
+              [class.active]="i === currentSlide"
+              (click)="goToSlide(i)"
+              [attr.aria-label]="'Go to slide ' + (i + 1)">
+      </button>
+    </div>
+  </div>
+</section>

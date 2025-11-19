@@ -1,0 +1,128 @@
+.quick-nav-sidebar {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  padding: 10px;
+  box-shadow: var(--shadow-heavy);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.nav-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav-item {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: var(--item-color, var(--primary-blue));
+  color: white;
+  text-decoration: none;
+  overflow: hidden;
+}
+
+.nav-item:hover {
+  transform: scale(1.1);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  width: 140px;
+  justify-content: flex-start;
+  padding-left: 15px;
+}
+
+.nav-item i {
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.nav-label {
+  position: absolute;
+  left: 45px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.nav-item:hover .nav-label {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.nav-item:hover i {
+  margin-right: 8px;
+}
+
+/* Active state */
+.nav-item.active {
+  background: var(--dark-blue);
+  transform: scale(1.05);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .quick-nav-sidebar {
+    right: 10px;
+    padding: 8px;
+  }
+  
+  .nav-item {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .nav-item:hover {
+    width: 120px;
+    padding-left: 12px;
+  }
+  
+  .nav-label {
+    left: 40px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .quick-nav-sidebar {
+    right: 5px;
+    bottom: 20px;
+    top: auto;
+    transform: none;
+    flex-direction: row;
+    padding: 5px;
+  }
+  
+  .nav-items {
+    flex-direction: row;
+    gap: 5px;
+  }
+  
+  .nav-item {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .nav-item:hover {
+    width: 40px;
+    padding-left: 0;
+    justify-content: center;
+  }
+  
+  .nav-label {
+    display: none;
+  }
+}

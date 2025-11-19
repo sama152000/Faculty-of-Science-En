@@ -1,0 +1,39 @@
+<section id="departments" class="departments-section section-padding position-relative overflow-hidden">
+  <!-- Split Background -->
+  <div class="departments-bg position-absolute w-100 h-100 d-flex">
+    <div class="bg-left flex-fill bg-primary-custom"></div>
+    <div class="bg-right flex-fill" style="background-color: var(--secondary-beige);"></div>
+  </div>
+
+  <div class="container position-relative">
+    <h2 class="section-title text-white mb-5">Our Departments</h2>
+    
+    <div class="row">
+      <!-- Left Column -->
+      <div class="col-lg-6 mb-4">
+        <div class="dept-column d-flex flex-wrap justify-content-center gap-4">
+          <div class="dept-card text-center hover-lift" 
+               *ngFor="let dept of leftColumnDepts">
+            <div class="dept-icon rounded-circle bg-white d-flex align-items-center justify-content-center mx-auto mb-3">
+              <i [class]="dept.icon" class="text-primary-custom"></i>
+            </div>
+            <h5 class="dept-name text-white fw-semibold">{{ dept.name }}</h5>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div class="col-lg-6 mb-4">
+        <div class="dept-column d-flex flex-wrap justify-content-center gap-4">
+          <div class="dept-card text-center hover-lift" 
+               *ngFor="let dept of rightColumnDepts">
+            <div class="dept-icon rounded-circle bg-white d-flex align-items-center justify-content-center mx-auto mb-3">
+              <i [class]="dept.icon" class="text-primary-custom"></i>
+            </div>
+            <h5 class="dept-name text-white fw-semibold">{{ dept.name }}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

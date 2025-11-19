@@ -1,0 +1,93 @@
+<footer id="footer" class="site-footer bg-warning text-dark">
+  <div class="container section-padding">
+    <div class="row">
+      <!-- Column 1: About -->
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="footer-col">
+          <h5 class="footer-title text-dark-blue mb-3">Faculty of Science</h5>
+          <p class="text-muted">
+            Luxor University's Faculty of Science is committed to excellence in teaching, research,
+            and innovation for a better future.
+          </p>
+        </div>
+      </div>
+
+      <!-- Column 2: Quick Links -->
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="footer-col">
+          <h5 class="footer-title text-dark-blue mb-3">Quick Links</h5>
+          <ul class="footer-links list-unstyled">
+            <li><a href="#hero" class="text-muted text-decoration-none">Home</a></li>
+            <li><a href="#dean" class="text-muted text-decoration-none">About</a></li>
+            <li><a href="#departments" class="text-muted text-decoration-none">Departments</a></li>
+            <li><a href="#news" class="text-muted text-decoration-none">News</a></li>
+            <li><a href="#events" class="text-muted text-decoration-none">Events</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Column 3: Departments -->
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="footer-col">
+          <h5 class="footer-title text-dark-blue mb-3">Departments</h5>
+          <ul class="footer-links list-unstyled">
+            <li><a href="#" class="text-muted text-decoration-none">Physics</a></li>
+            <li><a href="#" class="text-muted text-decoration-none">Chemistry</a></li>
+            <li><a href="#" class="text-muted text-decoration-none">Biology</a></li>
+            <li><a href="#" class="text-muted text-decoration-none">Computer Science</a></li>
+            <li><a href="#" class="text-muted text-decoration-none">Mathematics</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Column 4: Contact -->
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="footer-col">
+          <h5 class="footer-title text-dark-blue mb-3">Contact</h5>
+          <address class="text-muted mb-3">
+            Luxor University, Egypt<br>
+            Tel: +20 88-1234567<br>
+            Email: <a href="mailto:info@luxorsci.edu.eg" class="text-primary-custom">info@luxorsci.edu.eg</a>
+          </address>
+          
+          <!-- Social Icons -->
+          <div class="social-icons">
+            <a href="#" class="social-link me-3 text-dark-blue">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-link me-3 text-dark-blue">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="social-link me-3 text-dark-blue">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-link text-dark-blue">
+              <i class="fab fa-linkedin-in"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Bottom -->
+  <div class="footer-bottom bg-primary-custom text-white py-3">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-12 text-center">
+          <p class="mb-0">
+            © {{ currentYear }} Luxor University — All Rights Reserved
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll to Top Button -->
+  <button class="scroll-to-top btn btn-primary rounded-circle position-fixed"
+          *ngIf="showScrollTop"
+          (click)="scrollToTop()"
+          title="Go to top">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+</footer>

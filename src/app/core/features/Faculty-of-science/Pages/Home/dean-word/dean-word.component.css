@@ -1,0 +1,49 @@
+.dean-section {
+  position: relative;
+}
+
+.dean-image img {
+  border: 4px solid var(--white);
+  transition: var(--transition);
+}
+
+.dean-image img:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-heavy) !important;
+}
+
+.dean-content {
+  padding-left: 2rem;
+}
+
+.dean-signature {
+  border-left: 4px solid var(--primary-blue);
+  padding-left: 1.5rem;
+}
+
+.dean-signature h4 {
+  font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 991px) {
+  .dean-content {
+    padding-left: 0;
+    text-align: center;
+    margin-top: 2rem;
+  }
+  
+  .dean-signature {
+    border-left: none;
+    border-top: 4px solid var(--primary-blue);
+    padding-left: 0;
+    padding-top: 1.5rem;
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .dean-image img {
+    max-width: 300px !important;
+  }
+}

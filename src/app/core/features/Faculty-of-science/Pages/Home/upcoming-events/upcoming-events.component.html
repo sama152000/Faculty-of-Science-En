@@ -1,0 +1,47 @@
+<section id="events" class="events-section section-padding" 
+         style="background: linear-gradient(135deg, #acd2f1 0%, #e6d7ac 100%);">
+  <div class="container">
+    <h2 class="section-title text-dark-blue mb-5">Upcoming Events</h2>
+
+    <!-- Timeline -->
+    <div class="timeline position-relative">
+      <!-- Timeline Line -->
+      <div class="timeline-line position-absolute"></div>
+
+      <!-- Events Grid -->
+      <div class="row">
+        <div class="col-lg-3 col-md-6 mb-4" *ngFor="let event of events; let i = index">
+          <div class="timeline-event text-center position-relative">
+            <!-- Event Dot -->
+            <div class="event-dot rounded-circle bg-primary-custom mx-auto mb-3"></div>
+            
+            <!-- Event Date -->
+            <div class="event-date text-primary-custom fw-semibold mb-3">
+              {{ formatDate(event.date) }}
+            </div>
+            
+            <!-- Event Card -->
+            <div class="event-card card-custom hover-lift">
+              <img [src]="event.image" 
+                   [alt]="event.title"
+                   class="card-img-top img-cover"
+                   style="height: 150px;">
+              <div class="card-body">
+                <h5 class="card-title text-dark-blue">{{ event.title }}</h5>
+                <p class="card-text text-muted small">{{ event.description }}</p>
+                <a href="#" class="read-more text-primary-custom fw-semibold text-decoration-none">
+                  Read More
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- View All Button -->
+    <div class="text-center mt-5">
+      <a href="#" class="btn-primary-custom">View All Events</a>
+    </div>
+  </div>
+</section>
