@@ -2,6 +2,11 @@
 .news-details-section {
   background: var(--light-beige);
   min-height: 100vh;
+  min-width: 100%;
+  padding-left: 15rem ;
+  padding-right: 15rem;
+  padding-bottom: 3rem;
+padding-top: 3rem;
 }
 
 /* Loading and Error States */
@@ -301,6 +306,14 @@
 
 /* Responsive Design */
 @media (max-width: 992px) {
+  .news-details-section {
+  background: var(--light-beige);
+  min-width: 100%;
+  padding-left: 1rem ;
+  padding-right: 1rem;
+  padding-bottom: 3rem;
+padding-top: 3rem;
+}
   .news-sidebar {
     position: static;
     margin-top: 2rem;

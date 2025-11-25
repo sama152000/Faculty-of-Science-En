@@ -1,6 +1,15 @@
 .timeline {
   margin-top: 2rem;
 }
+.container-fluid{
+  padding-left: 15rem ;
+  padding-right: 15rem;
+  padding-bottom: 3rem;
+padding-top: 3rem;
+    min-width: 100%;
+
+
+}
 
 .timeline-line {
   top: 40px;
@@ -10,6 +19,7 @@
   background: var(--primary-blue);
   z-index: 0;
 }
+
 
 .timeline-event {
   position: relative;
@@ -24,16 +34,22 @@
 }
 
 .event-date {
+  margin-top: 2rem;
   font-size: 0.95rem;
 }
 
 .event-card {
   transition: var(--transition);
+  height: 450px;
 }
 
 .event-card:hover {
   transform: translateY(-8px);
   box-shadow: var(--shadow-heavy);
+}
+
+.event-card .card-body {
+  overflow: hidden;
 }
 
 .read-more {
@@ -55,6 +71,20 @@
   .event-dot {
     position: relative;
   }
+  .event-card {
+  transition: var(--transition);
+  height: auto;
+}
+
+  .container-fluid{
+    min-width: 100%;
+  
+  padding-left: 1rem ;
+  padding-right: 1rem;
+  padding-bottom: 3rem;
+padding-top: 3rem;
+
+}
 }
 
 @media (max-width: 768px) {
@@ -63,7 +93,7 @@
   }
   
   .event-card img {
-    height: 120px !important;
+    height: 250px !important;
   }
 }
 

@@ -1,9 +1,19 @@
 .statistics-section {
   overflow: hidden;
+  
+ 
+
 }
 
+.container-fluid{
+  padding-left: 9rem;
+  padding-right: 9rem;
+  padding-bottom: 3rem;
+  padding-top: 3rem;
+  min-width: 100%;
+}
 .stats-bg {
-  background: url('https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop') no-repeat center center/cover;
+  background: url('https://images.pexels.com/photos/256262/pexels-photo-256262.jpeg') no-repeat center center/cover;
   background-attachment: fixed;
   top: 0;
   left: 0;
@@ -11,10 +21,10 @@
 }
 
 .stats-overlay {
-  background: rgba(13, 79, 139, 0.8);
+  background: rgba(13, 78, 139, 0.425);
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: 0;
 }
 
 .stat-item {
@@ -28,9 +38,13 @@
 
 .stat-icon {
   font-size: 4rem;
-  color: var(--secondary-beige);
+  color: var(--white);
   text-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
   transition: var(--transition);
+}
+
+.stat-icon i {
+  color: var(--white);
 }
 
 .stat-item:hover .stat-icon {
@@ -79,6 +93,13 @@
   .stat-label {
     font-size: 1rem !important;
   }
+   .container-fluid{
+     padding-left: 0;
+  padding-right: 0;
+  padding-bottom: 3rem;
+padding-top: 3rem;
+min-width: 100%;
+}
 }
 
 @media (max-width: 576px) {

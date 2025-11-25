@@ -1,8 +1,15 @@
 .gallery-item {
   transition: var(--transition);
   cursor: pointer;
+  
 }
-
+.container-fluid{
+     padding-left: 17rem ;
+  padding-right: 17rem;
+  padding-bottom: 3rem;
+padding-top: 3rem;
+min-width: 100%;
+}
 .gallery-item:hover {
   transform: scale(1.05);
 }
@@ -50,6 +57,13 @@
   .gallery-content p {
     font-size: 0.8rem;
   }
+  .container-fluid{
+     padding-left: 1rem ;
+  padding-right: 1rem;
+  padding-bottom: 3rem;
+padding-top: 3rem;
+min-width: 100%;
+}
 }
 
 @media (max-width: 576px) {

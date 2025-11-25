@@ -7,7 +7,7 @@ import { FooterComponent } from "./Pages/shared/footer/footer.component";
   selector: 'app-Faculty-of-science',
   templateUrl: './Faculty-of-science.component.html',
   styleUrls: ['./Faculty-of-science.component.css'],
-  imports: [HeaderComponent, RouterModule, FooterComponent]
+  imports: [ RouterModule]
 })
 export class FacultyOfScienceComponent implements OnInit {
 

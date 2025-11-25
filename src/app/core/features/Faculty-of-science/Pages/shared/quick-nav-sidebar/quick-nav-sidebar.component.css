@@ -104,6 +104,7 @@
     transform: none;
     flex-direction: row;
     padding: 5px;
+    display: none;
   }
   
   .nav-items {

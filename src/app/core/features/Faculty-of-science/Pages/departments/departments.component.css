@@ -1,7 +1,13 @@
 /* Departments Component Styles */
 .departments-section {
   background: var(--light-beige);
+  width: 100%;
+  min-width: 100%;
   min-height: 100vh;
+  padding-left: 15rem;
+  padding-right: 15rem;
+  padding-bottom: 3rem;
+  padding-top: 3rem;
 }
 
 /* Departments Sidebar */
@@ -421,6 +427,15 @@
 
 /* Responsive Design */
 @media (max-width: 992px) {
+  .departments-section {
+  background: var(--light-beige);
+  width: 100%;
+  min-width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+}
   .departments-sidebar {
     position: static;
     margin-bottom: 2rem;

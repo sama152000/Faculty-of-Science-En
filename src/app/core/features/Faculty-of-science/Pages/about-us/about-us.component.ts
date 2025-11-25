@@ -8,7 +8,7 @@ import { HeaderComponent } from "../shared/header/header.component";
 @Component({
   selector: 'app-about-us',
   standalone: true,
-  imports: [CommonModule, FooterComponent, HeaderComponent],
+  imports: [CommonModule],
   templateUrl: './about-us.component.html',
   styleUrls: ['./about-us.component.css']
 })

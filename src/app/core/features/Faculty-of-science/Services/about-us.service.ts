@@ -53,7 +53,7 @@ export class AboutUsService {
       messageFromDean: "Welcome to the Faculty of Science at Luxor University. As we stand at the threshold of a new era in scientific discovery and technological innovation, I am proud to lead an institution that has consistently demonstrated excellence in education, research, and community service. Our faculty is home to distinguished professors, dedicated researchers, and bright students who together form a vibrant academic community. We are committed to providing our students with the knowledge, skills, and values necessary to become leaders in their chosen fields. Through our comprehensive programs, cutting-edge research, and strong industry partnerships, we prepare our graduates to meet the challenges of the 21st century. I invite you to explore the opportunities that await you at our faculty and join us in our mission to advance scientific knowledge for the betterment of humanity.",
       deanName: "Prof. Dr. Ahmed Hassan Mohamed",
       deanTitle: "Dean of Faculty of Science",
-      deanImage: "https://images.pexels.com/photos/5212317/pexels-photo-5212317.jpeg?auto=compress&cs=tinysrgb&w=400&h=400&dpr=1"
+      deanImage: "./assets/deanp.jpg"
     }
   ];
 

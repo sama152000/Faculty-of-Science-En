@@ -7,6 +7,7 @@ export interface Department {
   overview: string;
   vision: string;
   mission: string;
+  programs?: string[];
   objectives: string[];
   courses: string[];
   researchAreas: string[];

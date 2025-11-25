@@ -8,395 +8,254 @@ export class DepartmentsService {
   private departments: Department[] = [
     {
       id: '1',
-      name: 'Physics',
-      icon: 'fa-solid fa-atom',
-      order: 1,
-      description: 'Exploring the fundamental laws of nature and the universe',
-      overview: 'The Physics Department at Luxor University offers comprehensive programs in classical and modern physics, preparing students for careers in research, education, and industry.',
-      vision: 'To be a leading center of excellence in physics education and research in Egypt and the Middle East.',
-      mission: 'To provide high-quality education in physics, conduct cutting-edge research, and contribute to technological advancement and scientific understanding.',
-      objectives: [
-        'Provide comprehensive physics education',
-        'Conduct innovative research in various physics fields',
-        'Foster collaboration with industry and research institutions',
-        'Develop students\' analytical and problem-solving skills'
-      ],
-      courses: [
-        'Classical Mechanics',
-        'Quantum Physics',
-        'Electromagnetic Theory',
-        'Thermodynamics',
-        'Nuclear Physics',
-        'Particle Physics'
-      ],
-      researchAreas: [
-        'Quantum Computing',
-        'Nanotechnology',
-        'Renewable Energy Physics',
-        'Medical Physics',
-        'Astrophysics'
-      ],
-      headOfDepartment: 'Dr. Ahmed Hassan',
-      establishedYear: 1950,
-      studentCount: 450,
-      facultyCount: 25
-    },
-    {
-      id: '2',
-      name: 'Chemistry',
-      icon: 'fa-solid fa-flask',
-      order: 2,
-      description: 'Understanding matter and its transformations',
-      overview: 'Our Chemistry Department provides state-of-the-art facilities and expert faculty to explore chemical principles and their applications.',
-      vision: 'To advance chemical sciences through excellence in education, research, and innovation.',
-      mission: 'To educate future chemists, conduct groundbreaking research, and serve society through chemical knowledge and applications.',
-      objectives: [
-        'Deliver high-quality chemistry education',
-        'Promote interdisciplinary research',
-        'Support sustainable chemistry practices',
-        'Develop industry partnerships'
-      ],
-      courses: [
-        'Organic Chemistry',
-        'Inorganic Chemistry',
-        'Physical Chemistry',
-        'Analytical Chemistry',
-        'Biochemistry',
-        'Polymer Chemistry'
-      ],
-      researchAreas: [
-        'Green Chemistry',
-        'Medicinal Chemistry',
-        'Materials Science',
-        'Environmental Chemistry',
-        'Catalysis'
-      ],
-      headOfDepartment: 'Dr. Sarah Mohamed',
-      establishedYear: 1952,
-      studentCount: 380,
-      facultyCount: 22
-    },
-    {
-      id: '3',
-      name: 'Biology',
-      icon: 'fa-solid fa-dna',
-      order: 3,
-      description: 'Studying life and living organisms',
-      overview: 'The Biology Department offers diverse programs covering molecular biology to ecology, with modern laboratories and field research opportunities.',
-      vision: 'To be a premier institution for biological sciences education and research.',
-      mission: 'To advance understanding of life sciences through teaching, research, and community service.',
-      objectives: [
-        'Provide comprehensive biology education',
-        'Conduct cutting-edge biological research',
-        'Promote biodiversity conservation',
-        'Foster biotechnology innovation'
-      ],
-      courses: [
-        'Molecular Biology',
-        'Genetics',
-        'Ecology',
-        'Microbiology',
-        'Physiology',
-        'Biotechnology'
-      ],
-      researchAreas: [
-        'Genomics',
-        'Biodiversity Conservation',
-        'Medical Biotechnology',
-        'Plant Biotechnology',
-        'Neuroscience'
-      ],
-      headOfDepartment: 'Prof. Omar Ali',
-      establishedYear: 1955,
-      studentCount: 520,
-      facultyCount: 30
-    },
-    {
-      id: '4',
       name: 'Geology',
       icon: 'fa-solid fa-earth-africa',
-      order: 4,
-      description: 'Investigating Earth\'s structure and processes',
-      overview: 'Our Geology Department combines classroom learning with extensive field work to understand Earth\'s dynamic systems.',
-      vision: 'To lead in geological sciences education and contribute to sustainable Earth resource management.',
-      mission: 'To educate geologists, conduct geological research, and promote environmental stewardship.',
+      order: 1,
+      description: 'Studying the Earth\'s structure, materials, and processes',
+      overview: 'The Department of Geology at the Faculty of Science, Luxor University, combines advanced academic education with intensive fieldwork in one of the world\'s richest geological and archaeological regions.',
+      vision: 'The Department of Geology at the Faculty of Science, Luxor University, strives to achieve leadership and excellence in geological education, scientific research, community service, knowledge production, and sustainable development at both local and international levels.',
+      mission: `The Department of Geology is committed to attaining excellence and global competitiveness through:
+1. Delivering high-quality educational programs that enrich scientific knowledge and contribute to human development at local and regional levels.
+2. Graduating highly competent professionals capable of providing advanced scientific, consulting, and research services to society and the environment.
+3. Conducting outstanding scientific research that addresses community challenges, supported by specialized service units.
+4. Offering developmental and technical services to companies, factories, and industries in Luxor Governorate and surrounding regions.
+5. Fostering creativity, innovation, and entrepreneurial skills among students and graduates to support sustainable development goals.`,
       objectives: [
-        'Provide excellent geology education',
-        'Conduct field-based research',
+        'Provide distinguished geological education',
+        'Conduct field-based and applied research',
         'Support natural resource management',
-        'Advance geological knowledge'
+        'Contribute to solving environmental and developmental challenges'
       ],
       courses: [
-        'Mineralogy',
-        'Petrology',
-        'Structural Geology',
-        'Sedimentology',
-        'Geophysics',
-        'Hydrogeology'
+        'Mineralogy', 'Petrology', 'Structural Geology', 'Sedimentology',
+        'Geophysics', 'Hydrogeology', 'Environmental Geology', 'Archaeological Geology'
       ],
       researchAreas: [
         'Mineral Resources',
         'Groundwater Management',
-        'Earthquake Studies',
-        'Climate Change Geology',
-        'Remote Sensing'
+        'Environmental Geology',
+        'Archaeological Geology and Heritage',
+        'Seismology and Geological Hazards'
       ],
-      headOfDepartment: 'Dr. Fatima Al-Rashid',
-      establishedYear: 1960,
-      studentCount: 280,
-      facultyCount: 18
+      programs: [
+        'Bachelor of Science in Geology',
+        'Bachelor of Science in Geology and Chemistry',
+        'Bachelor of Science in Geophysics'
+      ],
+      headOfDepartment: 'Dr. Mohamed Abdel Rahman',
+      establishedYear: 2018,
+      studentCount: 285,
+      facultyCount: 21
+    },
+    {
+      id: '2',
+      name: 'Mathematics',
+      icon: 'fa-solid fa-calculator',
+      order: 2,
+      description: 'Exploring patterns, structures, and logical reasoning',
+      overview: 'The Department of Mathematics offers distinguished programs in pure and applied mathematics with a focus on developing analytical and critical thinking skills.',
+      vision: 'The Department of Mathematics at the Faculty of Science, Luxor University, aspires to achieve leadership and excellence in education, scientific research, community service, knowledge production, and sustainable development.',
+      mission: `The Department of Mathematics is committed to attaining distinction and international competitiveness through:
+1. Offering high-quality educational programs that enrich human knowledge and contribute to intellectual and cultural advancement.
+2. Producing highly skilled graduates capable of delivering advanced scientific, consulting, and research services.
+3. Conducting distinguished scientific research that addresses societal challenges.
+4. Providing developmental and technical services to companies and industries in Luxor and neighboring areas.
+5. Nurturing creativity, innovation, and entrepreneurial skills to support sustainable development pathways.`,
+      objectives: [
+        'Provide comprehensive education in pure and applied mathematics',
+        'Develop critical thinking and problem-solving skills',
+        'Foster research in mathematical sciences',
+        'Prepare graduates for diverse career opportunities',
+        'Contribute to mathematical knowledge and applications'
+      ],
+      courses: [
+        'Calculus I', 'Calculus II', 'Linear Algebra', 'Abstract Algebra',
+        'Real Analysis', 'Complex Analysis', 'Differential Equations', 'Discrete Mathematics',
+        'Probability and Statistics', 'Numerical Analysis', 'Topology', 'Geometry'
+      ],
+      researchAreas: [
+        'Pure Mathematics (Algebra, Analysis, Geometry)',
+        'Applied Mathematics (Modeling, Optimization)',
+        'Mathematical Physics',
+        'Statistics and Data Analysis',
+        'Computational Mathematics'
+      ],
+      programs: ['Bachelor of Science in Mathematics'],
+      headOfDepartment: 'Prof. Ibrahim El-Sayed',
+      establishedYear: 2018,
+      studentCount: 310,
+      facultyCount: 24
+    },
+    {
+      id: '3',
+      name: 'Physics',
+      icon: 'fa-solid fa-atom',
+      order: 3,
+      description: 'Investigating the fundamental laws of nature and the universe',
+      overview: 'The Department of Physics provides comprehensive education in classical and modern physics using advanced laboratories and research facilities.',
+      vision: 'The Department of Physics strives to lead in the fields of education, scientific research, community service, knowledge production, and sustainable development.',
+      mission: `The Department is committed to achieving excellence and global competitiveness through delivering high-quality education, graduating competent professionals, conducting outstanding research, providing technical services, and cultivating innovation among students.`,
+      objectives: [
+        'Provide fundamental understanding of physical laws and principles',
+        'Develop experimental and theoretical skills in physics',
+        'Foster research in physics and its applications',
+        'Prepare students for careers in science, technology, and education',
+        'Contribute to advancements in physical sciences'
+      ],
+      courses: [
+        'Classical Mechanics', 'Electromagnetism', 'Quantum Mechanics', 'Thermodynamics',
+        'Optics', 'Nuclear Physics', 'Solid State Physics', 'Particle Physics',
+        'Mathematical Physics', 'Computational Physics', 'Astrophysics', 'Biophysics'
+      ],
+      researchAreas: [
+        'Theoretical Physics',
+        'Experimental Physics',
+        'Applied Physics',
+        'Medical Physics',
+        'Renewable Energy Physics'
+      ],
+      programs: ['Bachelor of Science in Physics'],
+      headOfDepartment: 'Dr. Ahmed Mahmoud',
+      establishedYear: 2018,
+      studentCount: 295,
+      facultyCount: 22
+    },
+    {
+      id: '4',
+      name: 'Chemistry',
+      icon: 'fa-solid fa-flask',
+      order: 4,
+      description: 'Understanding matter and its transformations',
+      overview: 'The Department of Chemistry offers modern laboratories and specialized faculty across all chemistry disciplines with strong industrial consulting units.',
+      vision: 'The Department of Chemistry strives to achieve leadership and excellence in education, scientific research, community service, knowledge production, and sustainable development.',
+      mission: `Committed to excellence through high-quality education, graduating skilled professionals, distinguished research (e.g., Soap and Detergents Industry Consulting Unit), industrial services, and fostering innovation.`,
+      objectives: [
+        'Provide comprehensive education in chemical sciences',
+        'Develop laboratory and analytical skills',
+        'Foster research in chemistry and its applications',
+        'Prepare students for careers in industry, research, and education',
+        'Contribute to chemical knowledge and industrial advancements'
+      ],
+      courses: [
+        'General Chemistry', 'Organic Chemistry', 'Inorganic Chemistry', 'Physical Chemistry',
+        'Analytical Chemistry', 'Biochemistry', 'Polymer Chemistry', 'Environmental Chemistry',
+        'Medicinal Chemistry', 'Computational Chemistry', 'Spectroscopy', 'Electrochemistry'
+      ],
+      researchAreas: [
+        'Organic Synthesis',
+        'Analytical Chemistry',
+        'Environmental Chemistry',
+        'Industrial Chemistry',
+        'Biochemistry and Biotechnology'
+      ],
+      programs: ['Bachelor of Science in Chemistry'],
+      headOfDepartment: 'Prof. Sarah Ali',
+      establishedYear: 2018,
+      studentCount: 320,
+      facultyCount: 26
     },
     {
       id: '5',
-      name: 'Mathematics',
-      icon: 'fa-solid fa-calculator',
+      name: 'Botany and Microbiology',
+      icon: 'fa-solid fa-seedling',
       order: 5,
-      description: 'Exploring patterns, structures, and logical reasoning',
-      overview: 'The Mathematics Department offers rigorous programs in pure and applied mathematics, preparing students for diverse careers.',
-      vision: 'To be a center of mathematical excellence fostering innovation and critical thinking.',
-      mission: 'To provide superior mathematics education and conduct research that advances mathematical knowledge.',
+      description: 'Studying plants, microorganisms, and their environmental interactions',
+      overview: 'The Department focuses on plant sciences and microbiology with applications in environment, industry, and biotechnology.',
+      vision: 'The Department of Botany and Microbiology aspires to lead in education, scientific research, community service, knowledge production, and sustainable development.',
+      mission: `Achieving excellence through distinguished educational programs, scientific research, consulting services, and nurturing creativity and innovation.`,
       objectives: [
-        'Deliver comprehensive mathematics education',
-        'Promote mathematical research',
-        'Support interdisciplinary applications',
-        'Develop computational skills'
+        'Provide education in botany and microbiology',
+        'Develop skills in plant and microbial sciences',
+        'Foster research in biodiversity and biotechnology',
+        'Prepare students for careers in environmental science and biotechnology',
+        'Contribute to understanding of plant-microbe interactions'
       ],
       courses: [
-        'Calculus',
-        'Linear Algebra',
-        'Abstract Algebra',
-        'Real Analysis',
-        'Statistics',
-        'Discrete Mathematics'
+        'Plant Physiology', 'Microbiology', 'Plant Taxonomy', 'Bacteriology',
+        'Mycology', 'Virology', 'Plant Biotechnology', 'Environmental Microbiology',
+        'Ecology', 'Genetics', 'Biochemistry', 'Molecular Biology'
       ],
       researchAreas: [
-        'Pure Mathematics',
-        'Applied Mathematics',
-        'Statistics',
-        'Mathematical Modeling',
-        'Cryptography'
+        'Plant Biotechnology',
+        'Microbial Ecology',
+        'Environmental Microbiology',
+        'Plant Pathology',
+        'Biodiversity and Conservation'
       ],
-      headOfDepartment: 'Prof. Mohamed Ibrahim',
-      establishedYear: 1950,
-      studentCount: 320,
-      facultyCount: 20
+      programs: [
+        'Bachelor of Science in Botany and Chemistry',
+        'Bachelor of Science in Botany and Microbiology',
+        'Bachelor of Science in Microbiology and Chemistry'
+      ],
+      headOfDepartment: 'Dr. Norhan El-Sayed',
+      establishedYear: 2018,
+      studentCount: 340,
+      facultyCount: 28
     },
     {
       id: '6',
-      name: 'Computer Science',
-      icon: 'fa-solid fa-laptop-code',
-      order: 6,
-      description: 'Advancing computational thinking and technology',
-      overview: 'Our Computer Science Department provides cutting-edge education in software development, AI, and computer systems.',
-      vision: 'To be a leading computer science department driving technological innovation and digital transformation.',
-      mission: 'To educate computer scientists, conduct innovative research, and contribute to technological advancement.',
-      objectives: [
-        'Provide state-of-the-art CS education',
-        'Foster innovation in computing',
-        'Promote industry collaboration',
-        'Advance AI and machine learning research'
-      ],
-      courses: [
-        'Data Structures',
-        'Algorithms',
-        'Software Engineering',
-        'Database Systems',
-        'Artificial Intelligence',
-        'Computer Networks'
-      ],
-      researchAreas: [
-        'Artificial Intelligence',
-        'Machine Learning',
-        'Cybersecurity',
-        'Data Science',
-        'Software Engineering',
-        'Computer Vision'
-      ],
-      headOfDepartment: 'Dr. Youssef Ahmed',
-      establishedYear: 1985,
-      studentCount: 600,
-      facultyCount: 35
-    },
-    {
-      id: '7',
-      name: 'Botany',
-      icon: 'fa-solid fa-seedling',
-      order: 7,
-      description: 'Studying plant life and ecosystems',
-      overview: 'The Botany Department focuses on plant sciences, from molecular plant biology to ecosystem ecology.',
-      vision: 'To advance plant sciences for sustainable agriculture and environmental conservation.',
-      mission: 'To educate botanists, conduct plant research, and promote plant biodiversity conservation.',
-      objectives: [
-        'Provide comprehensive botany education',
-        'Conduct plant science research',
-        'Support sustainable agriculture',
-        'Conserve plant biodiversity'
-      ],
-      courses: [
-        'Plant Physiology',
-        'Plant Taxonomy',
-        'Plant Ecology',
-        'Plant Biotechnology',
-        'Mycology',
-        'Ethnobotany'
-      ],
-      researchAreas: [
-        'Plant Biotechnology',
-        'Medicinal Plants',
-        'Plant Ecology',
-        'Crop Improvement',
-        'Plant Pathology'
-      ],
-      headOfDepartment: 'Dr. Nour El-Din Hassan',
-      establishedYear: 1965,
-      studentCount: 250,
-      facultyCount: 15
-    },
-    {
-      id: '8',
       name: 'Zoology',
       icon: 'fa-solid fa-fish',
-      order: 8,
-      description: 'Understanding animal behavior and biology',
-      overview: 'Our Zoology Department offers comprehensive study of animal life, from cellular to ecosystem levels.',
-      vision: 'To be a leading zoology department advancing animal science knowledge and conservation.',
-      mission: 'To educate zoologists, conduct animal research, and promote wildlife conservation.',
+      order: 6,
+      description: 'Exploring animal biology, behavior, and ecosystems',
+      overview: 'The Department offers comprehensive study of animal life from cellular to ecological levels with emphasis on biodiversity and conservation.',
+      vision: 'The Department of Zoology strives to achieve leadership and excellence in education, scientific research, community service, knowledge production, and sustainable development.',
+      mission: `Committed to high-quality education, graduating skilled professionals, distinguished research, community services, and supporting sustainable development goals.`,
       objectives: [
-        'Provide excellent zoology education',
-        'Conduct animal biology research',
-        'Support wildlife conservation',
-        'Advance veterinary science knowledge'
+        'Provide comprehensive education in zoology and animal sciences',
+        'Develop skills in animal biology and ecology',
+        'Foster research in biodiversity and conservation',
+        'Prepare students for careers in wildlife management and research',
+        'Contribute to understanding of animal behavior and ecosystems'
       ],
       courses: [
-        'Animal Physiology',
-        'Animal Behavior',
-        'Evolutionary Biology',
-        'Entomology',
-        'Ichthyology',
-        'Ornithology'
+        'Animal Physiology', 'Ecology', 'Animal Behavior', 'Genetics',
+        'Developmental Biology', 'Evolutionary Biology', 'Marine Biology', 'Entomology',
+        'Ichthyology', 'Ornithology', 'Mammalogy', 'Conservation Biology'
       ],
       researchAreas: [
-        'Animal Behavior',
+        'Animal Ecology',
+        'Behavioral Biology',
         'Conservation Biology',
         'Evolutionary Biology',
-        'Marine Biology',
-        'Wildlife Management'
+        'Aquatic Biology'
       ],
-      headOfDepartment: 'Dr. Amira Saleh',
-      establishedYear: 1968,
-      studentCount: 300,
-      facultyCount: 20
-    },
-    {
-      id: '9',
-      name: 'Microbiology',
-      icon: 'fa-solid fa-microscope',
-      order: 9,
-      description: 'Exploring microscopic life forms',
-      overview: 'The Microbiology Department studies microorganisms and their applications in health, industry, and environment.',
-      vision: 'To be a center of excellence in microbiology research and education.',
-      mission: 'To advance microbiological knowledge through education and research for societal benefit.',
-      objectives: [
-        'Provide comprehensive microbiology education',
-        'Conduct microbial research',
-        'Support public health initiatives',
-        'Advance biotechnology applications'
+      programs: [
+        'Bachelor of Science in Zoology',
+        'Bachelor of Science in Zoology and Chemistry'
       ],
-      courses: [
-        'General Microbiology',
-        'Medical Microbiology',
-        'Industrial Microbiology',
-        'Virology',
-        'Immunology',
-        'Molecular Microbiology'
-      ],
-      researchAreas: [
-        'Medical Microbiology',
-        'Food Microbiology',
-        'Environmental Microbiology',
-        'Microbial Biotechnology',
-        'Antimicrobial Resistance'
-      ],
-      headOfDepartment: 'Prof. Karim Mahmoud',
-      establishedYear: 1975,
-      studentCount: 220,
-      facultyCount: 16
-    },
-    {
-      id: '10',
-      name: 'Environmental Science',
-      icon: 'fa-solid fa-water',
-      order: 10,
-      description: 'Protecting and understanding our environment',
-      overview: 'Our Environmental Science Department addresses critical environmental challenges through interdisciplinary approaches.',
-      vision: 'To lead in environmental education and research for sustainable development.',
-      mission: 'To educate environmental scientists and promote sustainable environmental practices.',
-      objectives: [
-        'Provide environmental science education',
-        'Conduct environmental research',
-        'Promote sustainable development',
-        'Support environmental policy'
-      ],
-      courses: [
-        'Environmental Chemistry',
-        'Environmental Biology',
-        'Environmental Geology',
-        'Environmental Policy',
-        'Sustainable Development',
-        'Climate Change Science'
-      ],
-      researchAreas: [
-        'Climate Change',
-        'Water Resources',
-        'Air Quality',
-        'Waste Management',
-        'Environmental Impact Assessment',
-        'Sustainable Energy'
-      ],
-      headOfDepartment: 'Dr. Layla Hassan',
-      establishedYear: 1990,
-      studentCount: 350,
-      facultyCount: 24
+      headOfDepartment: 'Dr. Reham Mohamed',
+      establishedYear: 2018,
+      studentCount: 270,
+      facultyCount: 19
     }
   ];
 
-  getAll(): Department[] {
-    return this.departments;
-  }
-
+  getAll(): Department[] { return this.departments; }
   getById(id: string): Department | undefined {
-    return this.departments.find(dept => dept.id === id);
+    return this.departments.find(d => d.id === id);
   }
-
   getByOrder(order: number): Department | undefined {
-    return this.departments.find(dept => dept.order === order);
+    return this.departments.find(d => d.order === order);
   }
-
-  getTopDepartments(count: number = 6): Department[] {
-    return this.departments
-      .sort((a, b) => a.order - b.order)
-      .slice(0, count);
+  getTopDepartments(count = 6): Department[] {
+    return this.departments.sort((a, b) => a.order - b.order).slice(0, count);
   }
-
   getDepartmentsByStudentCount(): Department[] {
-    return this.departments
-      .sort((a, b) => (b.studentCount || 0) - (a.studentCount || 0));
+    return this.departments.sort((a, b) => (b.studentCount || 0) - (a.studentCount || 0));
   }
-
   getTotalStudents(): number {
-    return this.departments.reduce((total, dept) => total + (dept.studentCount || 0), 0);
+    return this.departments.reduce((sum, d) => sum + (d.studentCount || 0), 0);
   }
-
   getTotalFaculty(): number {
-    return this.departments.reduce((total, dept) => total + (dept.facultyCount || 0), 0);
+    return this.departments.reduce((sum, d) => sum + (d.facultyCount || 0), 0);
   }
-
   searchDepartments(query: string): Department[] {
-    const lowerQuery = query.toLowerCase();
-    return this.departments.filter(dept =>
-      dept.name.toLowerCase().includes(lowerQuery) ||
-      dept.description.toLowerCase().includes(lowerQuery) ||
-      dept.researchAreas.some(area => area.toLowerCase().includes(lowerQuery))
+    const q = query.toLowerCase();
+    return this.departments.filter(d =>
+      d.name.toLowerCase().includes(q) ||
+      d.description.toLowerCase().includes(q) ||
+      d.programs?.some(p => p.toLowerCase().includes(q))
     );
   }
 }

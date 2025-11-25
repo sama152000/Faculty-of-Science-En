@@ -16,7 +16,7 @@ export class UpcomingEventsComponent implements OnInit {
   constructor(private eventsService: EventsService) {}
 
   ngOnInit() {
-    this.events = this.eventsService.getUpcoming(4);
+    this.events = this.eventsService.getAll();
   }
 
   formatDate(date: Date): string {

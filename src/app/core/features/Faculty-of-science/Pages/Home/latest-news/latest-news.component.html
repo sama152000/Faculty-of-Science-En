@@ -1,13 +1,13 @@
-<section id="news" class="news-section bg-beige-custom section-padding position-relative overflow-hidden">
-  <div class="container">
+<section id="news" class="news-section bg-beige-custom  position-relative overflow-hidden">
+  <div class="container-fluid">
     <h2 class="section-title text-dark-blue mb-5">Latest News</h2>
 
     <div class="news-slider-container position-relative">
       <!-- News Cards -->
       <div class="news-slider d-flex gap-4" 
            [style.transform]="'translateX(-' + (currentIndex * 320) + 'px)'">
-        <div class="news-card card-custom flex-shrink-0" 
-             *ngFor="let item of news">
+        <div class="news-card card-custom flex-shrink-0"
+             *ngFor="let item of extendedNews">
           <img [src]="item.image" 
                [alt]="item.title"
                class="card-img-top img-cover"
@@ -28,14 +28,12 @@
 
       <!-- Navigation Buttons -->
       <button class="news-nav news-prev btn btn-primary rounded-circle position-absolute"
-              (click)="prevNews()"
-              [disabled]="currentIndex === 0">
+              (click)="prevNews()">
         <i class="fa-solid fa-chevron-left"></i>
       </button>
-      
+
       <button class="news-nav news-next btn btn-primary rounded-circle position-absolute"
-              (click)="nextNews()"
-              [disabled]="currentIndex >= news.length - 1">
+              (click)="nextNews()">
         <i class="fa-solid fa-chevron-right"></i>
       </button>
     </div>

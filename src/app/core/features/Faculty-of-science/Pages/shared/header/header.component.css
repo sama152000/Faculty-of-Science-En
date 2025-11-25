@@ -1,5 +1,22 @@
 .top-bar {
   font-size: 0.9rem;
+  background-color: var(--accent-orange);
+}
+
+.btn-primary {
+  background-color: var(--primary-blue);
+  border-color: var(--primary-blue);
+  border-radius: var(--border-radius);
+  padding: 0.25rem 2rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-blue-dark);
+  border-color: var(--primary-blue-dark);
+  color: var(--primary-blue-dark);
 }
 
 .contact-info span {
@@ -7,11 +24,11 @@
 }
 
 .logo-img {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
-  border-radius: 50%;
-  border: 3px solid var(--primary-blue);
+  /* border-radius: 50%; */
+  /* border: 3px solid var(--primary-blue); */
 }
 
 .site-title {
@@ -77,6 +94,16 @@
 
 /* Mobile Styles */
 @media (max-width: 991px) {
+  .navbar {
+    justify-content: center;
+  }
+
+  .navbar-toggler {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    text-align: center;
+  }
+
   .navbar-collapse {
     background: var(--white);
     border-radius: var(--border-radius);
@@ -84,15 +111,15 @@
     margin-top: 1rem;
     padding: 1rem;
   }
-  
+
   .navbar-nav {
     text-align: center;
   }
-  
+
   .navbar-nav .nav-link::after {
     display: none;
   }
-  
+
   .dropdown-menu {
     box-shadow: none;
     background: var(--light-beige);
@@ -104,22 +131,74 @@
   .top-bar {
     font-size: 0.8rem;
   }
-  
+
   .contact-info {
     justify-content: center;
   }
-  
+
   .top-links {
     justify-content: center !important;
     margin-top: 0.5rem;
   }
-  
+
   .site-title {
     font-size: 1rem;
   }
-  
+
   .logo-img {
     width: 50px;
     height: 50px;
+  }
+}
+
+/* Extra Small Screens (Mobile) */
+@media (max-width: 576px) {
+  .top-bar {
+    font-size: 0.75rem;
+  }
+
+  .contact-info {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .top-links {
+    margin-top: 0.25rem;
+  }
+
+  .site-title {
+    font-size: 0.9rem;
+  }
+
+  .logo-img {
+    width: 45px;
+    height: 45px;
+  }
+
+  .logo {
+    justify-content: center;
+  }
+
+  .navbar-collapse {
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+
+  }
+
+  .navbar-nav .nav-link {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .dropdown-menu {
+    width: 100%;
+    left: 0;
+    right: 0;
+    margin: 0;
+  }
+
+  .dropdown-item {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
   }
 }

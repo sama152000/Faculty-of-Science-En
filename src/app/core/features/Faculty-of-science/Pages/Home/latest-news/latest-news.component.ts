@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NewsService } from '../../../Services/news.service';
 import { News } from '../../../model/news.model';
@@ -10,25 +10,51 @@ import { News } from '../../../model/news.model';
   templateUrl: './latest-news.component.html',
   styleUrls: ['./latest-news.component.css']
 })
-export class LatestNewsComponent implements OnInit {
+export class LatestNewsComponent implements OnInit, OnDestroy {
   news: News[] = [];
+  extendedNews: News[] = [];
   currentIndex = 0;
+  private autoplayIntervalId: any;
 
   constructor(private newsService: NewsService) {}
 
   ngOnInit() {
-    this.news = this.newsService.getLatest(3);
+    this.news = this.newsService.getLatest(4);
+    this.extendedNews = [...this.news, ...this.news];
+    // Start autoplay timer
+    this.autoplayIntervalId = setInterval(() => {
+      this.currentIndex = (this.currentIndex + 1) % this.extendedNews.length;
+      if (this.currentIndex === this.news.length) {
+        setTimeout(() => {
+          this.currentIndex = 0;
+        }, 300);
+      }
+    }, 3000); // Change slide every 3 seconds
+  }
+
+  ngOnDestroy() {
+    if (this.autoplayIntervalId) {
+      clearInterval(this.autoplayIntervalId);
+    }
   }
 
   nextNews() {
-    if (this.currentIndex < this.news.length - 1) {
-      this.currentIndex++;
+    this.currentIndex = (this.currentIndex + 1) % this.extendedNews.length;
+    if (this.currentIndex === this.news.length) {
+      setTimeout(() => {
+        this.currentIndex = 0;
+      }, 600);
     }
   }
 
   prevNews() {
-    if (this.currentIndex > 0) {
-      this.currentIndex--;
+    if (this.currentIndex === 0) {
+      this.currentIndex = this.news.length;
+      setTimeout(() => {
+        this.currentIndex = this.news.length - 1;
+      }, 600);
+    } else {
+      this.currentIndex = (this.currentIndex - 1) % this.extendedNews.length;
     }
   }
 

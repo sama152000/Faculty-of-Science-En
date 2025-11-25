@@ -1,7 +1,15 @@
 .site-footer {
   margin-top: auto;
+  background-color: var(--accent-orange);
+   
 }
 
+.container-fluid {
+   padding-left: 17rem ;
+  padding-right: 17rem;
+  padding-bottom: 3rem;
+padding-top: 3rem;
+}
 .footer-title {
   font-weight: 600;
   position: relative;
@@ -52,7 +60,7 @@
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Scroll to Top Button */
+/* Scroll to Top Button
 .scroll-to-top {
   bottom: 30px;
   right: 30px;
@@ -70,7 +78,7 @@
   background: var(--dark-blue) !important;
   transform: translateY(-4px);
   box-shadow: var(--shadow-medium);
-}
+} */
 
 /* Responsive Design */
 @media (max-width: 768px) {
@@ -84,12 +92,12 @@
     font-size: 0.9rem;
   }
   
-  .scroll-to-top {
+  /* .scroll-to-top {
     width: 45px;
     height: 45px;
     bottom: 20px;
     right: 20px;
-  }
+  } */
 }
 
 @media (max-width: 576px) {
@@ -106,4 +114,12 @@
   .social-icons {
     justify-content: center;
   }
+
+  
+.container-fluid {
+   padding-left: 1rem ;
+  padding-right: 1rem;
+  padding-bottom: 1rem;
+padding-top: 5rem;
+}
 }

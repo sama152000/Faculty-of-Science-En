@@ -13,7 +13,7 @@ import { FooterComponent } from "../shared/footer/footer.component";
   selector: 'app-Home',
   templateUrl: './Home.component.html',
   styleUrls: ['./Home.component.css'],
-  imports: [HeroComponent, DeanWordComponent, OurDepartmentsComponent, LatestNewsComponent, UpcomingEventsComponent, StatisticsComponent, OurGalleryComponent, HeaderComponent, FooterComponent]
+  imports: [HeroComponent, DeanWordComponent, OurDepartmentsComponent, LatestNewsComponent, UpcomingEventsComponent, StatisticsComponent, OurGalleryComponent]
 })
 export class HomeComponent implements OnInit {
 

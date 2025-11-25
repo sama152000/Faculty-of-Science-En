@@ -25,13 +25,13 @@ export class HeroComponent implements OnInit, OnDestroy {
     },
     {
       id: 2,
-      image: 'https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop',
+      image: 'https://images.pexels.com/photos/2280568/pexels-photo-2280568.jpeg',
       title: 'Innovative Research & Discovery',
       subtitle: 'Driving scientific progress through creativity and collaboration'
     },
     {
       id: 3,
-      image: 'https://images.pexels.com/photos/1181298/pexels-photo-1181298.jpeg?auto=compress&cs=tinysrgb&w=1600&h=900&fit=crop',
+      image: 'https://images.pexels.com/photos/2280547/pexels-photo-2280547.jpeg',
       title: 'Empowering Future Scientists',
       subtitle: 'Preparing tomorrow\'s leaders in science and technology'
     }
