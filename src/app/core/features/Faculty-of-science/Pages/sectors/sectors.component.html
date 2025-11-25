@@ -1,0 +1,264 @@
+<section class="sectors-section">
+  <div class="container-fluid">
+    <h2 class="section-title">Faculty Sectors</h2>
+
+    <div class="row">
+      <!-- Sectors Sidebar -->
+      <div class="col-lg-3 col-md-4 mb-4">
+        <div class="sectors-sidebar card-custom">
+          <h4 class="sidebar-title">
+            <i class="fas fa-sitemap me-2"></i>
+            Administrative Sectors
+          </h4>
+
+          <ul class="sectors-list">
+            <li *ngFor="let sector of sectors">
+              <button
+                class="sector-btn"
+                [class.active]="isSectorSelected(sector.id)"
+                (click)="selectSector(sector)">
+                <div class="sector-icon">
+                  <i [class]="sector.icon"></i>
+                </div>
+                <div class="sector-info">
+                  <h6 class="sector-name">{{ sector.name }}</h6>
+                  <p class="sector-desc">{{ sector.description }}</p>
+                </div>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Sector Content -->
+      <div class="col-lg-9 col-md-8">
+        <div class="sector-content" *ngIf="selectedSector">
+
+          <!-- Sector Header -->
+          <div class="sector-header card-custom mb-4">
+            <div class="header-content">
+              <div class="sector-icon-large">
+                <i [class]="selectedSector.icon"></i>
+              </div>
+              <div class="header-info">
+                <h1 class="sector-title">{{ selectedSector.name }}</h1>
+                <p class="sector-subtitle">{{ selectedSector.description }}</p>
+
+                <div class="sector-stats">
+                  <div class="stat-item" *ngIf="selectedSector.establishedYear">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Est. {{ selectedSector.establishedYear }}</span>
+                  </div>
+                  <div class="stat-item" *ngIf="selectedSector.staffCount">
+                    <i class="fas fa-users"></i>
+                    <span>{{ selectedSector.staffCount }} Staff</span>
+                  </div>
+                  <div class="stat-item" *ngIf="selectedSector.head">
+                    <i class="fas fa-user-tie"></i>
+                    <span>{{ selectedSector.head }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section Navigation -->
+          <div class="section-nav card-custom mb-4">
+            <div class="nav-buttons">
+              <button
+                class="nav-btn"
+                [class.active]="isActiveSection('overview')"
+                (click)="setActiveSection('overview')">
+                <i class="fas fa-info-circle me-2"></i>
+                Overview
+              </button>
+              <button
+                class="nav-btn"
+                [class.active]="isActiveSection('responsibilities')"
+                (click)="setActiveSection('responsibilities')">
+                <i class="fas fa-tasks me-2"></i>
+                Responsibilities
+              </button>
+              <button
+                class="nav-btn"
+                [class.active]="isActiveSection('departments')"
+                (click)="setActiveSection('departments')">
+                <i class="fas fa-building me-2"></i>
+                Departments
+              </button>
+              <button
+                class="nav-btn"
+                [class.active]="isActiveSection('services')"
+                (click)="setActiveSection('services')">
+                <i class="fas fa-cogs me-2"></i>
+                Services
+              </button>
+              <button
+                class="nav-btn"
+                [class.active]="isActiveSection('achievements')"
+                (click)="setActiveSection('achievements')">
+                <i class="fas fa-trophy me-2"></i>
+                Achievements
+              </button>
+            </div>
+          </div>
+
+          <!-- Section Content -->
+          <div class="section-content card-custom">
+
+            <!-- Overview Section -->
+            <div class="content-section" *ngIf="isActiveSection('overview')">
+              <div class="section-header">
+                <h3 class="section-title-left">
+                  <i class="fas fa-info-circle text-primary-custom me-3"></i>
+                  Sector Overview
+                </h3>
+              </div>
+
+              <div class="content-body">
+                <p class="lead">{{ selectedSector.overview }}</p>
+
+                <div class="row mt-4">
+                  <div class="col-md-6" *ngIf="selectedSector.head">
+                    <div class="info-card">
+                      <h5 class="text-primary-custom">
+                        <i class="fas fa-user-tie me-2"></i>
+                        Sector Head
+                      </h5>
+                      <p class="h6">{{ selectedSector.head }}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6" *ngIf="selectedSector.budget">
+                    <div class="info-card">
+                      <h5 class="text-primary-custom">
+                        <i class="fas fa-dollar-sign me-2"></i>
+                        Annual Budget
+                      </h5>
+                      <p class="h6">{{ selectedSector.budget }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Responsibilities Section -->
+            <div class="content-section" *ngIf="isActiveSection('responsibilities')">
+              <div class="section-header">
+                <h3 class="section-title-left">
+                  <i class="fas fa-tasks text-primary-custom me-3"></i>
+                  Key Responsibilities
+                </h3>
+              </div>
+
+              <div class="content-body">
+                <div class="responsibilities-grid">
+                  <div class="responsibility-item" *ngFor="let responsibility of selectedSector.responsibilities; let i = index">
+                    <div class="responsibility-number">{{ i + 1 }}</div>
+                    <div class="responsibility-content">
+                      <p>{{ responsibility }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Departments Section -->
+            <div class="content-section" *ngIf="isActiveSection('departments')">
+              <div class="section-header">
+                <h3 class="section-title-left">
+                  <i class="fas fa-building text-primary-custom me-3"></i>
+                  Associated Departments
+                </h3>
+              </div>
+
+              <div class="content-body">
+                <div class="departments-grid">
+                  <div class="department-item" *ngFor="let department of selectedSector.departments">
+                    <div class="department-icon">
+                      <i class="fas fa-building"></i>
+                    </div>
+                    <h6 class="department-name">{{ department }}</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Services Section -->
+            <div class="content-section" *ngIf="isActiveSection('services')">
+              <div class="section-header">
+                <h3 class="section-title-left">
+                  <i class="fas fa-cogs text-primary-custom me-3"></i>
+                  Services Provided
+                </h3>
+              </div>
+
+              <div class="content-body">
+                <div class="services-list">
+                  <div class="service-item" *ngFor="let service of selectedSector.services">
+                    <div class="service-icon">
+                      <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="service-content">
+                      <h6 class="service-title">{{ service }}</h6>
+                      <p class="service-desc">Comprehensive {{ service.toLowerCase() }} services to support faculty operations and development.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Achievements Section -->
+            <div class="content-section" *ngIf="isActiveSection('achievements')">
+              <div class="section-header">
+                <h3 class="section-title-left">
+                  <i class="fas fa-trophy text-primary-custom me-3"></i>
+                  Key Achievements & Goals
+                </h3>
+              </div>
+
+              <div class="content-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="achievements-card">
+                      <div class="achievements-icon">
+                        <i class="fas fa-trophy"></i>
+                      </div>
+                      <h4>Recent Achievements</h4>
+                      <ul class="achievements-list">
+                        <li *ngFor="let achievement of selectedSector.achievements">
+                          <i class="fas fa-check me-2"></i>
+                          {{ achievement }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="goals-card">
+                      <div class="goals-icon">
+                        <i class="fas fa-bullseye"></i>
+                      </div>
+                      <h4>Future Goals</h4>
+                      <ul class="goals-list">
+                        <li *ngFor="let goal of selectedSector.goals">
+                          <i class="fas fa-arrow-right me-2"></i>
+                          {{ goal }}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- No Sector Selected -->
+        <div class="no-selection text-center py-5" *ngIf="!selectedSector">
+          <i class="fas fa-sitemap fa-3x text-muted mb-3"></i>
+          <h4>Select a Sector</h4>
+          <p class="text-muted">Choose a sector from the sidebar to view detailed information.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
