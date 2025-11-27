@@ -111,8 +111,7 @@ A truly inspiring day of science and discovery in the heart of Upper Egypt!`,
     return this.news.filter(n => n.category === category);
   }
 
-  // Optional: لو حابة ترجعي related news زي الأول
   getRelatedNews(id: number): News[] {
-    return []; // حاليًا مفيش related، لو عايزة نضيفها قوليلي
+    return [];
   }
 }
