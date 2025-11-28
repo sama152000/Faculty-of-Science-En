@@ -19,7 +19,7 @@
             </div>
             <h5 class="card-title text-dark-blue">{{ item.title }}</h5>
             <p class="card-text text-muted">{{ item.excerpt }}</p>
-            <a href="#" class="read-more text-primary-custom fw-semibold text-decoration-none">
+            <a [routerLink]="['/news', item.id]" class="read-more text-primary-custom fw-semibold text-decoration-none">
               Read More →
             </a>
           </div>
@@ -40,7 +40,7 @@
 
     <!-- View All Button -->
     <div class="text-center mt-5">
-      <a href="#" class="btn-primary-custom">View All News</a>
+      <a [routerLink]="['/news']" class="btn-primary-custom">View All News</a>
     </div>
   </div>
 </section>

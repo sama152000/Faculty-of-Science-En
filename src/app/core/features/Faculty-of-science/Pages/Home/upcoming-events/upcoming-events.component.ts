@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { EventsService } from '../../../Services/events.service';
 import { Event } from '../../../model/event.model';
+
+
 
 @Component({
   selector: 'app-upcoming-events',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './upcoming-events.component.html',
   styleUrls: ['./upcoming-events.component.css']
 })

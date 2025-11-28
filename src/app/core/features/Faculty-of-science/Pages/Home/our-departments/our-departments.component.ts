@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { DepartmentsService } from '../../../Services/departments.service';
 import { Department } from '../../../model/department.model';
 
 @Component({
   selector: 'app-our-departments',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './our-departments.component.html',
   styleUrls: ['./our-departments.component.css']
 })
