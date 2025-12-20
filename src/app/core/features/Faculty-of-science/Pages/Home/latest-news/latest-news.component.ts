@@ -2,18 +2,17 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NewsService } from '../../../Services/news.service';
-import { News } from '../../../model/news.model';
 
 @Component({
   selector: 'app-latest-news',
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './latest-news.component.html',
-  styleUrls: ['./latest-news.component.css']
+  styleUrls: ['./latest-news.component.css'],
 })
 export class LatestNewsComponent implements OnInit, OnDestroy {
-  news: News[] = [];
-  extendedNews: News[] = [];
+  news: any[] = [];
+  extendedNews: any[] = [];
   currentIndex = 0;
   private autoplayIntervalId: any;
 
@@ -63,7 +62,7 @@ export class LatestNewsComponent implements OnInit, OnDestroy {
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'short',
-      day: 'numeric'
+      day: 'numeric',
     });
   }
 }

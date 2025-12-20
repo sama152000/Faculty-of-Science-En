@@ -9,11 +9,11 @@ import { Sector } from '../../model/sector.model';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './sectors.component.html',
-  styleUrls: ['./sectors.component.css']
+  styleUrls: ['./sectors.component.css'],
 })
 export class SectorsComponent implements OnInit {
-  sectors: Sector[] = [];
-  selectedSector: Sector | null = null;
+  sectors: any[] = [];
+  selectedSector: any | null = null;
   loading = true;
   activeSection = 'overview';
 

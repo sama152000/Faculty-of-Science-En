@@ -9,11 +9,11 @@ import { News } from '../../../model/news.model';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './news-details.component.html',
-  styleUrls: ['./news-details.component.css']
+  styleUrls: ['./news-details.component.css'],
 })
 export class NewsDetailsComponent implements OnInit {
-  newsItem: News | null = null;
-  relatedItems: News[] = [];
+  newsItem: any | null = null;
+  relatedItems: any[] = [];
   loading = true;
   error = false;
 
@@ -24,7 +24,7 @@ export class NewsDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       const id = +params['id'];
       this.loadNewsItem(id);
     });
@@ -41,8 +41,9 @@ export class NewsDetailsComponent implements OnInit {
       this.relatedItems = this.newsService.getRelatedNews(id);
       // If no related items found, get items of the same type
       if (this.relatedItems.length === 0) {
-        this.relatedItems = this.newsService.getByType(this.newsItem.type)
-          .filter(item => item.id !== id)
+        this.relatedItems = this.newsService
+          .getByType(this.newsItem.type)
+          .filter((item: any) => item.id !== id)
           .slice(0, 3);
       }
     } else {
@@ -58,8 +59,8 @@ export class NewsDetailsComponent implements OnInit {
 
   goBackToType(): void {
     if (this.newsItem) {
-      this.router.navigate(['/news'], { 
-        queryParams: { type: this.newsItem.type } 
+      this.router.navigate(['/news'], {
+        queryParams: { type: this.newsItem.type },
       });
     }
   }
@@ -68,7 +69,7 @@ export class NewsDetailsComponent implements OnInit {
     return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
     }).format(date);
   }
 
@@ -77,21 +78,27 @@ export class NewsDetailsComponent implements OnInit {
 
     const url = window.location.href;
     const title = this.newsItem.title;
-    
+
     let shareUrl = '';
-    
+
     switch (platform) {
       case 'facebook':
-        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`;
+        shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+          url
+        )}`;
         break;
       case 'twitter':
-        shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`;
+        shareUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+          url
+        )}&text=${encodeURIComponent(title)}`;
         break;
       case 'linkedin':
-        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`;
+        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+          url
+        )}`;
         break;
     }
-    
+
     if (shareUrl) {
       window.open(shareUrl, '_blank', 'width=600,height=400');
     }

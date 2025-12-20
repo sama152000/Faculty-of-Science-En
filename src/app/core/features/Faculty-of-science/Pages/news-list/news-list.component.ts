@@ -9,11 +9,11 @@ import { News } from '../../model/news.model';
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: './news-list.component.html',
-  styleUrls: ['./news-list.component.css']
+  styleUrls: ['./news-list.component.css'],
 })
 export class NewsListComponent implements OnInit {
-  allNews: News[] = [];
-  filteredNews: News[] = [];
+  allNews: any[] = [];
+  filteredNews: any[] = [];
   selectedType: 'all' | 'news' | 'article' = 'all';
   currentPage = 1;
   itemsPerPage = 6;
@@ -36,7 +36,7 @@ export class NewsListComponent implements OnInit {
     } else {
       this.filteredNews = this.newsService.getByType(this.selectedType);
     }
-    
+
     this.totalPages = Math.ceil(this.filteredNews.length / this.itemsPerPage);
     this.currentPage = 1;
   }
@@ -46,7 +46,7 @@ export class NewsListComponent implements OnInit {
     this.filterNews();
   }
 
-  getPaginatedNews(): News[] {
+  getPaginatedNews(): any[] {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
     return this.filteredNews.slice(startIndex, endIndex);
@@ -66,7 +66,7 @@ export class NewsListComponent implements OnInit {
     return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
       month: 'short',
-      day: 'numeric'
+      day: 'numeric',
     }).format(date);
   }
 }

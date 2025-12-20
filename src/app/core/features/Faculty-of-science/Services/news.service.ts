@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { News } from '../model/news.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class NewsService {
-  private news: News[] = [
+  private news: any[] = [
     {
       id: 1,
       title: 'Volunteerism Awareness Seminar with Egyptian Red Crescent',
@@ -18,13 +18,14 @@ Speakers:
 The seminar covered first aid basics, emergency response, fire safety protocols, and the vital role of volunteer work in community development. The event saw outstanding student participation and interaction.
 
 Under the patronage of Prof. Sabreen Abdel-Gelil (President of Luxor University) and supervised by Prof. Mohamed Abdullah Abbas (Dean), Assoc. Prof. Rokia El-Omari, Assoc. Prof. Nagwa Hussein, and Mr. Wajdi Mounir.`,
-      excerpt: 'A highly engaging volunteerism awareness seminar was organized in collaboration with the Egyptian Red Crescent, focusing on first aid and community service.',
+      excerpt:
+        'A highly engaging volunteerism awareness seminar was organized in collaboration with the Egyptian Red Crescent, focusing on first aid and community service.',
       image: './assets/new1.jpg',
       date: new Date('2025-11-20'),
       author: 'Faculty of Science Media Team',
       category: 'Community Service',
       type: 'news',
-      tags: ['Volunteerism', 'Red Crescent', 'Community', 'Awareness']
+      tags: ['Volunteerism', 'Red Crescent', 'Community', 'Awareness'],
     },
     {
       id: 2,
@@ -40,13 +41,19 @@ The celebration featured:
 Nearly 120 students attended this heartfelt celebration of national pride and unity.
 
 Organized by the Students’ Union and “Students for Egypt” Family.`,
-      excerpt: 'A grand ceremony marking the 52nd anniversary of the October Victory with patriotic performances and an inspiring seminar.',
+      excerpt:
+        'A grand ceremony marking the 52nd anniversary of the October Victory with patriotic performances and an inspiring seminar.',
       image: './assets/new2.jpg',
       date: new Date('2025-10-07'),
       author: 'Students’ Union – Faculty of Science',
       category: 'National Celebration',
       type: 'news',
-      tags: ['October Victory', 'National Day', 'Patriotism', 'Students Activities']
+      tags: [
+        'October Victory',
+        'National Day',
+        'Patriotism',
+        'Students Activities',
+      ],
     },
     {
       id: 3,
@@ -61,13 +68,14 @@ Organized by the Students’ Union and “Students for Egypt” Family.`,
 The ceremony celebrated dedication, academic excellence, and contributions to the faculty’s vibrant student life.
 
 Heartfelt thanks to all honorees for their passion and commitment. Together, we build a brighter future!`,
-      excerpt: 'A special ceremony honored top students, volunteers, and active participants for their excellence and dedication.',
+      excerpt:
+        'A special ceremony honored top students, volunteers, and active participants for their excellence and dedication.',
       image: './assets/new3.jpg',
       date: new Date('2025-11-15'),
       author: 'Faculty Administration',
       category: 'Achievement',
       type: 'news',
-      tags: ['Honoring', 'Students', 'Excellence', 'Volunteer']
+      tags: ['Honoring', 'Students', 'Excellence', 'Volunteer'],
     },
     {
       id: 4,
@@ -79,14 +87,15 @@ Led by Dr. Mohamed Abdo (Geology Department) and supervised by the Dean, vice de
 Students enjoyed interactive field discussions, hands-on learning, and exploration of this globally significant stratigraphic section.
 
 A truly inspiring day of science and discovery in the heart of Upper Egypt!`,
-      excerpt: 'Students explored the world-famous El-Dababiya Geological Protected Area in a hands-on scientific field trip.',
+      excerpt:
+        'Students explored the world-famous El-Dababiya Geological Protected Area in a hands-on scientific field trip.',
       image: './assets/new4.jpg',
       date: new Date('2025-11-05'),
       author: 'Geology Department & Students’ Union',
       category: 'Field Trip',
       type: 'news',
-      tags: ['Geology', 'Field Trip', 'El-Dababiya', 'Education']
-    }
+      tags: ['Geology', 'Field Trip', 'El-Dababiya', 'Education'],
+    },
   ];
 
   getAll(): News[] {
@@ -94,21 +103,21 @@ A truly inspiring day of science and discovery in the heart of Upper Egypt!`,
   }
 
   getById(id: number): News | undefined {
-    return this.news.find(item => item.id === id);
+    return this.news.find((item: any) => item.id === id);
   }
 
   getByType(type: 'news' | 'article'): News[] {
-    return this.news.filter(item => item.type === type);
+    return this.news.filter((item) => item.type === type);
   }
 
   getLatest(count: number = 3): News[] {
     return this.news
-      .sort((a, b) => b.date.getTime() - a.date.getTime())
+      .sort((a: any, b: any) => b.date.getTime() - a.date.getTime())
       .slice(0, count);
   }
 
   getByCategory(category: string): News[] {
-    return this.news.filter(n => n.category === category);
+    return this.news.filter((n: any) => n.category === category);
   }
 
   getRelatedNews(id: number): News[] {

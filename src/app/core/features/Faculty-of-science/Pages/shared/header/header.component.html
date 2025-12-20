@@ -1,5 +1,5 @@
 <!-- Top Bar -->
-<div class="top-bar ">
+<div class="top-bar">
   <div class="container">
     <div class="row align-items-center py-2">
       <div class="col-md-8">
@@ -13,14 +13,24 @@
         </div>
       </div>
       <div class="col-md-4">
-        <div class="top-links d-flex justify-content-end align-items-center gap-3">
-          <a href="https://www.luxor.edu.eg" target="_blank" 
-             class="text-primary-custom text-decoration-none fw-semibold">
+        <div
+          class="top-links d-flex justify-content-end align-items-center gap-3"
+        >
+          <a
+            href="https://www.luxor.edu.eg"
+            target="_blank"
+            class="text-primary-custom text-decoration-none fw-semibold"
+          >
             <i class="fa fa-university me-1"></i>University
           </a>
-          <a class="btn btn-primary btn-sm"  href="https://science-faculty-ar.vercel.app/" >
-العربية
-          </a>        </div>
+          <a
+            class="btn btn-primary btn-sm"
+            href="https://science-faculty-ar.vercel.app/"
+            target="_blank"
+          >
+            العربية
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -32,11 +42,18 @@
     <div class="row align-items-center py-3">
       <!-- Logo -->
       <div class="col-md-3">
-        <a routerLink="/" class="logo d-flex align-items-center text-decoration-none">
-          <img src="/assets/sci-logo.png"
-               alt="Faculty of Science Logo"
-               class="logo-img me-3">
-          <span class="site-title text-primary-custom fw-bold">Faculty of Science</span>
+        <a
+          routerLink="/"
+          class="logo d-flex align-items-center text-decoration-none"
+        >
+          <img
+            src="/assets/sci-logo.png"
+            alt="Faculty of Science Logo"
+            class="logo-img me-3"
+          />
+          <span class="site-title text-primary-custom fw-bold"
+            >Faculty of Science</span
+          >
         </a>
       </div>
 
@@ -44,72 +61,151 @@
       <div class="col-md-9">
         <nav class="navbar navbar-expand-lg">
           <!-- Mobile Toggle -->
-          <button class="navbar-toggler d-lg-none ms-auto" 
-                  type="button" 
-                  (click)="toggleMobileMenu()"
-                  [class.active]="isMobileMenuOpen">
+          <button
+            class="navbar-toggler d-lg-none ms-auto"
+            type="button"
+            (click)="toggleMobileMenu()"
+            [class.active]="isMobileMenuOpen"
+          >
             <span class="navbar-toggler-icon"></span>
           </button>
 
           <!-- Navigation Links -->
-          <div class="navbar-collapse" 
-               [class.show]="isMobileMenuOpen"
-               [ngClass]="{'collapse': !isMobileMenuOpen}">
+          <div
+            class="navbar-collapse"
+            [class.show]="isMobileMenuOpen"
+            [ngClass]="{ collapse: !isMobileMenuOpen }"
+          >
             <ul class="navbar-nav ms-auto">
               <li class="nav-item">
-                <a class="nav-link active" routerLink="/" (click)="closeMobileMenu()">Home</a>
+                <a
+                  class="nav-link active"
+                  routerLink="/"
+                  (click)="closeMobileMenu()"
+                  >Home</a
+                >
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="about" role="button" data-bs-toggle="dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  routerLink="/about"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                >
                   About
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#dean">Dean's Word</a></li>
-                  <li><a class="dropdown-item" href="#">Vision & Mission</a></li>
-                  <li><a class="dropdown-item" href="#">Organizational Structure</a></li>
+                  <li>
+                    <a class="dropdown-item" routerLink="/about/dean"
+                      >Dean's Word</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" routerLink="#">Vision & Mission</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" routerLink="#"
+                      >Organizational Structure</a
+                    >
+                  </li>
                 </ul>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="programs" (click)="closeMobileMenu()">Programs</a>
+                <a
+                  class="nav-link"
+                  routerLink="programs"
+                  (click)="closeMobileMenu()"
+                  >Programs</a
+                >
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="sectors" role="button" data-bs-toggle="dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  routerLink="sectors"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                >
                   sectors
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Education Sector</a></li>
-                  <li><a class="dropdown-item" href="#">Research Sector</a></li>
-                  <li><a class="dropdown-item" href="#">Community Service</a></li>
+                  <li>
+                    <a class="dropdown-item" routerLink="#">Education Sector</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" routerLink="#">Research Sector</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" routerLink="#"
+                      >Community Service</a
+                    >
+                  </li>
                 </ul>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="units" role="button" data-bs-toggle="dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  routerLink="/units"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                >
                   Units & Centers
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">IT Unit</a></li>
-                  <li><a class="dropdown-item" href="#">Quality Assurance Unit</a></li>
-                  <li><a class="dropdown-item" href="#">Scientific Research Center</a></li>
+                  <li><a class="dropdown-item" routerLink="#">IT Unit</a></li>
+                  <li>
+                    <a class="dropdown-item" routerLink="#"
+                      >Quality Assurance Unit</a
+                    >
+                  </li>
+                  <li>
+                    <a class="dropdown-item" routerLink="#"
+                      >Scientific Research Center</a
+                    >
+                  </li>
                 </ul>
               </li>
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="services" role="button" data-bs-toggle="dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  routerLink="/services"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                >
                   Services
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Student Portal</a></li>
-                  <li><a class="dropdown-item" href="#">Staff Portal</a></li>
-                  <li><a class="dropdown-item" href="#">Library</a></li>
+                  <li>
+                    <a class="dropdown-item" routerLink="#">Student Portal</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" routerLink="#">Staff Portal</a>
+                  </li>
+                  <li><a class="dropdown-item" routerLink="#">Library</a></li>
                 </ul>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="news" (click)="closeMobileMenu()">News</a>
+                <a
+                  class="nav-link"
+                  routerLink="/news"
+                  (click)="closeMobileMenu()"
+                  >News</a
+                >
               </li>
-                <li class="nav-item">
-                <a class="nav-link" href="departments" (click)="closeMobileMenu()">Departments</a>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  routerLink="/departments"
+                  (click)="closeMobileMenu()"
+                  >Departments</a
+                >
               </li>
-                <li class="nav-item">
-                <a class="nav-link" href="contact" (click)="closeMobileMenu()">Contact Us</a>
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  routerLink="/contact"
+                  (click)="closeMobileMenu()"
+                  >Contact Us</a
+                >
               </li>
             </ul>
           </div>
