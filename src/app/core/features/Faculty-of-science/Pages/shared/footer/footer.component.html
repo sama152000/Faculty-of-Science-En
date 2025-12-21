@@ -1,14 +1,11 @@
-<footer id="footer" class="site-footer  text-dark">
-  <div class="container-fluid ">
+<footer id="footer" class="site-footer text-dark">
+  <div class="container-fluid">
     <div class="row">
       <!-- Column 1: About -->
       <div class="col-lg-3 col-md-6 mb-4">
         <div class="footer-col">
           <h5 class="footer-title text-dark-blue mb-3">Faculty of Science</h5>
-          <p class="text-muted">
-            Luxor University's Faculty of Science is committed to excellence in teaching, research,
-            and innovation for a better future.
-          </p>
+          <p class="text-muted" [innerHTML]="visionText()"></p>
         </div>
       </div>
 
@@ -17,54 +14,183 @@
         <div class="footer-col">
           <h5 class="footer-title text-dark-blue mb-3">Quick Links</h5>
           <ul class="footer-links list-unstyled">
-            <li><a href="home" class="text-muted text-decoration-none">Home</a></li>
-            <li><a href="about" class="text-muted text-decoration-none">About</a></li>
-            <li><a href="departments" class="text-muted text-decoration-none">Departments</a></li>
-            <li><a href="news" class="text-muted text-decoration-none">News</a></li>
-            <li><a href="sectors" class="text-muted text-decoration-none">sectors</a></li>
+            <li>
+              <a routerLink="/home" class="text-muted text-decoration-none">
+                <i class="pi pi-home me-2"></i>Home
+              </a>
+            </li>
+            <li>
+              <a routerLink="/about" class="text-muted text-decoration-none">
+                <i class="pi pi-info-circle me-2"></i>About
+              </a>
+            </li>
+            <li>
+              <a
+                routerLink="/departments"
+                class="text-muted text-decoration-none"
+              >
+                <i class="pi pi-sitemap me-2"></i>Departments
+              </a>
+            </li>
+            <li>
+              <a routerLink="/news" class="text-muted text-decoration-none">
+                <i class="pi pi-book me-2"></i>News
+              </a>
+            </li>
+            <li>
+              <a routerLink="/sectors" class="text-muted text-decoration-none">
+                <i class="pi pi-building me-2"></i>Sectors
+              </a>
+            </li>
           </ul>
         </div>
       </div>
 
-      <!-- Column 3: Departments -->
+      <!-- Column 3: Departments (Dynamic from API) -->
       <div class="col-lg-3 col-md-6 mb-4">
         <div class="footer-col">
           <h5 class="footer-title text-dark-blue mb-3">Departments</h5>
           <ul class="footer-links list-unstyled">
-            <li><a href="#" class="text-muted text-decoration-none">Physics</a></li>
-            <li><a href="#" class="text-muted text-decoration-none">Chemistry</a></li>
-            <li><a href="#" class="text-muted text-decoration-none">Biology</a></li>
-            <li><a href="#" class="text-muted text-decoration-none">Computer Science</a></li>
-            <li><a href="#" class="text-muted text-decoration-none">Mathematics</a></li>
+            @for (dept of footerDepartments(); track dept.id) {
+            <li>
+              <a
+                routerLink="/departments"
+                class="text-muted text-decoration-none"
+              >
+                {{ dept.name }}
+              </a>
+            </li>
+            } @empty {
+            <li>
+              <a
+                routerLink="/departments"
+                class="text-muted text-decoration-none"
+              >
+                View All Departments
+              </a>
+            </li>
+            }
           </ul>
         </div>
       </div>
 
-      <!-- Column 4: Contact -->
+      <!-- Column 4: Contact (Dynamic from API) -->
       <div class="col-lg-3 col-md-6 mb-4">
         <div class="footer-col">
           <h5 class="footer-title text-dark-blue mb-3">Contact</h5>
+
+          @if (hasContactInfo()) {
           <address class="text-muted mb-3">
-            Luxor University, Egypt<br>
-            Tel: +20 88-1234567<br>
-            Email: <a href="mailto:info@luxorsci.edu.eg" class="text-primary-custom">info@luxorsci.edu.eg</a>
+            <!-- Address -->
+            @if (contactInfo()?.address) {
+            <div class="contact-item mb-2">
+              <i class="pi pi-map-marker me-2 text-primary-custom"></i>
+              {{ contactInfo()?.address }}
+            </div>
+            }
+
+            <!-- Phone -->
+            @if (contactInfo()?.phone) {
+            <div class="contact-item mb-2">
+              <i class="pi pi-phone me-2 text-primary-custom"></i>
+              <a [href]="'tel:' + contactInfo()?.phone" class="text-muted">
+                {{ contactInfo()?.phone }}
+              </a>
+            </div>
+            }
+
+            <!-- Fax -->
+            @if (contactInfo()?.fax) {
+            <div class="contact-item mb-2">
+              <i class="pi pi-print me-2 text-primary-custom"></i>
+              Fax: {{ contactInfo()?.fax }}
+            </div>
+            }
+
+            <!-- Email -->
+            @if (contactInfo()?.email) {
+            <div class="contact-item mb-2">
+              <i class="pi pi-envelope me-2 text-primary-custom"></i>
+              <a
+                [href]="'mailto:' + contactInfo()?.email"
+                class="text-primary-custom"
+              >
+                {{ contactInfo()?.email }}
+              </a>
+            </div>
+            }
+
+            <!-- Website -->
+            @if (contactInfo()?.webSite) {
+            <div class="contact-item mb-2">
+              <i class="pi pi-globe me-2 text-primary-custom"></i>
+              <a
+                [href]="contactInfo()?.webSite"
+                target="_blank"
+                class="text-primary-custom"
+              >
+                Visit Website
+              </a>
+            </div>
+            }
           </address>
-          
-          <!-- Social Icons -->
+          } @else {
+          <!-- Fallback if API fails -->
+          <address class="text-muted mb-3">
+            <div class="contact-item mb-2">
+              <i class="pi pi-map-marker me-2 text-primary-custom"></i>
+              Luxor University, Egypt
+            </div>
+            <div class="contact-item mb-2">
+              <i class="pi pi-envelope me-2 text-primary-custom"></i>
+              <a href="mailto:info@luxorsci.edu.eg" class="text-primary-custom">
+                info&#64;luxorsci.edu.eg
+              </a>
+            </div>
+          </address>
+          }
+
+          <!-- Social Icons (Dynamic from API) -->
+          @if (hasSocialLinks()) {
           <div class="social-icons">
-            <a href="#" class="social-link me-3 text-dark-blue">
-              <i class="fab fa-facebook-f"></i>
+            @for (link of socialLinks(); track link.platform) {
+            <a
+              [href]="link.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="social-link me-2"
+              [title]="link.platform"
+              [style.color]="link.color"
+            >
+              <i [class]="link.icon"></i>
             </a>
-            <a href="#" class="social-link me-3 text-dark-blue">
-              <i class="fab fa-twitter"></i>
+            }
+          </div>
+          } @else {
+          <!-- Fallback social icons -->
+          <div class="social-icons">
+            <a
+              href="#"
+              class="social-link me-3 text-dark-blue"
+              title="Facebook"
+            >
+              <i class="pi pi-facebook"></i>
             </a>
-            <a href="#" class="social-link me-3 text-dark-blue">
-              <i class="fab fa-instagram"></i>
+            <a href="#" class="social-link me-3 text-dark-blue" title="Twitter">
+              <i class="pi pi-twitter"></i>
             </a>
-            <a href="#" class="social-link text-dark-blue">
-              <i class="fab fa-linkedin-in"></i>
+            <a
+              href="#"
+              class="social-link me-3 text-dark-blue"
+              title="Instagram"
+            >
+              <i class="pi pi-instagram"></i>
+            </a>
+            <a href="#" class="social-link text-dark-blue" title="LinkedIn">
+              <i class="pi pi-linkedin"></i>
             </a>
           </div>
+          }
         </div>
       </div>
     </div>
@@ -84,10 +210,14 @@
   </div>
 
   <!-- Scroll to Top Button -->
-  <button class="scroll-to-top btn btn-primary rounded-circle position-fixed"
-          *ngIf="showScrollTop"
-          (click)="scrollToTop()"
-          title="Go to top">
-    <i class="fas fa-chevron-up"></i>
+  @if (showScrollTop()) {
+  <button
+    class="scroll-to-top btn btn-primary rounded-circle position-fixed"
+    (click)="scrollToTop()"
+    title="Go to top"
+    type="button"
+  >
+    <i class="pi pi-chevron-up"></i>
   </button>
+  }
 </footer>

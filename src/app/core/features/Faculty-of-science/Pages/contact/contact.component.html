@@ -2,300 +2,488 @@
   <div class="container-fluid">
     <h2 class="section-title">Contact Us</h2>
 
+    <!-- ============================================ -->
+    <!-- LOADING STATE -->
+    <!-- ============================================ -->
+    @if (isLoading()) {
     <div class="row">
-      <!-- Contact Sidebar -->
+      <!-- Sidebar Skeleton -->
+      <div class="col-lg-3 col-md-4 mb-4">
+        <p-card>
+          <p-skeleton height="2rem" width="60%" styleClass="mb-3" />
+          <p-skeleton height="3rem" styleClass="mb-2" />
+          <p-skeleton height="3rem" styleClass="mb-2" />
+          <p-skeleton height="3rem" />
+        </p-card>
+      </div>
+      <!-- Content Skeleton -->
+      <div class="col-lg-9 col-md-8">
+        <p-card>
+          <p-skeleton height="4rem" styleClass="mb-4" />
+          <div class="row">
+            @for (i of [1, 2, 3, 4]; track i) {
+            <div class="col-6 mb-3">
+              <p-skeleton height="5rem" />
+            </div>
+            }
+          </div>
+        </p-card>
+      </div>
+    </div>
+    }
+
+    <!-- ============================================ -->
+    <!-- ERROR STATE -->
+    <!-- ============================================ -->
+    @if (hasError()) {
+    <div class="row justify-content-center">
+      <div class="col-md-6 text-center py-5">
+        <i class="pi pi-exclamation-triangle text-6xl text-red-500 mb-4"></i>
+        <h4 class="mb-3">Failed to Load Contact Information</h4>
+        <p class="text-muted mb-4">{{ error() }}</p>
+        <p-button
+          label="Try Again"
+          icon="pi pi-refresh"
+          (onClick)="retry()"
+          severity="danger"
+        />
+      </div>
+    </div>
+    }
+
+    <!-- ============================================ -->
+    <!-- SUCCESS STATE -->
+    <!-- ============================================ -->
+    @if (isSuccess() && hasContactInfo()) {
+    <div class="row">
+      <!-- Sidebar -->
       <div class="col-lg-3 col-md-4 mb-4">
         <div class="contact-sidebar card-custom">
           <h4 class="sidebar-title">
-            <i class="fas fa-phone me-2"></i>
-            Contact Information
+            <i class="pi pi-phone mr-2 inline-block"></i>
+            <span class="inline-block ms-3"> Quick Navigation </span>
           </h4>
 
-          <ul class="contact-list">
-            <li *ngFor="let contact of contactInfo">
-              <button
-                class="contact-btn"
-                [class.active]="isContactSelected(contact.id)"
-                (click)="selectContact(contact)">
-                <div class="contact-icon">
-                  <i class="fas fa-building"></i>
-                </div>
-                <div class="contact-info">
-                  <h6 class="contact-name">{{ contact.title }}</h6>
-                  <p class="contact-desc">{{ contact.description }}</p>
-                </div>
-              </button>
-            </li>
-          </ul>
+          <!-- Section Buttons -->
+          <div class="section-buttons">
+            <button
+              type="button"
+              class="section-btn"
+              [class.active]="isActiveSection('general')"
+              (click)="setActiveSection('general')"
+            >
+              <i class="pi pi-info-circle mr-2"></i>
+              General Info
+            </button>
+            <button
+              type="button"
+              class="section-btn"
+              [class.active]="isActiveSection('staff')"
+              (click)="setActiveSection('staff')"
+            >
+              <i class="pi pi-users mr-2"></i>
+              Staff Directory @if (hasMembers()) {
+              <p-tag
+                [value]="totalMembersCount().toString()"
+                [rounded]="true"
+                styleClass="ml-auto"
+              />
+              }
+            </button>
+            <button
+              type="button"
+              class="section-btn"
+              [class.active]="isActiveSection('location')"
+              (click)="setActiveSection('location')"
+            >
+              <i class="pi pi-map-marker mr-2"></i>
+              Location & Map
+            </button>
+          </div>
 
-          <!-- Quick Actions -->
-          <div class="quick-actions mt-4">
-            <h5 class="actions-title">Quick Actions</h5>
-            <div class="action-buttons">
-              <button
-                class="action-btn"
-                [class.active]="isActiveSection('general')"
-                (click)="setActiveSection('general')">
-                <i class="fas fa-info-circle me-2"></i>
-                General Info
-              </button>
-              <button
-                class="action-btn"
-                [class.active]="isActiveSection('staff')"
-                (click)="setActiveSection('staff')">
-                <i class="fas fa-users me-2"></i>
-                Staff Directory
-              </button>
-              <button
-                class="action-btn"
-                [class.active]="isActiveSection('location')"
-                (click)="setActiveSection('location')">
-                <i class="fas fa-map-marker-alt me-2"></i>
-                Location & Map
-              </button>
-            </div>
+          <!-- Quick Contact -->
+          <p-divider />
+          <h5 class="quick-title">Quick Contact</h5>
+          <div class="quick-actions">
+            @if (contactInfo()?.phone) {
+            <p-button
+              icon="pi pi-phone"
+              label="Call Us"
+              [outlined]="true"
+              styleClass="w-full mb-2"
+              (onClick)="callPhone()"
+            />
+            } @if (contactInfo()?.email) {
+            <p-button
+              icon="pi pi-envelope"
+              label="Email Us"
+              [outlined]="true"
+              styleClass="w-full mb-2"
+              (onClick)="sendEmail()"
+            />
+            } @if (contactInfo()?.webSite) {
+            <p-button
+              icon="pi pi-globe"
+              label="Website"
+              [outlined]="true"
+              styleClass="w-full"
+              (onClick)="openWebsite()"
+            />
+            }
           </div>
         </div>
       </div>
 
-      <!-- Contact Content -->
+      <!-- Main Content -->
       <div class="col-lg-9 col-md-8">
-        
-        <!-- General Information Section -->
-        <div class="contact-content" *ngIf="isActiveSection('general') && selectedContact">
-          
+        <!-- ================================ -->
+        <!-- GENERAL INFO SECTION -->
+        <!-- ================================ -->
+        @if (isActiveSection('general')) {
+        <div class="contact-content">
           <!-- Contact Header -->
-          <div class="contact-header card-custom mb-4">
-            <div class="header-content">
-              <div class="contact-icon-large">
-                <i class="fas fa-building"></i>
+          <p-card styleClass="mb-4">
+            <div class="contact-header">
+              <div class="header-icon">
+                <i class="pi pi-building"></i>
               </div>
               <div class="header-info">
-                <h1 class="contact-title">{{ selectedContact.title }}</h1>
-                <p class="contact-subtitle">{{ selectedContact.description }}</p>
+                <h1 class="contact-title">Faculty of Science</h1>
+                <p class="contact-subtitle">
+                  Luxor University - Contact Information
+                </p>
               </div>
             </div>
-          </div>
+          </p-card>
 
-          <!-- Contact Details -->
+          <!-- Contact Details Grid -->
           <div class="contact-details">
             <div class="row g-4">
-              
-              <!-- Phone Numbers -->
+              <!-- Phone -->
+              @if (contactInfo()?.phone) {
               <div class="col-md-6">
                 <div class="detail-card">
-                  <div class="detail-icon">
-                    <i class="fas fa-phone"></i>
+                  <div class="detail-icon phone-icon">
+                    <i class="pi pi-phone"></i>
                   </div>
                   <div class="detail-content">
-                    <h5>Phone Numbers</h5>
-                    <div class="phone-list">
-                      <div *ngFor="let phone of selectedContact.phone" class="phone-item">
-                        <a [href]="'tel:' + phone" class="phone-link">
-                          <i class="fas fa-phone-alt me-2"></i>
-                          {{ phone }}
-                        </a>
-                      </div>
-                    </div>
+                    <h5>Phone</h5>
+                    <a
+                      [href]="'tel:' + contactInfo()?.phone"
+                      class="detail-link"
+                    >
+                      {{ contactInfo()?.phone }}
+                    </a>
                   </div>
                 </div>
               </div>
+              }
 
-              <!-- Email Addresses -->
+              <!-- Email -->
+              @if (contactInfo()?.email) {
               <div class="col-md-6">
                 <div class="detail-card">
-                  <div class="detail-icon">
-                    <i class="fas fa-envelope"></i>
+                  <div class="detail-icon email-icon">
+                    <i class="pi pi-envelope"></i>
                   </div>
                   <div class="detail-content">
-                    <h5>Email Addresses</h5>
-                    <div class="email-list">
-                      <div *ngFor="let email of selectedContact.email" class="email-item">
-                        <a [href]="'mailto:' + email" class="email-link">
-                          <i class="fas fa-envelope me-2"></i>
-                          {{ email }}
-                        </a>
-                      </div>
-                    </div>
+                    <h5>Email</h5>
+                    <a
+                      [href]="'mailto:' + contactInfo()?.email"
+                      class="detail-link"
+                    >
+                      {{ contactInfo()?.email }}
+                    </a>
                   </div>
                 </div>
               </div>
+              }
 
               <!-- Address -->
+              @if (contactInfo()?.address) {
               <div class="col-md-6">
                 <div class="detail-card">
-                  <div class="detail-icon">
-                    <i class="fas fa-map-marker-alt"></i>
+                  <div class="detail-icon address-icon">
+                    <i class="pi pi-map-marker"></i>
                   </div>
                   <div class="detail-content">
                     <h5>Address</h5>
-                    <p class="address-text">{{ selectedContact.address }}</p>
+                    <p class="detail-text">{{ contactInfo()?.address }}</p>
                   </div>
                 </div>
               </div>
+              }
 
-              <!-- Office Hours -->
+              <!-- Fax -->
+              @if (contactInfo()?.fax) {
               <div class="col-md-6">
                 <div class="detail-card">
-                  <div class="detail-icon">
-                    <i class="fas fa-clock"></i>
+                  <div class="detail-icon fax-icon">
+                    <i class="pi pi-print"></i>
                   </div>
                   <div class="detail-content">
-                    <h5>Office Hours</h5>
-                    <p class="hours-text">{{ selectedContact.officeHours }}</p>
+                    <h5>Fax</h5>
+                    <p class="detail-text">{{ contactInfo()?.fax }}</p>
                   </div>
                 </div>
               </div>
+              }
+
+              <!-- Website -->
+              @if (contactInfo()?.webSite) {
+              <div class="col-md-6">
+                <div class="detail-card">
+                  <div class="detail-icon website-icon">
+                    <i class="pi pi-globe"></i>
+                  </div>
+                  <div class="detail-content">
+                    <h5>Website</h5>
+                    <a
+                      [href]="contactInfo()?.webSite"
+                      target="_blank"
+                      class="detail-link"
+                    >
+                      {{ contactInfo()?.webSite }}
+                    </a>
+                  </div>
+                </div>
+              </div>
+              }
             </div>
           </div>
-        </div>
 
-        <!-- Staff Directory Section -->
-        <div class="staff-content" *ngIf="isActiveSection('staff')">
-          
+          <!-- Social Media -->
+          @if (hasSocialLinks()) {
+          <p-card header="Follow Us" styleClass="mt-4">
+            <div class="social-links">
+              @for (link of socialLinks(); track link.platform) {
+              <p-button
+                [icon]="link.icon"
+                [rounded]="true"
+                [pTooltip]="link.platform"
+                tooltipPosition="top"
+                styleClass="mr-2"
+                [style]="{
+                  'background-color': link.color,
+                  'border-color': link.color
+                }"
+                (onClick)="openSocialLink(link.url)"
+              />
+              }
+            </div>
+          </p-card>
+          }
+        </div>
+        }
+
+        <!-- ================================ -->
+        <!-- STAFF DIRECTORY SECTION -->
+        <!-- ================================ -->
+        @if (isActiveSection('staff')) {
+        <div class="staff-content">
           <!-- Staff Header -->
-          <div class="staff-header card-custom mb-4">
-            <div class="header-content">
-              <div class="staff-icon-large">
-                <i class="fas fa-users"></i>
+          <p-card styleClass="mb-4">
+            <div class="staff-header">
+              <div class="header-icon">
+                <i class="pi pi-users"></i>
               </div>
               <div class="header-info">
                 <h1 class="staff-title">Faculty Staff Directory</h1>
-                <p class="staff-subtitle">Connect with our academic and administrative staff</p>
+                <p class="staff-subtitle">
+                  Connect with our academic and administrative staff
+                </p>
+              </div>
+            </div>
+          </p-card>
+
+          <!-- Loading Members -->
+          @if (membersLoading()) {
+          <div class="row g-4">
+            @for (i of [1, 2, 3]; track i) {
+            <div class="col-lg-4 col-md-6">
+              <p-card>
+                <div class="text-center">
+                  <p-skeleton shape="circle" size="6rem" styleClass="mb-3" />
+                  <p-skeleton
+                    height="1.5rem"
+                    width="80%"
+                    styleClass="mb-2 mx-auto"
+                  />
+                  <p-skeleton height="1rem" width="60%" styleClass="mx-auto" />
+                </div>
+              </p-card>
+            </div>
+            }
+          </div>
+          }
+
+          <!-- Dean / President -->
+          @if (president(); as dean) {
+          <div class="president-section mb-4">
+            <h3 class="section-subtitle">
+              <i class="pi pi-star mr-2 text-warning"></i>
+              Dean of Faculty
+            </h3>
+            <div class="president-card">
+              <div class="president-image">
+                @if (hasAvatar(dean)) {
+                <img
+                  [src]="getMemberAvatar(dean)"
+                  [alt]="dean.fullName"
+                  class="president-avatar"
+                />
+                } @else {
+                <p-avatar
+                  [label]="dean.fullName.charAt(0)"
+                  size="xlarge"
+                  shape="circle"
+                  styleClass="president-avatar-fallback"
+                />
+                }
+              </div>
+              <div class="president-info">
+                <h2 class="president-name">{{ dean.fullName }}</h2>
+                <p-tag
+                  [value]="dean.position"
+                  severity="success"
+                  styleClass="mb-2"
+                />
+                <p class="president-specialization">
+                  <i class="pi pi-book mr-1"></i>
+                  {{ dean.specialization }}
+                </p>
               </div>
             </div>
           </div>
+          }
 
-          <!-- Key Staff
+          <!-- Key Staff (Vice Deans) -->
+          @if (keyStaff().length > 0) {
           <div class="key-staff-section mb-4">
-            <h3 class="section-title-left">
-              <i class="fas fa-star text-primary-custom me-3"></i>
+            <h3 class="section-subtitle">
+              <i class="pi pi-users mr-2"></i>
               Key Personnel
             </h3>
-            
             <div class="row g-4">
-              <div *ngFor="let staff of getKeyStaff()" class="col-lg-4 col-md-6">
+              @for (member of keyStaff(); track member.id) {
+              <div class="col-lg-4 col-md-6">
                 <div class="staff-card">
                   <div class="staff-image">
-                    <img [src]="staff.image" [alt]="staff.name" class="img-fluid">
+                    @if (hasAvatar(member)) {
+                    <img
+                      [src]="getMemberAvatar(member)"
+                      [alt]="member.fullName"
+                      class="staff-style"
+                    />
+                    } @else {
+                    <p-avatar
+                      [label]="member.fullName.charAt(0)"
+                      size="large"
+                      shape="circle"
+                    />
+                    }
                   </div>
                   <div class="staff-info">
-                    <h5 class="staff-name">{{ staff.name }}</h5>
-                    <p class="staff-position">{{ staff.position }}</p>
-                    <p class="staff-department">{{ staff.department }}</p>
-                    
-                    <div class="staff-contact">
-                      <div class="contact-item" *ngIf="staff.email">
-                        <i class="fas fa-envelope me-2"></i>
-                        <a [href]="'mailto:' + staff.email">{{ staff.email }}</a>
-                      </div>
-                      <div class="contact-item" *ngIf="staff.phone">
-                        <i class="fas fa-phone me-2"></i>
-                        <a [href]="'tel:' + staff.phone">{{ staff.phone }}</a>
-                      </div>
-                      <div class="contact-item" *ngIf="staff.officeLocation">
-                        <i class="fas fa-map-marker-alt me-2"></i>
-                        <span>{{ staff.officeLocation }}</span>
-                      </div>
-                      <div class="contact-item" *ngIf="staff.officeHours">
-                        <i class="fas fa-clock me-2"></i>
-                        <span>{{ staff.officeHours }}</span>
-                      </div>
-                    </div>
+                    <h5 class="staff-name">{{ member.fullName }}</h5>
+                    <p class="staff-position">{{ member.position }}</p>
+                    <p-tag
+                      [value]="member.memberType"
+                      [severity]="getMemberTypeSeverity(member.memberType)"
+                      styleClass="mt-2"
+                    />
                   </div>
                 </div>
               </div>
-            </div>
-          </div> -->
-
-          <!-- All Staff -->
-          <div class="all-staff-section">
-            <h3 class="section-title-left">
-              <i class="fas fa-users text-primary-custom me-3"></i>
-              Complete Staff Directory
-            </h3>
-            
-            <div class="staff-table-container card-custom">
-              <div class="table-responsive">
-                <table class="table staff-table">
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Position</th>
-                      <th>Department</th>
-                      <th>Email</th>
-                      <th>Phone</th>
-                      <th>Office</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let staff of staffContacts">
-                      <td>
-                        <div class="staff-name-cell">
-                          <img [src]="staff.image" [alt]="staff.name" class="staff-avatar">
-                          <span>{{ staff.name }}</span>
-                        </div>
-                      </td>
-                      <td>{{ staff.position }}</td>
-                      <td>{{ staff.department }}</td>
-                      <td>
-                        <a [href]="'mailto:' + staff.email" class="email-link">
-                          {{ staff.email }}
-                        </a>
-                      </td>
-                      <td>
-                        <a *ngIf="staff.phone" [href]="'tel:' + staff.phone" class="phone-link">
-                          {{ staff.phone }}
-                        </a>
-                        <span *ngIf="!staff.phone" class="text-muted">-</span>
-                      </td>
-                      <td>
-                        <span *ngIf="staff.officeLocation">{{ staff.officeLocation }}</span>
-                        <span *ngIf="!staff.officeLocation" class="text-muted">-</span>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              }
             </div>
           </div>
-        </div>
+          }
 
-        <!-- Location & Map Section -->
-        <div class="location-content" *ngIf="isActiveSection('location')">
-          
+          <!-- Department Members -->
+          @if (departmentMembers().length > 0) {
+          <div class="department-section">
+            <h3 class="section-subtitle">
+              <i class="pi pi-sitemap mr-2"></i>
+              Department Members
+            </h3>
+            <div class="row g-4">
+              @for (member of departmentMembers(); track member.id) {
+              <div class="col-lg-4 col-md-6">
+                <div class="staff-card">
+                  <div class="staff-image">
+                    @if (hasAvatar(member)) {
+                    <img
+                      [src]="getMemberAvatar(member)"
+                      [alt]="member.fullName"
+                      class="staff-avatar"
+                    />
+                    } @else {
+                    <p-avatar
+                      [label]="member.fullName.charAt(0)"
+                      size="large"
+                      shape="circle"
+                    />
+                    }
+                  </div>
+                  <div class="staff-info">
+                    <h5 class="staff-name">{{ member.fullName }}</h5>
+                    <p class="staff-position">{{ member.position }}</p>
+                    <p class="staff-specialization">
+                      {{ member.specialization }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              }
+            </div>
+          </div>
+          }
+
+          <!-- No Members -->
+          @if (!membersLoading() && !hasMembers()) {
+          <div class="no-members text-center py-5">
+            <i class="pi pi-users text-6xl text-gray-400 mb-4"></i>
+            <h4>No Staff Members Found</h4>
+            <p class="text-muted">Staff directory will be updated soon.</p>
+          </div>
+          }
+        </div>
+        }
+
+        <!-- ================================ -->
+        <!-- LOCATION & MAP SECTION -->
+        <!-- ================================ -->
+        @if (isActiveSection('location')) {
+        <div class="location-content">
           <!-- Location Header -->
-          <div class="location-header card-custom mb-4">
-            <div class="header-content">
-              <div class="location-icon-large">
-                <i class="fas fa-map-marker-alt"></i>
+          <p-card styleClass="mb-4">
+            <div class="location-header">
+              <div class="header-icon">
+                <i class="pi pi-map-marker"></i>
               </div>
               <div class="header-info">
                 <h1 class="location-title">Find Us</h1>
-                <p class="location-subtitle">Visit our campus and explore our facilities</p>
+                <p class="location-subtitle">
+                  Visit our campus and explore our facilities
+                </p>
               </div>
             </div>
-          </div>
+          </p-card>
 
-          <!-- Map and Directions -->
-          <div class="map-section card-custom mb-4">
+          <!-- Map -->
+          <p-card styleClass="mb-4">
             <div class="map-container">
-              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3593.0258622713013!2d32.8040167!3d25.769709300000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14491592597f70b1%3A0xccac387a294f12e5!2z2KzYp9mF2LnYqSDYp9mE2KPZgti12LE!5e0!3m2!1sar!2seg!4v1764261012461!5m2!1sar!2seg" 
-          
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3593.0258622713013!2d32.8040167!3d25.769709300000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14491592597f70b1%3A0xccac387a294f12e5!2z2KzYp9mF2LnYqSDYp9mE2KPZgti12LE!5e0!3m2!1sar!2seg!4v1764261012461!5m2!1sar!2seg"
                 width="100%"
                 height="400"
-                style="border:0;"
+                style="border: 0; border-radius: 12px"
                 allowfullscreen=""
                 loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade">
-              </iframe>
-              <div *ngIf="!selectedContact?.mapUrl" class="map-placeholder">
-                <i class="fas fa-map fa-3x text-muted mb-3"></i>
-                <h4>Interactive Map</h4>
-                <p class="text-muted">Map will be available soon</p>
-              </div>
+                referrerpolicy="no-referrer-when-downgrade"
+              ></iframe>
             </div>
-          </div>
+          </p-card>
 
           <!-- Campus Information -->
           <div class="campus-info">
@@ -303,43 +491,57 @@
               <div class="col-md-6">
                 <div class="info-card">
                   <div class="info-icon">
-                    <i class="fas fa-car"></i>
+                    <i class="pi pi-car"></i>
                   </div>
                   <h5>Parking</h5>
-                  <p>Free parking available for visitors and students. Multiple parking areas around the campus.</p>
+                  <p>
+                    Free parking available for visitors and students. Multiple
+                    parking areas around the campus.
+                  </p>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="info-card">
                   <div class="info-icon">
-                    <i class="fas fa-bus"></i>
+                    <i class="pi pi-clock"></i>
                   </div>
-                  <h5>Public Transport</h5>
-                  <p>Accessible by public buses and taxis. Main bus stop located 200m from the main entrance.</p>
+                  <h5>Working Hours</h5>
+                  <p>
+                    Sunday - Thursday: 8:00 AM - 4:00 PM<br />
+                    Friday - Saturday: Closed
+                  </p>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="info-card">
                   <div class="info-icon">
-                    <i class="fas fa-wheelchair"></i>
+                    <i class="pi pi-directions"></i>
                   </div>
                   <h5>Accessibility</h5>
-                  <p>Campus is fully accessible with ramps, elevators, and designated parking spaces.</p>
+                  <p>
+                    Campus is fully accessible with ramps, elevators, and
+                    designated parking spaces.
+                  </p>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="info-card">
                   <div class="info-icon">
-                    <i class="fas fa-info-circle"></i>
+                    <i class="pi pi-info-circle"></i>
                   </div>
                   <h5>Visitor Information</h5>
-                  <p>Reception desk at main entrance provides maps, directions, and general assistance.</p>
+                  <p>
+                    Reception desk at main entrance provides maps, directions,
+                    and general assistance.
+                  </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        }
       </div>
     </div>
+    }
   </div>
 </section>

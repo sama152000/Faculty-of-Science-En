@@ -1,68 +1,83 @@
-import { Component, OnInit } from '@angular/core';
+/**
+ * Services Component
+ * Displays faculty services using real API data
+ */
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { ServicesService } from '../../Services/services.service';
-import { Service } from '../../model/service.model';
+import { SkeletonModule } from 'primeng/skeleton';
+import { TagModule } from 'primeng/tag';
+
+import {
+  FacultyServicesService,
+  FacultyService,
+} from '../../Services/real-services/services.service';
 
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, SkeletonModule, TagModule],
   templateUrl: './services.component.html',
-  styleUrls: ['./services.component.css']
+  styleUrls: ['./services.component.css'],
 })
 export class ServicesComponent implements OnInit {
-  services: Service[] = [];
-  categories: string[] = [];
-  selectedService: Service | null = null;
-  selectedCategory = 'All Services';
-  loading = true;
-  activeSection = 'overview';
+  private readonly servicesService = inject(FacultyServicesService);
 
-  constructor(private servicesService: ServicesService) {}
+  // State signals
+  services = signal<FacultyService[]>([]);
+  selectedService = signal<FacultyService | null>(null);
+  loading = signal(true);
+  error = signal<string | null>(null);
+
+  // Computed
+  hasData = computed(() => this.services().length > 0);
+  selectedServiceId = computed(() => this.selectedService()?.id || null);
 
   ngOnInit(): void {
     this.loadServices();
-    this.loadCategories();
   }
 
   loadServices(): void {
-    this.services = this.servicesService.getAll();
-    this.loading = false;
+    this.loading.set(true);
+    this.error.set(null);
+
+    this.servicesService.getAll().subscribe({
+      next: (response) => {
+        if (response.success && response.data) {
+          this.services.set(response.data);
+        }
+        this.loading.set(false);
+      },
+      error: (err) => {
+        this.error.set('Failed to load services');
+        this.loading.set(false);
+        console.error('Error loading services:', err);
+      },
+    });
   }
 
-  loadCategories(): void {
-    this.categories = this.servicesService.getCategories();
-  }
-
-  selectCategory(category: string): void {
-    this.selectedCategory = category;
-    this.services = this.servicesService.getByCategory(category);
-    this.selectedService = null;
-  }
-
-  selectService(service: Service): void {
-    this.selectedService = service;
-    this.activeSection = 'overview';
+  selectService(service: FacultyService): void {
+    this.selectedService.set(service);
   }
 
   closeDetails(): void {
-    this.selectedService = null;
+    this.selectedService.set(null);
   }
 
   isServiceSelected(serviceId: string): boolean {
-    return this.selectedService?.id === serviceId;
+    return this.selectedServiceId() === serviceId;
   }
 
-  isCategorySelected(category: string): boolean {
-    return this.selectedCategory === category;
+  getServiceIcon(service: FacultyService): string {
+    // If iconPath is a full URL or path, return it
+    // Otherwise, use a default icon class
+    if (service.iconPath && service.iconPath.startsWith('http')) {
+      return service.iconPath;
+    }
+    return service.iconPath || 'fas fa-cog';
   }
 
-  setActiveSection(section: string): void {
-    this.activeSection = section;
-  }
-
-  isActiveSection(section: string): boolean {
-    return this.activeSection === section;
+  retry(): void {
+    this.loadServices();
   }
 }

@@ -1,7 +1,110 @@
-<section class="departments-section ">
+<section class="departments-section">
   <div class="container-fluid">
     <h2 class="section-title">Faculty Departments</h2>
 
+    <!-- Loading State -->
+    @if (isLoading()) {
+    <div class="row">
+      <div class="col-lg-3 col-md-4 mb-4">
+        <div class="departments-sidebar card-custom">
+          <h4 class="sidebar-title">
+            <i class="fas fa-building me-2"></i>
+            Departments
+          </h4>
+          <ul class="departments-list">
+            @for (i of [1, 2, 3, 4, 5]; track i) {
+            <li>
+              <div
+                class="department-btn"
+                style="
+                  height: 60px;
+                  background: linear-gradient(
+                    90deg,
+                    #f0f0f0 25%,
+                    #e0e0e0 50%,
+                    #f0f0f0 75%
+                  );
+                  background-size: 200% 100%;
+                  animation: shimmer 1.5s infinite;
+                  border-radius: 8px;
+                "
+              ></div>
+            </li>
+            }
+          </ul>
+        </div>
+      </div>
+      <div class="col-lg-9 col-md-8">
+        <div class="card-custom" style="padding: 2rem">
+          <div
+            style="
+              height: 32px;
+              width: 40%;
+              background: linear-gradient(
+                90deg,
+                #f0f0f0 25%,
+                #e0e0e0 50%,
+                #f0f0f0 75%
+              );
+              background-size: 200% 100%;
+              animation: shimmer 1.5s infinite;
+              border-radius: 8px;
+              margin-bottom: 1.5rem;
+            "
+          ></div>
+          <div
+            style="
+              height: 20px;
+              width: 100%;
+              background: linear-gradient(
+                90deg,
+                #f0f0f0 25%,
+                #e0e0e0 50%,
+                #f0f0f0 75%
+              );
+              background-size: 200% 100%;
+              animation: shimmer 1.5s infinite;
+              border-radius: 4px;
+              margin-bottom: 1rem;
+            "
+          ></div>
+          <div
+            style="
+              height: 20px;
+              width: 90%;
+              background: linear-gradient(
+                90deg,
+                #f0f0f0 25%,
+                #e0e0e0 50%,
+                #f0f0f0 75%
+              );
+              background-size: 200% 100%;
+              animation: shimmer 1.5s infinite;
+              border-radius: 4px;
+            "
+          ></div>
+        </div>
+      </div>
+    </div>
+    }
+
+    <!-- Error State -->
+    @if (hasError()) {
+    <div class="row justify-content-center">
+      <div class="col-md-6 text-center py-5">
+        <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+        <h4>Failed to Load Departments</h4>
+        <p class="text-muted">{{ error() }}</p>
+        <button class="btn btn-primary" (click)="retry()">
+          <i class="fas fa-redo me-2"></i>
+          Try Again
+        </button>
+      </div>
+    </div>
+    }
+
+    <!-- Success State -->
+    @if (isSuccess()) {
     <div class="row">
       <!-- Departments Sidebar -->
       <div class="col-lg-3 col-md-4 mb-4">
@@ -12,55 +115,90 @@
           </h4>
 
           <ul class="departments-list">
-            <li *ngFor="let dept of departments">
+            @for (dept of filteredDepartments(); track dept.id) {
+            <li>
               <button
                 class="department-btn"
                 [class.active]="isDepartmentSelected(dept.id)"
-                [routerLink]="['/departments', dept.id]"
-                (click)="selectDepartment(dept)">
+                (click)="selectDepartment(dept)"
+              >
                 <div class="dept-icon">
-                  <i [class]="dept.icon"></i>
+                  <i class="fas fa-flask"></i>
                 </div>
                 <div class="dept-info">
                   <h6 class="dept-name">{{ dept.name }}</h6>
-                  <p class="dept-desc">{{ dept.description }}</p>
+                  <p class="dept-desc">{{ dept.subTitle }}</p>
                 </div>
               </button>
             </li>
+            }
           </ul>
         </div>
       </div>
 
       <!-- Department Content -->
       <div class="col-lg-9 col-md-8">
-        <div class="department-content" *ngIf="selectedDepartment">
-
+        @if (selectedDepartment(); as dept) {
+        <div class="department-content">
           <!-- Department Header -->
           <div class="department-header card-custom mb-4">
             <div class="header-content">
               <div class="dept-icon-large">
-                <i [class]="selectedDepartment.icon"></i>
+                @if (featuredImage()) {
+                <img
+                  [src]="featuredImage()"
+                  [alt]="dept.name"
+                  style="
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    border-radius: 50%;
+                  "
+                />
+                } @else {
+                <i class="fas fa-flask"></i>
+                }
               </div>
               <div class="header-info">
-                <h1 class="department-title">{{ selectedDepartment.name }}</h1>
-                <p class="department-subtitle">{{ selectedDepartment.description }}</p>
+                <h1 class="department-title">{{ dept.name }}</h1>
+                <p class="department-subtitle">
+                  {{ dept.subTitle }}
+                </p>
 
-                <div class="department-stats" *ngIf="selectedDepartment.establishedYear">
+                <div class="department-stats">
+                  @if (departmentHead()) {
                   <div class="stat-item">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>Est. {{ selectedDepartment.establishedYear }}</span>
+                    <i class="fas fa-user-tie"></i>
+                    <span>Head: {{ departmentHead()?.memberName }}</span>
                   </div>
-                  <div class="stat-item" *ngIf="selectedDepartment.studentCount">
+                  }
+                  <div class="stat-item" *ngIf="departmentMembers().length">
                     <i class="fas fa-users"></i>
-                    <span>{{ selectedDepartment.studentCount }} Students</span>
+                    <span>{{ departmentMembers().length }} Members</span>
                   </div>
-                  <div class="stat-item" *ngIf="selectedDepartment.facultyCount">
-                    <i class="fas fa-chalkboard-teacher"></i>
-                    <span>{{ selectedDepartment.facultyCount }} Faculty</span>
+                  <div class="stat-item" *ngIf="departmentPrograms().length">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>{{ departmentPrograms().length }} Programs</span>
+                  </div>
+                  <div class="stat-item" *ngIf="departmentServices().length">
+                    <i class="fas fa-cogs"></i>
+                    <span>{{ departmentServices().length }} Services</span>
                   </div>
                 </div>
               </div>
             </div>
+
+            <!-- About Section in Header -->
+            @if (dept.about) {
+            <div
+              class="header-about mt-4 pt-4"
+              style="border-top: 1px solid rgba(13, 79, 139, 0.1)"
+            >
+              <p class="mb-0" style="color: var(--text-dark); line-height: 1.7">
+                {{ dept.about }}
+              </p>
+            </div>
+            }
           </div>
 
           <!-- Section Navigation -->
@@ -69,46 +207,59 @@
               <button
                 class="nav-btn"
                 [class.active]="isActiveSection('overview')"
-                (click)="setActiveSection('overview')">
+                (click)="setActiveSection('overview')"
+              >
                 <i class="fas fa-info-circle me-2"></i>
                 Overview
               </button>
               <button
                 class="nav-btn"
                 [class.active]="isActiveSection('vision')"
-                (click)="setActiveSection('vision')">
+                (click)="setActiveSection('vision')"
+              >
                 <i class="fas fa-eye me-2"></i>
                 Vision & Mission
               </button>
               <button
                 class="nav-btn"
                 [class.active]="isActiveSection('objectives')"
-                (click)="setActiveSection('objectives')">
+                (click)="setActiveSection('objectives')"
+              >
                 <i class="fas fa-bullseye me-2"></i>
                 Objectives
               </button>
               <button
                 class="nav-btn"
-                [class.active]="isActiveSection('courses')"
-                (click)="setActiveSection('courses')">
+                [class.active]="isActiveSection('programs')"
+                (click)="setActiveSection('programs')"
+              >
                 <i class="fas fa-book me-2"></i>
-                Courses
+                Programs
               </button>
               <button
                 class="nav-btn"
-                [class.active]="isActiveSection('research')"
-                (click)="setActiveSection('research')">
-                <i class="fas fa-flask me-2"></i>
-                Research
+                [class.active]="isActiveSection('members')"
+                (click)="setActiveSection('members')"
+              >
+                <i class="fas fa-users me-2"></i>
+                Members
+              </button>
+              <button
+                class="nav-btn"
+                [class.active]="isActiveSection('services')"
+                (click)="setActiveSection('services')"
+              >
+                <i class="fas fa-cogs me-2"></i>
+                Services
               </button>
             </div>
           </div>
 
           <!-- Section Content -->
           <div class="section-content card-custom">
-
             <!-- Overview Section -->
-            <div class="content-section" *ngIf="isActiveSection('overview')">
+            @if (isActiveSection('overview')) {
+            <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
                   <i class="fas fa-info-circle text-primary-custom me-3"></i>
@@ -117,33 +268,44 @@
               </div>
 
               <div class="content-body">
-                <p class="lead">{{ selectedDepartment.overview }}</p>
+                <p class="lead">{{ dept.about }}</p>
 
-                <div class="row mt-4" *ngIf="selectedDepartment.headOfDepartment">
+                @if (departmentHead()) {
+                <div class="row mt-4">
                   <div class="col-md-6">
                     <div class="info-card">
                       <h5 class="text-primary-custom">
                         <i class="fas fa-user-tie me-2"></i>
                         Head of Department
                       </h5>
-                      <p class="h6">{{ selectedDepartment.headOfDepartment }}</p>
-                    </div>
-                  </div>
-                  <div class="col-md-6" *ngIf="selectedDepartment.establishedYear">
-                    <div class="info-card">
-                      <h5 class="text-primary-custom">
-                        <i class="fas fa-calendar-alt me-2"></i>
-                        Established
-                      </h5>
-                      <p class="h6">{{ selectedDepartment.establishedYear }}</p>
+                      <p class="h6">
+                        {{ departmentHead()?.memberName }}
+                      </p>
                     </div>
                   </div>
                 </div>
+                }
+
+                <!-- Department Details -->
+                @if (departmentDetails().length) {
+                <div class="row mt-4">
+                  @for (detail of departmentDetails(); track detail.id) {
+                  <div class="col-md-6 mb-3">
+                    <div class="info-card">
+                      <h5 class="text-primary-custom">{{ detail.title }}</h5>
+                      <p>{{ detail.content }}</p>
+                    </div>
+                  </div>
+                  }
+                </div>
+                }
               </div>
             </div>
+            }
 
             <!-- Vision & Mission Section -->
-            <div class="content-section" *ngIf="isActiveSection('vision')">
+            @if (isActiveSection('vision')) {
+            <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
                   <i class="fas fa-eye text-primary-custom me-3"></i>
@@ -159,7 +321,7 @@
                         <i class="fas fa-lightbulb"></i>
                       </div>
                       <h4>Our Vision</h4>
-                      <p>{{ selectedDepartment.vision }}</p>
+                      <p>{{ dept.vision }}</p>
                     </div>
                   </div>
                   <div class="col-md-6 mb-4">
@@ -168,15 +330,17 @@
                         <i class="fas fa-rocket"></i>
                       </div>
                       <h4>Our Mission</h4>
-                      <p>{{ selectedDepartment.mission }}</p>
+                      <p>{{ dept.mission }}</p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            }
 
             <!-- Objectives Section -->
-            <div class="content-section" *ngIf="isActiveSection('objectives')">
+            @if (isActiveSection('objectives')) {
+            <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
                   <i class="fas fa-bullseye text-primary-custom me-3"></i>
@@ -186,70 +350,176 @@
 
               <div class="content-body">
                 <div class="objectives-grid">
-                  <div class="objective-item" *ngFor="let objective of selectedDepartment.objectives; let i = index">
+                  @for (goal of dept.goals; track goal.id; let i = $index) {
+                  <div class="objective-item">
                     <div class="objective-number">{{ i + 1 }}</div>
                     <div class="objective-content">
-                      <p>{{ objective }}</p>
+                      <p>{{ goal.goalName }}</p>
                     </div>
                   </div>
+                  }
                 </div>
               </div>
             </div>
+            }
 
-            <!-- Courses Section -->
-            <div class="content-section" *ngIf="isActiveSection('courses')">
+            <!-- Programs Section -->
+            @if (isActiveSection('programs')) {
+            <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
                   <i class="fas fa-book text-primary-custom me-3"></i>
-                  Courses Offered
+                  Academic Programs
                 </h3>
               </div>
 
               <div class="content-body">
+                @if (departmentPrograms().length) {
                 <div class="courses-grid">
-                  <div class="course-item" *ngFor="let course of selectedDepartment.courses">
+                  @for (program of departmentPrograms(); track program.id) {
+                  <div class="course-item">
                     <div class="course-icon">
                       <i class="fas fa-graduation-cap"></i>
                     </div>
-                    <h6 class="course-name">{{ course }}</h6>
+                    <h6 class="course-name">{{ program.programName }}</h6>
                   </div>
+                  }
                 </div>
+                } @else {
+                <div class="text-center py-4">
+                  <i class="fas fa-book fa-2x text-muted mb-3"></i>
+                  <p class="text-muted">
+                    No programs available for this department.
+                  </p>
+                </div>
+                }
               </div>
             </div>
+            }
 
-            <!-- Research Section -->
-            <div class="content-section" *ngIf="isActiveSection('research')">
+            <!-- Members Section -->
+            @if (isActiveSection('members')) {
+            <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
-                  <i class="fas fa-flask text-primary-custom me-3"></i>
-                  Research Areas
+                  <i class="fas fa-users text-primary-custom me-3"></i>
+                  Department Members
                 </h3>
               </div>
 
               <div class="content-body">
+                @if (departmentMembers().length) {
                 <div class="research-areas">
-                  <div class="research-item" *ngFor="let area of selectedDepartment.researchAreas">
+                  @for (member of departmentMembers(); track member.id) {
+                  <div class="research-item">
                     <div class="research-icon">
-                      <i class="fas fa-microscope"></i>
+                      <i class="fas fa-user-tie"></i>
                     </div>
                     <div class="research-content">
-                      <h6 class="research-title">{{ area }}</h6>
-                      <p class="research-desc">Advanced research and development in {{ area.toLowerCase() }} with focus on innovation and practical applications.</p>
+                      <h6 class="research-title">{{ member.memberName }}</h6>
+                      <p class="research-desc">
+                        @if (member.isLeader) {
+                        <span class="badge bg-primary me-2"
+                          >Head of Department</span
+                        >
+                        } Department Member
+                      </p>
                     </div>
                   </div>
+                  }
                 </div>
+                } @else {
+                <div class="text-center py-4">
+                  <i class="fas fa-users fa-2x text-muted mb-3"></i>
+                  <p class="text-muted">
+                    No members available for this department.
+                  </p>
+                </div>
+                }
               </div>
             </div>
+            }
+
+            <!-- Services Section -->
+            @if (isActiveSection('services')) {
+            <div class="content-section">
+              <div class="section-header">
+                <h3 class="section-title-left">
+                  <i class="fas fa-cogs text-primary-custom me-3"></i>
+                  Department Services
+                </h3>
+              </div>
+
+              <div class="content-body">
+                @if (departmentServices().length) {
+                <div class="research-areas">
+                  @for (service of departmentServices(); track service.id) {
+                  <div class="research-item">
+                    <div class="research-icon">
+                      @if (service.isOnline) {
+                      <i class="fas fa-globe"></i>
+                      } @else {
+                      <i class="fas fa-building"></i>
+                      }
+                    </div>
+                    <div class="research-content">
+                      <h6 class="research-title">{{ service.name }}</h6>
+                      <p class="research-desc">{{ service.details }}</p>
+                      <div class="mt-2">
+                        @if (service.duration) {
+                        <span class="badge bg-secondary me-2">
+                          <i class="fas fa-clock me-1"></i
+                          >{{ service.duration }}
+                        </span>
+                        } @if (service.fees) {
+                        <span class="badge bg-info me-2">
+                          <i class="fas fa-money-bill me-1"></i
+                          >{{ service.fees }} EGP
+                        </span>
+                        } @if (service.isOnline) {
+                        <span class="badge bg-success">
+                          <i class="fas fa-wifi me-1"></i>Available Online
+                        </span>
+                        }
+                      </div>
+                      @if (service.contactPerson) {
+                      <p class="mt-2 mb-0 small text-muted">
+                        <i class="fas fa-user me-1"></i
+                        >{{ service.contactPerson }} @if (service.contactPhone)
+                        { - <i class="fas fa-phone me-1"></i
+                        >{{ service.contactPhone }}
+                        }
+                      </p>
+                      }
+                    </div>
+                  </div>
+                  }
+                </div>
+                } @else {
+                <div class="text-center py-4">
+                  <i class="fas fa-cogs fa-2x text-muted mb-3"></i>
+                  <p class="text-muted">
+                    No services available for this department.
+                  </p>
+                </div>
+                }
+              </div>
+            </div>
+            }
           </div>
         </div>
-
+        } @else {
         <!-- No Department Selected -->
-        <div class="no-selection text-center py-5" *ngIf="!selectedDepartment">
+        <div class="no-selection text-center py-5">
           <i class="fas fa-building fa-3x text-muted mb-3"></i>
           <h4>Select a Department</h4>
-          <p class="text-muted">Choose a department from the sidebar to view detailed information.</p>
+          <p class="text-muted">
+            Choose a department from the sidebar to view detailed information.
+          </p>
         </div>
+        }
       </div>
     </div>
+    }
   </div>
 </section>

@@ -4,7 +4,7 @@
  */
 export const environment = {
   production: true,
-  apiUrl: 'http://alisoncollegeen.runasp.net/api/v1',
+  apiUrl: 'https://sciencecollegeen.runasp.net/api/v1',
   apiTimeout: 30000, // 30 seconds
   enableDebugMode: false,
   cacheExpiration: 600000, // 10 minutes

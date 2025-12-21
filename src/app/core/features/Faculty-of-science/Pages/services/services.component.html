@@ -2,249 +2,149 @@
   <div class="container-fluid">
     <h2 class="section-title">Faculty Services</h2>
 
+    <!-- Loading State -->
+    @if (loading()) {
+    <div class="row">
+      <div class="col-lg-3 col-md-4 mb-4">
+        <div class="services-sidebar card-custom">
+          <p-skeleton height="2rem" width="60%" styleClass="mb-4" />
+          @for (i of [1, 2, 3, 4]; track i) {
+          <p-skeleton height="4rem" styleClass="mb-2" />
+          }
+        </div>
+      </div>
+      <div class="col-lg-9 col-md-8">
+        <div class="card-custom p-4">
+          <p-skeleton height="6rem" styleClass="mb-4" />
+          <p-skeleton height="3rem" styleClass="mb-2" />
+          <p-skeleton height="15rem" />
+        </div>
+      </div>
+    </div>
+    }
+
+    <!-- Error State -->
+    @if (error()) {
+    <div class="text-center py-5">
+      <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+      <h4 class="mb-3">{{ error() }}</h4>
+      <button class="btn btn-primary" (click)="retry()">
+        <i class="fas fa-refresh me-2"></i>Try Again
+      </button>
+    </div>
+    }
+
+    <!-- Success State -->
+    @if (!loading() && !error() && hasData()) {
     <div class="row">
       <!-- Services Sidebar -->
       <div class="col-lg-3 col-md-4 mb-4">
         <div class="services-sidebar card-custom">
           <h4 class="sidebar-title">
             <i class="fas fa-cogs me-2"></i>
-            Service Categories
+            Available Services
           </h4>
 
-          <ul class="categories-list">
-            <li *ngFor="let category of categories">
+          <ul class="services-list">
+            @for (service of services(); track service.id) {
+            <li>
               <button
-                class="category-btn"
-                [class.active]="isCategorySelected(category)"
-                (click)="selectCategory(category)">
-                <div class="category-icon">
-                  <i class="fas fa-folder"></i>
+                class="service-btn"
+                [class.active]="isServiceSelected(service.id)"
+                (click)="selectService(service)"
+              >
+                <div class="service-icon">
+                  @if (service.iconPath && service.iconPath.startsWith('http'))
+                  {
+                  <img
+                    [src]="service.iconPath"
+                    [alt]="service.title"
+                    class="service-img"
+                  />
+                  } @else {
+                  <i [class]="getServiceIcon(service)"></i>
+                  }
                 </div>
-                <div class="category-info">
-                  <h6 class="category-name">{{ category }}</h6>
+                <div class="service-info">
+                  <h6 class="service-name">{{ service.title }}</h6>
+                  <p class="service-desc">{{ service.description }}</p>
                 </div>
               </button>
             </li>
+            }
           </ul>
-
-          <div class="services-list mt-4" *ngIf="selectedCategory !== 'All Services'">
-            <h5 class="list-title">{{ selectedCategory }}</h5>
-            <ul class="service-items">
-              <li *ngFor="let service of services">
-                <button
-                  class="service-btn"
-                  [class.active]="isServiceSelected(service.id)"
-                  (click)="selectService(service)">
-                  <div class="service-icon">
-                    <i [class]="service.icon"></i>
-                  </div>
-                  <div class="service-info">
-                    <h6 class="service-name">{{ service.name }}</h6>
-                    <p class="service-desc">{{ service.description }}</p>
-                  </div>
-                </button>
-              </li>
-            </ul>
-          </div>
         </div>
       </div>
 
       <!-- Service Content -->
       <div class="col-lg-9 col-md-8">
-        <div class="service-content" *ngIf="selectedService">
-
+        @if (selectedService(); as service) {
+        <div class="service-content">
           <!-- Service Header -->
           <div class="service-header card-custom mb-4">
             <div class="header-content">
               <div class="service-icon-large">
-                <i [class]="selectedService.icon"></i>
+                @if (service.iconPath && service.iconPath.startsWith('http')) {
+                <img
+                  [src]="service.iconPath"
+                  [alt]="service.title"
+                  class="service-img-large"
+                />
+                } @else {
+                <i [class]="getServiceIcon(service)"></i>
+                }
               </div>
               <div class="header-info">
-                <h1 class="service-title">{{ selectedService.name }}</h1>
-                <p class="service-subtitle">{{ selectedService.description }}</p>
+                <h1 class="service-title">{{ service.title }}</h1>
+                <p class="service-subtitle">{{ service.description }}</p>
                 <div class="service-meta">
-                  <span class="badge bg-primary">{{ selectedService.category }}</span>
-                  <span class="badge bg-success" *ngIf="selectedService.isActive">Active</span>
+                  @if (service.isActive) {
+                  <p-tag value="Active" severity="success" />
+                  } @else {
+                  <p-tag value="Inactive" severity="danger" />
+                  }
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Section Navigation -->
-          <div class="section-nav card-custom mb-4">
-            <div class="nav-buttons">
-              <button
-                class="nav-btn"
-                [class.active]="isActiveSection('overview')"
-                (click)="setActiveSection('overview')">
-                <i class="fas fa-info-circle me-2"></i>
-                Overview
-              </button>
-              <button
-                class="nav-btn"
-                [class.active]="isActiveSection('features')"
-                (click)="setActiveSection('features')">
-                <i class="fas fa-star me-2"></i>
-                Features
-              </button>
-              <button
-                class="nav-btn"
-                [class.active]="isActiveSection('requirements')"
-                (click)="setActiveSection('requirements')">
-                <i class="fas fa-list-check me-2"></i>
-                Requirements
-              </button>
-              <button
-                class="nav-btn"
-                [class.active]="isActiveSection('contact')"
-                (click)="setActiveSection('contact')">
-                <i class="fas fa-phone me-2"></i>
-                Contact
-              </button>
-            </div>
-          </div>
-
-          <!-- Section Content -->
+          <!-- Service Details -->
           <div class="section-content card-custom">
-
-            <!-- Overview Section -->
-            <div class="content-section" *ngIf="isActiveSection('overview')">
+            <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
                   <i class="fas fa-info-circle text-primary-custom me-3"></i>
-                  Service Overview
+                  Service Details
                 </h3>
               </div>
 
               <div class="content-body">
-                <p class="lead">{{ selectedService.overview }}</p>
-
-                <div class="row mt-4">
-                  <div class="col-md-6" *ngIf="selectedService.duration">
-                    <div class="info-card">
-                      <h5 class="text-primary-custom">
-                        <i class="fas fa-clock me-2"></i>
-                        Duration
-                      </h5>
-                      <p class="h6">{{ selectedService.duration }}</p>
-                    </div>
-                  </div>
-                  <div class="col-md-6" *ngIf="selectedService.cost">
-                    <div class="info-card">
-                      <h5 class="text-primary-custom">
-                        <i class="fas fa-dollar-sign me-2"></i>
-                        Cost
-                      </h5>
-                      <p class="h6">{{ selectedService.cost }}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Features Section -->
-            <div class="content-section" *ngIf="isActiveSection('features')">
-              <div class="section-header">
-                <h3 class="section-title-left">
-                  <i class="fas fa-star text-primary-custom me-3"></i>
-                  Service Features
-                </h3>
-              </div>
-
-              <div class="content-body">
-                <div class="features-grid">
-                  <div class="feature-item" *ngFor="let feature of selectedService.features; let i = index">
-                    <div class="feature-number">{{ i + 1 }}</div>
-                    <div class="feature-content">
-                      <p>{{ feature }}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Requirements Section -->
-            <div class="content-section" *ngIf="isActiveSection('requirements')">
-              <div class="section-header">
-                <h3 class="section-title-left">
-                  <i class="fas fa-list-check text-primary-custom me-3"></i>
-                  Requirements
-                </h3>
-              </div>
-
-              <div class="content-body">
-                <div class="requirements-list">
-                  <div class="requirement-item" *ngFor="let requirement of selectedService.requirements">
-                    <div class="requirement-icon">
-                      <i class="fas fa-check-circle"></i>
-                    </div>
-                    <div class="requirement-content">
-                      <p>{{ requirement }}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Contact Section -->
-            <div class="content-section" *ngIf="isActiveSection('contact')">
-              <div class="section-header">
-                <h3 class="section-title-left">
-                  <i class="fas fa-phone text-primary-custom me-3"></i>
-                  Contact Information
-                </h3>
-              </div>
-
-              <div class="content-body">
-                <div class="row">
-                  <div class="col-md-6" *ngIf="selectedService.contactPerson">
-                    <div class="contact-card">
-                      <div class="contact-icon">
-                        <i class="fas fa-user"></i>
-                      </div>
-                      <h5>Contact Person</h5>
-                      <p>{{ selectedService.contactPerson }}</p>
-                    </div>
-                  </div>
-                  <div class="col-md-6" *ngIf="selectedService.contactEmail">
-                    <div class="contact-card">
-                      <div class="contact-icon">
-                        <i class="fas fa-envelope"></i>
-                      </div>
-                      <h5>Email</h5>
-                      <p>
-                        <a [href]="'mailto:' + selectedService.contactEmail">
-                          {{ selectedService.contactEmail }}
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                  <div class="col-md-6" *ngIf="selectedService.contactPhone">
-                    <div class="contact-card">
-                      <div class="contact-icon">
-                        <i class="fas fa-phone"></i>
-                      </div>
-                      <h5>Phone</h5>
-                      <p>
-                        <a [href]="'tel:' + selectedService.contactPhone">
-                          {{ selectedService.contactPhone }}
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <p class="lead" [innerHTML]="service.description"></p>
               </div>
             </div>
           </div>
         </div>
-
+        } @else {
         <!-- No Service Selected -->
-        <div class="no-selection text-center py-5" *ngIf="!selectedService">
+        <div class="no-selection text-center py-5">
           <i class="fas fa-cogs fa-3x text-muted mb-3"></i>
-          <h4>Select a Service Category</h4>
-          <p class="text-muted">Choose a category from the sidebar to view available services.</p>
+          <h4>Select a Service</h4>
+          <p class="text-muted">
+            Choose a service from the sidebar to view detailed information.
+          </p>
         </div>
+        }
       </div>
     </div>
+    }
+
+    <!-- Empty State -->
+    @if (!loading() && !error() && !hasData()) {
+    <div class="text-center py-5">
+      <i class="fas fa-cogs fa-3x text-muted mb-3"></i>
+      <h4>No Services Available</h4>
+      <p class="text-muted">Services will be added soon.</p>
+    </div>
+    }
   </div>
 </section>

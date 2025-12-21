@@ -1,47 +1,167 @@
-<section id="events" class="events-section " 
-         style="background: linear-gradient(135deg, #acd2f1 0%, #e6d7ac 100%);">
+<section
+  id="events"
+  class="events-section"
+  style="background: linear-gradient(135deg, #acd2f1 0%, #e6d7ac 100%)"
+>
   <div class="container-fluid">
     <h2 class="section-title text-dark-blue mb-5">Upcoming Events</h2>
 
-    <!-- Timeline -->
-    <div class="timeline position-relative">
-      <!-- Timeline Line -->
-      <div class="timeline-line position-absolute "></div>
-
-      <!-- Events Grid -->
-      <div class="row">
-        <div class="col-lg-3 col-md-6 mb-4" *ngFor="let event of events; let i = index">
-          <div class="timeline-event text-center position-relative">
-            <!-- Event Dot -->
-            <div class="event-dot rounded-circle bg-primary-custom mx-auto mb-3"></div>
-            
-            <!-- Event Date -->
-            <div class="event-date text-primary-custom fw-semibold mb-3">
-              {{ formatDate(event.date) }}
-            </div>
-            
-            <!-- Event Card -->
-            <div class="event-card card-custom hover-lift">
-              <img [src]="event.image" 
-                   [alt]="event.title"
-                   class="card-img-top img-cover"
-                   style="height: 150px;">
-              <div class="card-body">
-                <h5 class="card-title text-dark-blue">{{ event.title }}</h5>
-                <p class="card-text text-muted small">{{ event.description }}</p>
-                <!-- <a [routerLink]="['/event', event.id]" class="read-more text-primary-custom fw-semibold text-decoration-none">
-                  Read More
-                </a> -->
-              </div>
+    <!-- Loading State -->
+    @if (isLoading()) {
+    <div class="row">
+      @for (i of [1, 2, 3, 4]; track i) {
+      <div class="col-lg-3 col-md-6 mb-4">
+        <div class="timeline-event text-center position-relative">
+          <div
+            class="event-dot rounded-circle bg-primary-custom mx-auto mb-3"
+          ></div>
+          <div
+            style="
+              height: 20px;
+              width: 60%;
+              margin: 0 auto 1rem;
+              background: linear-gradient(
+                90deg,
+                #f0f0f0 25%,
+                #e0e0e0 50%,
+                #f0f0f0 75%
+              );
+              background-size: 200% 100%;
+              animation: shimmer 1.5s infinite;
+              border-radius: 4px;
+            "
+          ></div>
+          <div class="event-card card-custom">
+            <div
+              style="
+                height: 150px;
+                background: linear-gradient(
+                  90deg,
+                  #f0f0f0 25%,
+                  #e0e0e0 50%,
+                  #f0f0f0 75%
+                );
+                background-size: 200% 100%;
+                animation: shimmer 1.5s infinite;
+              "
+            ></div>
+            <div class="card-body">
+              <div
+                style="
+                  height: 20px;
+                  width: 80%;
+                  background: linear-gradient(
+                    90deg,
+                    #f0f0f0 25%,
+                    #e0e0e0 50%,
+                    #f0f0f0 75%
+                  );
+                  background-size: 200% 100%;
+                  animation: shimmer 1.5s infinite;
+                  border-radius: 4px;
+                  margin-bottom: 0.5rem;
+                "
+              ></div>
+              <div
+                style="
+                  height: 14px;
+                  width: 100%;
+                  background: linear-gradient(
+                    90deg,
+                    #f0f0f0 25%,
+                    #e0e0e0 50%,
+                    #f0f0f0 75%
+                  );
+                  background-size: 200% 100%;
+                  animation: shimmer 1.5s infinite;
+                  border-radius: 4px;
+                "
+              ></div>
             </div>
           </div>
         </div>
       </div>
+      }
     </div>
+    }
+
+    <!-- Error State -->
+    @if (hasError()) {
+    <div class="text-center py-5">
+      <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+      <h4>Failed to Load Events</h4>
+      <p class="text-muted">{{ error() }}</p>
+      <button class="btn btn-primary" (click)="retry()">
+        <i class="fas fa-redo me-2"></i>
+        Try Again
+      </button>
+    </div>
+    }
+
+    <!-- Success State -->
+    @if (isSuccess() && events().length > 0) {
+    <div class="timeline position-relative">
+      <!-- Timeline Line -->
+      <div class="timeline-line position-absolute"></div>
+
+      <!-- Events Grid -->
+      <div class="row">
+        @for (event of events(); track event.id; let i = $index) {
+        <div class="col-lg-3 col-md-6 mb-4">
+          <div class="timeline-event text-center position-relative">
+            <!-- Event Dot -->
+            <div
+              class="event-dot rounded-circle bg-primary-custom mx-auto mb-3"
+            ></div>
+
+            <!-- Event Date -->
+            <div class="event-date text-primary-custom fw-semibold mb-3">
+              <span class="event-day">{{ getDay(event.createdDate) }}</span>
+              <span class="event-month">{{ getMonth(event.createdDate) }}</span>
+            </div>
+
+            <!-- Event Card -->
+            <div class="event-card card-custom hover-lift">
+              <img
+                [src]="getFeaturedImage(event)"
+                [alt]="event.title"
+                class="card-img-top img-cover"
+                style="height: 150px"
+              />
+              <div class="card-body">
+                <h5 class="card-title text-dark-blue">{{ event.title }}</h5>
+                <p class="card-text text-muted small">
+                  {{ getExcerpt(event.content, 80) }}
+                </p>
+                <a
+                  [routerLink]="['/news', event.id]"
+                  class="read-more text-primary-custom fw-semibold text-decoration-none"
+                >
+                  View Details →
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    }
+
+    <!-- Empty State -->
+    @if (isSuccess() && events().length === 0) {
+    <div class="text-center py-5">
+      <i class="fas fa-calendar-times fa-3x text-muted mb-3"></i>
+      <h4>No Upcoming Events</h4>
+      <p class="text-muted">Check back later for upcoming events.</p>
+    </div>
+    }
 
     <!-- View All Button -->
-    <!-- <div class="text-center mt-5">
-      <a href="#" class="btn-primary-custom">View All Events</a>
-    </div> -->
+    @if (isSuccess() && events().length > 0) {
+    <div class="text-center mt-5">
+      <a [routerLink]="['/news']" class="btn-primary-custom">View All Events</a>
+    </div>
+    }
   </div>
 </section>

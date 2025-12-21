@@ -1,9 +1,9 @@
 .dean-section {
   position: relative;
-   padding-left: 17rem ;
+  padding-left: 17rem;
   padding-right: 17rem;
   padding-bottom: 3rem;
-padding-top: 3rem;
+  padding-top: 3rem;
 }
 
 .dean-image img {
@@ -36,7 +36,7 @@ padding-top: 3rem;
     text-align: center;
     margin-top: 2rem;
   }
-  
+
   .dean-signature {
     border-left: none;
     border-top: 4px solid var(--primary-blue);
@@ -52,11 +52,27 @@ padding-top: 3rem;
   }
 
   .dean-section {
-  position: relative;
-   padding-left: 1rem ;
-  padding-right: 1rem;
-  padding-bottom: 1rem;
-padding-top: 1rem;
+    position: relative;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 1rem;
+    padding-top: 1rem;
+  }
 }
 
+/* Skeleton Loading Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-image,
+.skeleton-title,
+.skeleton-text,
+.skeleton-name {
+  background-size: 200% 100%;
 }

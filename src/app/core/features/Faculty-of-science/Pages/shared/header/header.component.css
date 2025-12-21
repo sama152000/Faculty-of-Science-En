@@ -50,7 +50,7 @@
 }
 
 .navbar-nav .nav-link::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 50%;
@@ -183,7 +183,6 @@
   .navbar-collapse {
     padding: 0.5rem;
     margin-top: 0.5rem;
-
   }
 
   .navbar-nav .nav-link {

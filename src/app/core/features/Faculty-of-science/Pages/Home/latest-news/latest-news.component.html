@@ -1,46 +1,200 @@
-<section id="news" class="news-section bg-beige-custom  position-relative overflow-hidden">
+<section
+  id="news"
+  class="news-section bg-beige-custom position-relative overflow-hidden"
+>
   <div class="container-fluid">
     <h2 class="section-title text-dark-blue mb-5">Latest News</h2>
 
+    <!-- Loading State -->
+    @if (isLoading()) {
     <div class="news-slider-container position-relative">
-      <!-- News Cards -->
-      <div class="news-slider d-flex gap-4" 
-           [style.transform]="'translateX(-' + (currentIndex * 320) + 'px)'">
-        <div class="news-card card-custom flex-shrink-0"
-             *ngFor="let item of extendedNews">
-          <img [src]="item.image" 
-               [alt]="item.title"
-               class="card-img-top img-cover"
-               style="height: 200px;">
+      <div class="news-slider d-flex gap-4">
+        @for (i of [1, 2, 3, 4]; track i) {
+        <div class="news-card card-custom flex-shrink-0">
+          <div
+            style="
+              height: 200px;
+              background: linear-gradient(
+                90deg,
+                #f0f0f0 25%,
+                #e0e0e0 50%,
+                #f0f0f0 75%
+              );
+              background-size: 200% 100%;
+              animation: shimmer 1.5s infinite;
+            "
+          ></div>
+          <div class="card-body">
+            <div
+              style="
+                height: 16px;
+                width: 40%;
+                background: linear-gradient(
+                  90deg,
+                  #f0f0f0 25%,
+                  #e0e0e0 50%,
+                  #f0f0f0 75%
+                );
+                background-size: 200% 100%;
+                animation: shimmer 1.5s infinite;
+                border-radius: 4px;
+                margin-bottom: 0.75rem;
+              "
+            ></div>
+            <div
+              style="
+                height: 20px;
+                width: 80%;
+                background: linear-gradient(
+                  90deg,
+                  #f0f0f0 25%,
+                  #e0e0e0 50%,
+                  #f0f0f0 75%
+                );
+                background-size: 200% 100%;
+                animation: shimmer 1.5s infinite;
+                border-radius: 4px;
+                margin-bottom: 0.5rem;
+              "
+            ></div>
+            <div
+              style="
+                height: 16px;
+                width: 100%;
+                background: linear-gradient(
+                  90deg,
+                  #f0f0f0 25%,
+                  #e0e0e0 50%,
+                  #f0f0f0 75%
+                );
+                background-size: 200% 100%;
+                animation: shimmer 1.5s infinite;
+                border-radius: 4px;
+              "
+            ></div>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    }
+
+    <!-- Error State -->
+    @if (hasError()) {
+    <div class="text-center py-5">
+      <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+      <h4>Failed to Load News</h4>
+      <p class="text-muted">{{ error() }}</p>
+      <button class="btn btn-primary" (click)="retry()">
+        <i class="fas fa-redo me-2"></i>
+        Try Again
+      </button>
+    </div>
+    }
+
+    <!-- Success State -->
+    @if (isSuccess() && news().length > 0) {
+    <!-- Grid Mode: 5 or fewer news items - fill the width -->
+    @if (!isSliderMode()) {
+    <div class="news-grid-container">
+      <div class="news-grid" [class]="'news-count-' + news().length">
+        @for (item of news(); track item.id) {
+        <div class="news-card card-custom">
+          <img
+            [src]="getFeaturedImage(item)"
+            [alt]="item.title"
+            class="card-img-top img-cover"
+            style="height: 200px"
+          />
           <div class="card-body">
             <div class="news-date text-muted mb-2">
               <i class="fa-regular fa-calendar me-2"></i>
-              {{ formatDate(item.date) }}
+              {{ formatDate(item.createdDate) }}
             </div>
             <h5 class="card-title text-dark-blue">{{ item.title }}</h5>
-            <p class="card-text text-muted">{{ item.excerpt }}</p>
-            <a [routerLink]="['/news', item.id]" class="read-more text-primary-custom fw-semibold text-decoration-none">
+            <p class="card-text text-muted">
+              {{ getExcerpt(item.content, 100) }}
+            </p>
+            <a
+              [routerLink]="['/news', item.id]"
+              class="read-more text-primary-custom fw-semibold text-decoration-none"
+            >
               Read More →
             </a>
           </div>
         </div>
+        }
+      </div>
+    </div>
+    } @else {
+    <!-- Slider Mode: More than 5 news items OR mobile -->
+    <div class="news-slider-container position-relative">
+      <div
+        class="news-slider d-flex"
+        [class.gap-4]="!isMobile()"
+        [style.transform]="getSlideTransform()"
+      >
+        @for (item of news(); track item.id) {
+        <div class="news-card card-custom flex-shrink-0">
+          <img
+            [src]="getFeaturedImage(item)"
+            [alt]="item.title"
+            class="card-img-top img-cover"
+            style="height: 200px"
+          />
+          <div class="card-body">
+            <div class="news-date text-muted mb-2">
+              <i class="fa-regular fa-calendar me-2"></i>
+              {{ formatDate(item.createdDate) }}
+            </div>
+            <h5 class="card-title text-dark-blue">{{ item.title }}</h5>
+            <p class="card-text text-muted">
+              {{ getExcerpt(item.content, 100) }}
+            </p>
+            <a
+              [routerLink]="['/news', item.id]"
+              class="read-more text-primary-custom fw-semibold text-decoration-none"
+            >
+              Read More →
+            </a>
+          </div>
+        </div>
+        }
       </div>
 
-      <!-- Navigation Buttons -->
-      <button class="news-nav news-prev btn btn-primary rounded-circle position-absolute"
-              (click)="prevNews()">
+      <!-- Navigation Buttons (only in slider mode) -->
+      @if (showNavButtons()) {
+      <button
+        class="news-nav news-prev btn btn-primary rounded-circle position-absolute"
+        (click)="prevNews()"
+      >
         <i class="fa-solid fa-chevron-left"></i>
       </button>
 
-      <button class="news-nav news-next btn btn-primary rounded-circle position-absolute"
-              (click)="nextNews()">
+      <button
+        class="news-nav news-next btn btn-primary rounded-circle position-absolute"
+        (click)="nextNews()"
+      >
         <i class="fa-solid fa-chevron-right"></i>
       </button>
+      }
     </div>
+    } }
+
+    <!-- Empty State -->
+    @if (isSuccess() && news().length === 0) {
+    <div class="text-center py-5">
+      <i class="fas fa-newspaper fa-3x text-muted mb-3"></i>
+      <h4>No News Available</h4>
+      <p class="text-muted">Check back later for the latest news.</p>
+    </div>
+    }
 
     <!-- View All Button -->
+    @if (isSuccess() && news().length > 0) {
     <div class="text-center mt-5">
       <a [routerLink]="['/news']" class="btn-primary-custom">View All News</a>
     </div>
+    }
   </div>
 </section>

@@ -1,167 +1,315 @@
-<section class="news-details-section ">
+<section class="news-details-section">
   <div class="container-fluid">
-    
-    <!-- Loading State -->
-    <div class="loading-container text-center py-5" *ngIf="loading">
-      <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+    <!-- ============================================ -->
+    <!-- LOADING STATE - Using PrimeNG Skeleton -->
+    <!-- ============================================ -->
+    @if (isLoading()) {
+    <div class="row">
+      <!-- Main Content Skeleton -->
+      <div class="col-lg-8 col-md-7">
+        <p-card styleClass="mb-4">
+          <!-- Title skeleton -->
+          <p-skeleton height="2rem" width="80%" styleClass="mb-3" />
+          <!-- Meta skeleton -->
+          <div class="flex gap-2 mb-3">
+            <p-skeleton width="6rem" height="1.5rem" />
+            <p-skeleton width="8rem" height="1.5rem" />
+          </div>
+          <!-- Image skeleton -->
+          <p-skeleton height="400px" styleClass="mb-4" />
+          <!-- Content skeleton -->
+          <p-skeleton styleClass="mb-2" />
+          <p-skeleton width="95%" styleClass="mb-2" />
+          <p-skeleton width="90%" styleClass="mb-2" />
+          <p-skeleton width="85%" />
+        </p-card>
       </div>
-      <p class="mt-3">Loading article...</p>
+      <!-- Sidebar Skeleton -->
+      <div class="col-lg-4 col-md-5">
+        <p-card styleClass="mb-4">
+          <p-skeleton height="2rem" width="60%" styleClass="mb-3" />
+          <p-skeleton height="3rem" styleClass="mb-2" />
+          <p-skeleton height="3rem" />
+        </p-card>
+        <p-card>
+          <p-skeleton height="200px" />
+        </p-card>
+      </div>
     </div>
+    }
 
-    <!-- Error State -->
-    <div class="error-container text-center py-5" *ngIf="error && !loading">
-      <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
-      <h3>Article Not Found</h3>
-      <p class="text-muted mb-4">The article you're looking for doesn't exist or has been removed.</p>
-      <button class="btn btn-primary-custom" (click)="goBack()">
-        <i class="fas fa-arrow-left me-2"></i>
-        Back to News
-      </button>
+    <!-- ============================================ -->
+    <!-- ERROR STATE -->
+    <!-- ============================================ -->
+    @if (hasError()) {
+    <div class="error-container text-center py-5">
+      <i class="pi pi-exclamation-triangle text-6xl text-yellow-500 mb-4"></i>
+      <h3 class="mb-3">Article Not Found</h3>
+      <p class="text-muted mb-4">{{ error() }}</p>
+      <p-button
+        label="Back to News"
+        icon="pi pi-arrow-left"
+        (onClick)="goBack()"
+        styleClass="p-button-primary"
+      />
     </div>
+    }
 
-    <!-- Main Content -->
-    <div class="row" *ngIf="newsItem && !loading && !error">
-      
+    <!-- ============================================ -->
+    <!-- MAIN CONTENT -->
+    <!-- ============================================ -->
+    @if (isSuccess() && newsItem(); as article) {
+    <div class="row">
       <!-- Article Content -->
       <div class="col-lg-8 col-md-7">
         <article class="news-article card-custom">
-          
           <!-- Article Header -->
-          <div class="article-header">
+          <header class="article-header">
+            <!-- Meta Information -->
             <div class="article-meta">
-              <span class="article-type" [class]="newsItem.type">
-                <i class="fas" [class.fa-newspaper]="newsItem.type === 'news'" [class.fa-file-alt]="newsItem.type === 'article'"></i>
-                {{ newsItem.type | titlecase }}
-              </span>
-              <span class="article-date">
-                <i class="fas fa-calendar-alt me-1"></i>
-                {{ formatDate(newsItem.date) }}
-              </span>
-              <span class="article-author" *ngIf="newsItem.author">
-                <i class="fas fa-user me-1"></i>
-                {{ newsItem.author }}
-              </span>
+              <p-tag
+                [value]="primaryCategory()"
+                icon="pi pi-bookmark"
+                styleClass="mr-2"
+              />
+              <p-tag
+                [value]="formattedDate()"
+                icon="pi pi-calendar"
+                severity="secondary"
+                styleClass="mr-2"
+              />
+              @if (article.status) {
+              <p-tag
+                [value]="article.status"
+                [severity]="statusSeverity()"
+                icon="pi pi-circle-fill"
+              />
+              }
             </div>
-            
-            <h1 class="article-title">{{ newsItem.title }}</h1>
-            
+
+            <!-- Title -->
+            <h1 class="article-title">{{ article.title }}</h1>
+
             <!-- Tags -->
-            <div class="article-tags" *ngIf="newsItem.tags && newsItem.tags.length > 0">
-              <span class="tag" *ngFor="let tag of newsItem.tags">
-                {{ tag }}
-              </span>
+            @if (hasTags()) {
+            <div class="article-tags">
+              @for (tag of tags(); track tag.id) {
+              <p-tag
+                [value]="tag.name"
+                severity="info"
+                [rounded]="true"
+                styleClass="mr-1 mb-1"
+              />
+              }
             </div>
-          </div>
+            }
+          </header>
 
-          <!-- Article Image -->
-          <div class="article-image-container" *ngIf="newsItem.image">
-            <img [src]="newsItem.image" [alt]="newsItem.title" class="article-image">
+          <!-- Featured Image -->
+          @if (featuredImage(); as image) {
+          <div class="article-image-container">
+            <img
+              [src]="image"
+              [alt]="article.title"
+              class="article-image"
+              loading="lazy"
+            />
           </div>
+          }
 
-          <!-- Article Content -->
+          <!-- Article Body -->
           <div class="article-content">
-            <div class="article-excerpt" *ngIf="newsItem.excerpt">
-              <p class="lead">{{ newsItem.excerpt }}</p>
-            </div>
-            
-            <div class="article-body">
-              <p>{{ newsItem.content }}</p>
-            </div>
+            <div class="article-body" [innerHTML]="article.content"></div>
           </div>
 
-          <!-- Article Footer -->
-          <div class="article-footer">
+          <!-- Gallery (PrimeNG Galleria) -->
+          @if (hasGallery()) {
+          <div class="article-gallery">
+            <h5 class="gallery-title">
+              <i class="pi pi-images mr-2"></i>
+              Gallery
+            </h5>
+            <p-galleria
+              [value]="galleriaImages()"
+              [responsiveOptions]="galleriaResponsiveOptions"
+              [numVisible]="5"
+              [showThumbnails]="true"
+              [showIndicators]="true"
+              [showItemNavigators]="true"
+              [containerStyle]="{ 'max-width': '100%' }"
+            >
+              <ng-template pTemplate="item" let-item>
+                <img
+                  [src]="item.itemImageSrc"
+                  [alt]="item.alt"
+                  class="gallery-main-img"
+                />
+              </ng-template>
+              <ng-template pTemplate="thumbnail" let-item>
+                <img
+                  [src]="item.thumbnailImageSrc"
+                  [alt]="item.alt"
+                  class="gallery-thumb-img"
+                />
+              </ng-template>
+            </p-galleria>
+          </div>
+          }
+
+          <!-- Article Footer - Share Buttons -->
+          <footer class="article-footer">
             <div class="share-buttons">
-              <h6>Share this {{ newsItem.type }}:</h6>
+              <h6>Share this article:</h6>
               <div class="social-share">
-                <button class="share-btn facebook" (click)="shareOnSocial('facebook')" title="Share on Facebook">
-                  <i class="fab fa-facebook-f"></i>
-                </button>
-                <button class="share-btn twitter" (click)="shareOnSocial('twitter')" title="Share on Twitter">
-                  <i class="fab fa-twitter"></i>
-                </button>
-                <button class="share-btn linkedin" (click)="shareOnSocial('linkedin')" title="Share on LinkedIn">
-                  <i class="fab fa-linkedin-in"></i>
-                </button>
+                <p-button
+                  icon="pi pi-facebook"
+                  [rounded]="true"
+                  severity="info"
+                  pTooltip="Share on Facebook"
+                  tooltipPosition="top"
+                  (onClick)="shareOnSocial('facebook')"
+                  styleClass="mr-2"
+                />
+                <p-button
+                  icon="pi pi-twitter"
+                  [rounded]="true"
+                  severity="info"
+                  pTooltip="Share on Twitter"
+                  tooltipPosition="top"
+                  (onClick)="shareOnSocial('twitter')"
+                  styleClass="mr-2"
+                />
+                <p-button
+                  icon="pi pi-linkedin"
+                  [rounded]="true"
+                  severity="info"
+                  pTooltip="Share on LinkedIn"
+                  tooltipPosition="top"
+                  (onClick)="shareOnSocial('linkedin')"
+                  styleClass="mr-2"
+                />
+                <p-button
+                  icon="pi pi-whatsapp"
+                  [rounded]="true"
+                  severity="success"
+                  pTooltip="Share on WhatsApp"
+                  tooltipPosition="top"
+                  (onClick)="shareOnSocial('whatsapp')"
+                  styleClass="mr-2"
+                />
+                <p-button
+                  icon="pi pi-link"
+                  [rounded]="true"
+                  severity="secondary"
+                  pTooltip="Copy Link"
+                  tooltipPosition="top"
+                  (onClick)="copyLink()"
+                />
               </div>
             </div>
-          </div>
+          </footer>
         </article>
       </div>
 
       <!-- Sidebar -->
       <div class="col-lg-4 col-md-5">
         <aside class="news-sidebar">
-          
-          <!-- Navigation Buttons -->
-          <div class="sidebar-section card-custom mb-4">
-            <h5 class="sidebar-title">Navigation</h5>
+          <!-- Navigation -->
+          <p-card header="Navigation" styleClass="mb-4">
             <div class="nav-buttons">
-              <button class="btn btn-outline-custom w-100 mb-2" (click)="goBack()">
-                <i class="fas fa-arrow-left me-2"></i>
-                Back to All News
-              </button>
-              <button class="btn btn-outline-custom w-100" (click)="goBackToType()">
-                <i class="fas fa-arrow-left me-2"></i>
-                Back to {{ newsItem.type | titlecase }}s
-              </button>
+              <p-button
+                label="Back to All News"
+                icon="pi pi-arrow-left"
+                [outlined]="true"
+                styleClass="w-full mb-2"
+                (onClick)="goBack()"
+              />
+              <p-button
+                [label]="'Back to ' + primaryCategory()"
+                icon="pi pi-folder"
+                [outlined]="true"
+                styleClass="w-full"
+                (onClick)="goBackToCategory()"
+              />
             </div>
-          </div>
+          </p-card>
 
-          <!-- Related Items -->
-          <div class="sidebar-section card-custom" *ngIf="relatedItems.length > 0">
-            <h5 class="sidebar-title">
-              Related {{ newsItem.type === 'news' ? 'News' : 'Articles' }}
-            </h5>
-            
+          <!-- Related News -->
+          @if (hasRelatedItems()) {
+          <p-card header="Related News" styleClass="mb-4">
             <div class="related-items">
-              <div class="related-item" *ngFor="let item of relatedItems">
+              @for (item of relatedItems(); track item.id) {
+              <div class="related-item">
                 <div class="related-image">
-                  <img [src]="item.image" [alt]="item.title" class="img-cover">
-                  <div class="related-type-badge" [class]="item.type">
-                    <i class="fas" [class.fa-newspaper]="item.type === 'news'" [class.fa-file-alt]="item.type === 'article'"></i>
-                  </div>
+                  <img
+                    [src]="getRelatedItemImage(item)"
+                    [alt]="item.title"
+                    class="img-cover"
+                    loading="lazy"
+                  />
+                  <p-tag
+                    value=""
+                    icon="pi pi-bookmark"
+                    severity="info"
+                    styleClass="related-type-badge"
+                  />
                 </div>
-                
                 <div class="related-content">
                   <h6 class="related-title">
                     <a [routerLink]="['/news', item.id]">{{ item.title }}</a>
                   </h6>
                   <p class="related-date">
-                    <i class="fas fa-calendar-alt me-1"></i>
-                    {{ formatDate(item.date) }}
+                    <i class="pi pi-calendar mr-1"></i>
+                    {{ formatDateValue(item.createdDate) }}
                   </p>
-                  <p class="related-excerpt">{{ item.excerpt | slice:0:80 }}...</p>
+                  <p class="related-excerpt">
+                    {{ getExcerpt(item.content, 80) }}
+                  </p>
                 </div>
               </div>
+              }
             </div>
-          </div>
+          </p-card>
+          }
 
-          <!-- Article Info -->
-          <div class="sidebar-section card-custom">
-            <h5 class="sidebar-title">Article Information</h5>
+          <!-- Article Information -->
+          <p-card header="Article Information">
             <div class="article-info">
               <div class="info-item">
-                <strong>Type:</strong>
-                <span class="ms-2">{{ newsItem.type | titlecase }}</span>
-              </div>
-              <div class="info-item" *ngIf="newsItem.category">
                 <strong>Category:</strong>
-                <span class="ms-2">{{ newsItem.category }}</span>
+                <span class="ms-2">{{ primaryCategory() }}</span>
               </div>
-              <div class="info-item" *ngIf="newsItem.author">
-                <strong>Author:</strong>
-                <span class="ms-2">{{ newsItem.author }}</span>
+              @if (article.pageTittle) {
+              <div class="info-item">
+                <strong>Page:</strong>
+                <span class="ms-2">{{ article.pageTittle }}</span>
+              </div>
+              }
+              <div class="info-item">
+                <strong>Status:</strong>
+                <p-tag
+                  [value]="article.status"
+                  [severity]="statusSeverity()"
+                  styleClass="ms-2"
+                />
               </div>
               <div class="info-item">
                 <strong>Published:</strong>
-                <span class="ms-2">{{ formatDate(newsItem.date) }}</span>
+                <span class="ms-2">{{ formattedDate() }}</span>
               </div>
+              @if (article.publishedDate) {
+              <div class="info-item">
+                <strong>Published Date:</strong>
+                <span class="ms-2">{{
+                  formatDateValue(article.publishedDate)
+                }}</span>
+              </div>
+              }
             </div>
-          </div>
+          </p-card>
         </aside>
       </div>
     </div>
+    }
   </div>
 </section>

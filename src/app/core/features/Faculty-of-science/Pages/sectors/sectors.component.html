@@ -2,6 +2,40 @@
   <div class="container-fluid">
     <h2 class="section-title">Faculty Sectors</h2>
 
+    <!-- Loading State -->
+    @if (loading()) {
+    <div class="row">
+      <div class="col-lg-3 col-md-4 mb-4">
+        <div class="sectors-sidebar card-custom">
+          <p-skeleton height="2rem" width="60%" styleClass="mb-4" />
+          @for (i of [1, 2, 3, 4]; track i) {
+          <p-skeleton height="4rem" styleClass="mb-2" />
+          }
+        </div>
+      </div>
+      <div class="col-lg-9 col-md-8">
+        <div class="card-custom p-4">
+          <p-skeleton height="6rem" styleClass="mb-4" />
+          <p-skeleton height="3rem" styleClass="mb-2" />
+          <p-skeleton height="15rem" />
+        </div>
+      </div>
+    </div>
+    }
+
+    <!-- Error State -->
+    @if (error()) {
+    <div class="text-center py-5">
+      <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+      <h4 class="mb-3">{{ error() }}</h4>
+      <button class="btn btn-primary" (click)="retry()">
+        <i class="fas fa-refresh me-2"></i>Try Again
+      </button>
+    </div>
+    }
+
+    <!-- Success State -->
+    @if (!loading() && !error() && hasData()) {
     <div class="row">
       <!-- Sectors Sidebar -->
       <div class="col-lg-3 col-md-4 mb-4">
@@ -12,51 +46,79 @@
           </h4>
 
           <ul class="sectors-list">
-            <li *ngFor="let sector of sectors">
+            @for (sector of sectors(); track sector.id) {
+            <li>
               <button
                 class="sector-btn"
                 [class.active]="isSectorSelected(sector.id)"
-                (click)="selectSector(sector)">
+                (click)="selectSector(sector)"
+              >
                 <div class="sector-icon">
-                  <i [class]="sector.icon"></i>
+                  @if (getSectorImage(sector)) {
+                  <img
+                    [src]="getSectorImage(sector)"
+                    [alt]="sector.name"
+                    class="sector-thumb"
+                  />
+                  } @else {
+                  <i class="fas fa-sitemap"></i>
+                  }
                 </div>
                 <div class="sector-info">
                   <h6 class="sector-name">{{ sector.name }}</h6>
-                  <p class="sector-desc">{{ sector.description }}</p>
+                  <p class="sector-desc">{{ sector.subTitle }}</p>
                 </div>
               </button>
             </li>
+            }
           </ul>
         </div>
       </div>
 
       <!-- Sector Content -->
       <div class="col-lg-9 col-md-8">
-        <div class="sector-content" *ngIf="selectedSector">
-
+        @if (selectedSector(); as sector) {
+        <div class="sector-content">
           <!-- Sector Header -->
           <div class="sector-header card-custom mb-4">
             <div class="header-content">
               <div class="sector-icon-large">
-                <i [class]="selectedSector.icon"></i>
+                @if (getSectorImage(sector)) {
+                <img
+                  [src]="getSectorImage(sector)"
+                  [alt]="sector.name"
+                  class="sector-image"
+                />
+                } @else {
+                <i class="fas fa-sitemap"></i>
+                }
               </div>
               <div class="header-info">
-                <h1 class="sector-title">{{ selectedSector.name }}</h1>
-                <p class="sector-subtitle">{{ selectedSector.description }}</p>
+                <h1 class="sector-title">{{ sector.name }}</h1>
+                <p class="sector-subtitle">{{ sector.subTitle }}</p>
 
                 <div class="sector-stats">
-                  <div class="stat-item" *ngIf="selectedSector.establishedYear">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>Est. {{ selectedSector.establishedYear }}</span>
-                  </div>
-                  <div class="stat-item" *ngIf="selectedSector.staffCount">
-                    <i class="fas fa-users"></i>
-                    <span>{{ selectedSector.staffCount }} Staff</span>
-                  </div>
-                  <div class="stat-item" *ngIf="selectedSector.head">
+                  @if (leader()) {
+                  <div class="stat-item">
                     <i class="fas fa-user-tie"></i>
-                    <span>{{ selectedSector.head }}</span>
+                    <span>{{ leader()?.memberName }}</span>
                   </div>
+                  } @if (sectorMembers().length > 0) {
+                  <div class="stat-item">
+                    <i class="fas fa-users"></i>
+                    <span>{{ sectorMembers().length }} Members</span>
+                  </div>
+                  } @if (sectorUnits().length > 0) {
+                  <div class="stat-item">
+                    <i class="fas fa-building"></i>
+                    <span>{{ sectorUnits().length }} Units</span>
+                  </div>
+                  } @if (sectorPrograms().length > 0) {
+                  <div class="stat-item">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>{{ sectorPrograms().length }} Programs</span>
+                  </div>
+                  }
                 </div>
               </div>
             </div>
@@ -68,46 +130,83 @@
               <button
                 class="nav-btn"
                 [class.active]="isActiveSection('overview')"
-                (click)="setActiveSection('overview')">
+                (click)="setActiveSection('overview')"
+              >
                 <i class="fas fa-info-circle me-2"></i>
                 Overview
               </button>
+              @if (sector.goals && sector.goals.length > 0) {
               <button
                 class="nav-btn"
-                [class.active]="isActiveSection('responsibilities')"
-                (click)="setActiveSection('responsibilities')">
-                <i class="fas fa-tasks me-2"></i>
-                Responsibilities
+                [class.active]="isActiveSection('goals')"
+                (click)="setActiveSection('goals')"
+              >
+                <i class="fas fa-bullseye me-2"></i>
+                Goals
               </button>
+              } @if (hasDetails()) {
               <button
                 class="nav-btn"
-                [class.active]="isActiveSection('departments')"
-                (click)="setActiveSection('departments')">
+                [class.active]="isActiveSection('details')"
+                (click)="setActiveSection('details')"
+              >
+                <i class="fas fa-list me-2"></i>
+                Details
+              </button>
+              } @if (hasUnits()) {
+              <button
+                class="nav-btn"
+                [class.active]="isActiveSection('units')"
+                (click)="setActiveSection('units')"
+              >
                 <i class="fas fa-building me-2"></i>
-                Departments
+                Units
               </button>
+              } @if (hasPrograms()) {
+              <button
+                class="nav-btn"
+                [class.active]="isActiveSection('programs')"
+                (click)="setActiveSection('programs')"
+              >
+                <i class="fas fa-graduation-cap me-2"></i>
+                Programs
+              </button>
+              } @if (hasServices()) {
               <button
                 class="nav-btn"
                 [class.active]="isActiveSection('services')"
-                (click)="setActiveSection('services')">
+                (click)="setActiveSection('services')"
+              >
                 <i class="fas fa-cogs me-2"></i>
                 Services
               </button>
+              } @if (hasPosts()) {
               <button
                 class="nav-btn"
-                [class.active]="isActiveSection('achievements')"
-                (click)="setActiveSection('achievements')">
-                <i class="fas fa-trophy me-2"></i>
-                Achievements
+                [class.active]="isActiveSection('posts')"
+                (click)="setActiveSection('posts')"
+              >
+                <i class="fas fa-newspaper me-2"></i>
+                Posts
               </button>
+              } @if (hasMembers()) {
+              <button
+                class="nav-btn"
+                [class.active]="isActiveSection('team')"
+                (click)="setActiveSection('team')"
+              >
+                <i class="fas fa-users me-2"></i>
+                Team
+              </button>
+              }
             </div>
           </div>
 
           <!-- Section Content -->
           <div class="section-content card-custom">
-
             <!-- Overview Section -->
-            <div class="content-section" *ngIf="isActiveSection('overview')">
+            @if (isActiveSection('overview')) {
+            <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
                   <i class="fas fa-info-circle text-primary-custom me-3"></i>
@@ -116,75 +215,191 @@
               </div>
 
               <div class="content-body">
-                <p class="lead">{{ selectedSector.overview }}</p>
+                <p class="lead" [innerHTML]="sector.about"></p>
 
                 <div class="row mt-4">
-                  <div class="col-md-6" *ngIf="selectedSector.head">
+                  @if (sector.mission) {
+                  <div class="col-md-6 mb-3">
                     <div class="info-card">
                       <h5 class="text-primary-custom">
-                        <i class="fas fa-user-tie me-2"></i>
-                        Sector Head
+                        <i class="fas fa-bullhorn me-2"></i>
+                        Mission
                       </h5>
-                      <p class="h6">{{ selectedSector.head }}</p>
+                      <p [innerHTML]="sector.mission"></p>
                     </div>
                   </div>
-                  <div class="col-md-6" *ngIf="selectedSector.budget">
+                  } @if (sector.vision) {
+                  <div class="col-md-6 mb-3">
                     <div class="info-card">
                       <h5 class="text-primary-custom">
-                        <i class="fas fa-dollar-sign me-2"></i>
-                        Annual Budget
+                        <i class="fas fa-eye me-2"></i>
+                        Vision
                       </h5>
-                      <p class="h6">{{ selectedSector.budget }}</p>
+                      <p [innerHTML]="sector.vision"></p>
                     </div>
                   </div>
+                  }
                 </div>
               </div>
             </div>
+            }
 
-            <!-- Responsibilities Section -->
-            <div class="content-section" *ngIf="isActiveSection('responsibilities')">
+            <!-- Goals Section -->
+            @if (isActiveSection('goals')) {
+            <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
-                  <i class="fas fa-tasks text-primary-custom me-3"></i>
-                  Key Responsibilities
+                  <i class="fas fa-bullseye text-primary-custom me-3"></i>
+                  Sector Goals
                 </h3>
               </div>
 
               <div class="content-body">
+                @if (sector.goals && sector.goals.length > 0) {
                 <div class="responsibilities-grid">
-                  <div class="responsibility-item" *ngFor="let responsibility of selectedSector.responsibilities; let i = index">
-                    <div class="responsibility-number">{{ i + 1 }}</div>
+                  @for (goal of sector.goals; track goal.id; let i = $index) {
+                  <div class="responsibility-item">
+                    <div class="responsibility-number">
+                      {{ goal.index || i + 1 }}
+                    </div>
                     <div class="responsibility-content">
-                      <p>{{ responsibility }}</p>
+                      <p>{{ goal.goalName }}</p>
                     </div>
                   </div>
+                  }
                 </div>
+                } @else {
+                <p class="text-muted">No goals available.</p>
+                }
               </div>
             </div>
+            }
 
-            <!-- Departments Section -->
-            <div class="content-section" *ngIf="isActiveSection('departments')">
+            <!-- Details Section -->
+            @if (isActiveSection('details')) {
+            <div class="content-section">
+              <div class="section-header">
+                <h3 class="section-title-left">
+                  <i class="fas fa-list text-primary-custom me-3"></i>
+                  Sector Details
+                </h3>
+              </div>
+
+              <div class="content-body">
+                @if (detailsLoading()) {
+                <div class="text-center py-4">
+                  <p-skeleton height="5rem" styleClass="mb-2" />
+                  <p-skeleton height="5rem" />
+                </div>
+                } @else if (hasDetails()) {
+                <div class="details-list">
+                  @for (detail of sectorDetails(); track detail.id) {
+                  <div class="detail-item">
+                    <h5 class="detail-title">{{ detail.title }}</h5>
+                    <div
+                      class="detail-content"
+                      [innerHTML]="detail.content"
+                    ></div>
+                  </div>
+                  }
+                </div>
+                } @else {
+                <p class="text-muted">No details available.</p>
+                }
+              </div>
+            </div>
+            }
+
+            <!-- Units Section -->
+            @if (isActiveSection('units')) {
+            <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
                   <i class="fas fa-building text-primary-custom me-3"></i>
-                  Associated Departments
+                  Sector Units
                 </h3>
               </div>
 
               <div class="content-body">
-                <div class="departments-grid">
-                  <div class="department-item" *ngFor="let department of selectedSector.departments">
-                    <div class="department-icon">
+                @if (hasUnits()) {
+                <div class="units-grid">
+                  @for (unit of sectorUnits(); track unit.id) {
+                  <div class="unit-card">
+                    <div class="unit-icon">
                       <i class="fas fa-building"></i>
                     </div>
-                    <h6 class="department-name">{{ department }}</h6>
+                    <div class="unit-content">
+                      <h6 class="unit-name">{{ unit.unitName }}</h6>
+                      @if (unit.memberName) {
+                      <p class="unit-leader">
+                        <i class="fas fa-user me-1"></i>
+                        {{ unit.memberName }}
+                      </p>
+                      } @if (unit.location) {
+                      <p class="unit-location">
+                        <i class="fas fa-map-marker-alt me-1"></i>
+                        {{ unit.location }}
+                      </p>
+                      }
+                      <div class="unit-meta">
+                        @if (unit.employeesCount) {
+                        <span class="meta-item">
+                          <i class="fas fa-users me-1"></i>
+                          {{ unit.employeesCount }} employees
+                        </span>
+                        } @if (unit.unitPhone) {
+                        <span class="meta-item">
+                          <i class="fas fa-phone me-1"></i>
+                          {{ unit.unitPhone }}
+                        </span>
+                        }
+                      </div>
+                    </div>
                   </div>
+                  }
                 </div>
+                } @else {
+                <p class="text-muted">No units available.</p>
+                }
               </div>
             </div>
+            }
+
+            <!-- Programs Section -->
+            @if (isActiveSection('programs')) {
+            <div class="content-section">
+              <div class="section-header">
+                <h3 class="section-title-left">
+                  <i class="fas fa-graduation-cap text-primary-custom me-3"></i>
+                  Sector Programs
+                </h3>
+              </div>
+
+              <div class="content-body">
+                @if (hasPrograms()) {
+                <div class="programs-grid">
+                  @for (program of sectorPrograms(); track program.id) {
+                  <div class="program-card">
+                    <div class="program-icon">
+                      <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h6 class="program-name">{{ program.programName }}</h6>
+                    @if (program.name) {
+                    <p class="program-desc">{{ program.name }}</p>
+                    }
+                  </div>
+                  }
+                </div>
+                } @else {
+                <p class="text-muted">No programs available.</p>
+                }
+              </div>
+            </div>
+            }
 
             <!-- Services Section -->
-            <div class="content-section" *ngIf="isActiveSection('services')">
+            @if (isActiveSection('services')) {
+            <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
                   <i class="fas fa-cogs text-primary-custom me-3"></i>
@@ -193,72 +408,138 @@
               </div>
 
               <div class="content-body">
+                @if (hasServices()) {
                 <div class="services-list">
-                  <div class="service-item" *ngFor="let service of selectedSector.services">
+                  @for (service of sectorServices(); track service.id) {
+                  <div class="service-item">
                     <div class="service-icon">
                       <i class="fas fa-check-circle"></i>
                     </div>
                     <div class="service-content">
-                      <h6 class="service-title">{{ service }}</h6>
-                      <p class="service-desc">Comprehensive {{ service.toLowerCase() }} services to support faculty operations and development.</p>
+                      <h6 class="service-title">{{ service.name }}</h6>
+                      <p class="service-desc">{{ service.details }}</p>
+                      <div class="service-meta">
+                        @if (service.category) {
+                        <p-tag [value]="service.category" severity="info" />
+                        } @if (service.duration) {
+                        <span class="meta-item">
+                          <i class="fas fa-clock me-1"></i>
+                          {{ service.duration }}
+                        </span>
+                        } @if (service.fees) {
+                        <span class="meta-item">
+                          <i class="fas fa-money-bill me-1"></i>
+                          {{ service.fees }} EGP
+                        </span>
+                        } @if (service.isOnline) {
+                        <p-tag value="Online" severity="success" />
+                        } @if (service.contactPerson) {
+                        <span class="meta-item">
+                          <i class="fas fa-user me-1"></i>
+                          {{ service.contactPerson }}
+                        </span>
+                        }
+                      </div>
                     </div>
                   </div>
+                  }
                 </div>
+                } @else {
+                <p class="text-muted">No services available.</p>
+                }
               </div>
             </div>
+            }
 
-            <!-- Achievements Section -->
-            <div class="content-section" *ngIf="isActiveSection('achievements')">
+            <!-- Posts Section -->
+            @if (isActiveSection('posts')) {
+            <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
-                  <i class="fas fa-trophy text-primary-custom me-3"></i>
-                  Key Achievements & Goals
+                  <i class="fas fa-newspaper text-primary-custom me-3"></i>
+                  Sector Posts
                 </h3>
               </div>
 
               <div class="content-body">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="achievements-card">
-                      <div class="achievements-icon">
-                        <i class="fas fa-trophy"></i>
-                      </div>
-                      <h4>Recent Achievements</h4>
-                      <ul class="achievements-list">
-                        <li *ngFor="let achievement of selectedSector.achievements">
-                          <i class="fas fa-check me-2"></i>
-                          {{ achievement }}
-                        </li>
-                      </ul>
+                @if (hasPosts()) {
+                <div class="posts-grid">
+                  @for (post of sectorPosts(); track post.id) {
+                  <div class="post-card">
+                    <div class="post-icon">
+                      <i class="fas fa-newspaper"></i>
                     </div>
+                    <h6 class="post-name">{{ post.postName }}</h6>
                   </div>
-                  <div class="col-md-6">
-                    <div class="goals-card">
-                      <div class="goals-icon">
-                        <i class="fas fa-bullseye"></i>
-                      </div>
-                      <h4>Future Goals</h4>
-                      <ul class="goals-list">
-                        <li *ngFor="let goal of selectedSector.goals">
-                          <i class="fas fa-arrow-right me-2"></i>
-                          {{ goal }}
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
+                  }
                 </div>
+                } @else {
+                <p class="text-muted">No posts available.</p>
+                }
               </div>
             </div>
+            }
+
+            <!-- Team Section -->
+            @if (isActiveSection('team')) {
+            <div class="content-section">
+              <div class="section-header">
+                <h3 class="section-title-left">
+                  <i class="fas fa-users text-primary-custom me-3"></i>
+                  Sector Team
+                </h3>
+              </div>
+
+              <div class="content-body">
+                @if (hasMembers()) {
+                <div class="team-grid">
+                  @for (member of sectorMembers(); track member.id) {
+                  <div class="team-card" [class.leader]="member.isLeader">
+                    <div class="team-avatar">
+                      <p-avatar
+                        [label]="member.memberName.charAt(0)"
+                        size="large"
+                        shape="circle"
+                      />
+                    </div>
+                    <div class="team-info">
+                      <h6 class="team-name">{{ member.memberName }}</h6>
+                      @if (member.isLeader) {
+                      <p-tag value="Leader" severity="success" />
+                      }
+                    </div>
+                  </div>
+                  }
+                </div>
+                } @else {
+                <p class="text-muted">No team members available.</p>
+                }
+              </div>
+            </div>
+            }
           </div>
         </div>
-
+        } @else {
         <!-- No Sector Selected -->
-        <div class="no-selection text-center py-5" *ngIf="!selectedSector">
+        <div class="no-selection text-center py-5">
           <i class="fas fa-sitemap fa-3x text-muted mb-3"></i>
           <h4>Select a Sector</h4>
-          <p class="text-muted">Choose a sector from the sidebar to view detailed information.</p>
+          <p class="text-muted">
+            Choose a sector from the sidebar to view detailed information.
+          </p>
         </div>
+        }
       </div>
     </div>
+    }
+
+    <!-- Empty State -->
+    @if (!loading() && !error() && !hasData()) {
+    <div class="text-center py-5">
+      <i class="fas fa-sitemap fa-3x text-muted mb-3"></i>
+      <h4>No Sectors Available</h4>
+      <p class="text-muted">Sectors will be added soon.</p>
+    </div>
+    }
   </div>
 </section>

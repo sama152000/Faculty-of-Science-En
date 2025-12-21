@@ -4,12 +4,15 @@
     <div class="row align-items-center py-2">
       <div class="col-md-8">
         <div class="contact-info d-flex flex-wrap gap-3">
+          @if (contact()?.phone) {
           <span class="text-primary-custom">
-            <i class="fa fa-phone me-2"></i>+20 88-1234567
+            <i class="fa fa-phone me-2"></i>{{ contact()?.phone }}
           </span>
+          } @if (contact()?.email) {
           <span class="text-primary-custom">
-            <i class="fa fa-envelope me-2"></i>info@science.luxor.edu.eg
+            <i class="fa fa-envelope me-2"></i>{{ contact()?.email }}
           </span>
+          }
         </div>
       </div>
       <div class="col-md-4">
@@ -41,16 +44,19 @@
   <div class="container">
     <div class="row align-items-center py-3">
       <!-- Logo -->
-      <div class="col-md-3">
+      <div class="col-9 col-lg-3">
         <a
           routerLink="/"
           class="logo d-flex align-items-center text-decoration-none"
         >
+          @if (logo()) {
           <img
-            src="/assets/sci-logo.png"
+            [src]="logo()"
             alt="Faculty of Science Logo"
             class="logo-img me-3"
           />
+          }
+
           <span class="site-title text-primary-custom fw-bold"
             >Faculty of Science</span
           >
@@ -58,7 +64,7 @@
       </div>
 
       <!-- Navigation -->
-      <div class="col-md-9">
+      <div class="col-3 col-lg-9">
         <nav class="navbar navbar-expand-lg">
           <!-- Mobile Toggle -->
           <button

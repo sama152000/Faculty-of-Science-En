@@ -6,12 +6,15 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable, catchError, retry, timeout } from 'rxjs';
-import { API_ENDPOINTS } from '../../../../constants/api-endpoints';
-import { ApiResponse, PaginatedResponse } from '../../../../models/api.models';
-import { PageRequest } from '../../model/real model/page-request.model';
-import { ErrorHandlerService } from '../../../../services/error-handler.service';
-import { environment } from '../../../../../../environments/environment';
-import { Center } from '../../model/centers.model';
+import { API_ENDPOINTS } from '../../../../../constants/api-endpoints';
+import {
+  ApiResponse,
+  PaginatedResponse,
+} from '../../../../../models/api.models';
+import { PageRequest } from '../../../model/real model/page-request.model';
+import { ErrorHandlerService } from '../../../../../services/error-handler.service';
+import { environment } from '../../../../../../../environments/environment';
+import { Center } from '../../../model/centers.model';
 
 @Injectable({
   providedIn: 'root',

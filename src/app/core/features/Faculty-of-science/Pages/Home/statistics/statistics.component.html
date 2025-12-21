@@ -1,21 +1,24 @@
-<section id="statistics" class="statistics-section  position-relative text-white text-center">
+<section
+  id="statistics"
+  class="statistics-section position-relative text-white text-center"
+>
   <!-- Background Image with Overlay -->
   <div class="stats-bg position-absolute w-100 h-100"></div>
   <div class="stats-overlay position-absolute w-100 h-100"></div>
 
   <div class="container-fluid position-relative">
     <div class="row">
-      <div class="col-lg-3 col-md-6 mb-4" *ngFor="let stat of statistics; let i = index">
+      @for(stat of stats ; track $index){
+      <div class="col-lg-3 col-md-6 mb-4">
         <div class="stat-item hover-lift">
-          <div class="stat-icon mb-3">
-            <i [class]="stat.icon"></i>
-          </div>
+          <i [class]="stat.iconPath" class="stat-icon mb-3"></i>
           <h3 class="stat-number display-4 fw-bold mb-2">
-            {{ displayValues[i] }}{{ stat.suffix || '' }}
+            {{ displayValues[$index] }}
           </h3>
-          <p class="stat-label lead mb-0">{{ stat.label }}</p>
+          <p class="stat-label lead mb-0">{{ stat.title }}</p>
         </div>
       </div>
+      }
     </div>
   </div>
 </section>

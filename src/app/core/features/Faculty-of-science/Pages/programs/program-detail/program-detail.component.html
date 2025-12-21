@@ -1,0 +1,235 @@
+@if (program(); as prog) {
+<div class="program-content">
+  <!-- Program Header -->
+  <div class="program-header card-custom mb-4">
+    <div class="header-content">
+      <div class="program-icon-large">
+        @if (getProgramImage()) {
+        <img
+          [src]="getProgramImage()"
+          [alt]="prog.pageTitle"
+          class="program-image"
+        />
+        } @else {
+        <i class="fas fa-graduation-cap"></i>
+        }
+      </div>
+      <div class="header-info">
+        <h1 class="program-title">{{ prog.pageTitle }}</h1>
+
+        <div class="program-stats">
+          @if (leader()) {
+          <div class="stat-item">
+            <i class="fas fa-user-tie"></i>
+            <span>{{ leader()?.memberName }}</span>
+          </div>
+          } @if (programMembers().length > 0) {
+          <div class="stat-item">
+            <i class="fas fa-users"></i>
+            <span>{{ programMembers().length }} Members</span>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section Navigation -->
+  <div class="section-nav card-custom mb-4">
+    <div class="nav-buttons">
+      <button
+        class="nav-btn"
+        [class.active]="isActiveSection('overview')"
+        (click)="setActiveSection('overview')"
+      >
+        <i class="fas fa-info-circle me-2"></i>
+        Overview
+      </button>
+      @if (hasGoals()) {
+      <button
+        class="nav-btn"
+        [class.active]="isActiveSection('goals')"
+        (click)="setActiveSection('goals')"
+      >
+        <i class="fas fa-bullseye me-2"></i>
+        Goals
+      </button>
+      } @if (hasDetails()) {
+      <button
+        class="nav-btn"
+        [class.active]="isActiveSection('details')"
+        (click)="setActiveSection('details')"
+      >
+        <i class="fas fa-list me-2"></i>
+        Details
+      </button>
+      } @if (hasMembers()) {
+      <button
+        class="nav-btn"
+        [class.active]="isActiveSection('team')"
+        (click)="setActiveSection('team')"
+      >
+        <i class="fas fa-users me-2"></i>
+        Team
+      </button>
+      }
+    </div>
+  </div>
+
+  <!-- Section Content -->
+  <div class="section-content card-custom">
+    <!-- Overview Section -->
+    @if (isActiveSection('overview')) {
+    <div class="content-section">
+      <div class="section-header">
+        <h3 class="section-title-left">
+          <i class="fas fa-info-circle text-primary-custom me-3"></i>
+          Program Overview
+        </h3>
+      </div>
+
+      <div class="content-body">
+        <p class="lead" [innerHTML]="prog.about"></p>
+
+        <div class="row mt-4">
+          @if (prog.mission) {
+          <div class="col-md-6 mb-3">
+            <div class="info-card">
+              <h5 class="text-primary-custom">
+                <i class="fas fa-bullhorn me-2"></i>
+                Mission
+              </h5>
+              <p [innerHTML]="prog.mission"></p>
+            </div>
+          </div>
+          } @if (prog.vision) {
+          <div class="col-md-6 mb-3">
+            <div class="info-card">
+              <h5 class="text-primary-custom">
+                <i class="fas fa-eye me-2"></i>
+                Vision
+              </h5>
+              <p [innerHTML]="prog.vision"></p>
+            </div>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+    }
+
+    <!-- Goals Section -->
+    @if (isActiveSection('goals')) {
+    <div class="content-section">
+      <div class="section-header">
+        <h3 class="section-title-left">
+          <i class="fas fa-bullseye text-primary-custom me-3"></i>
+          Program Goals
+        </h3>
+      </div>
+
+      <div class="content-body">
+        @if (prog.goals && prog.goals.length > 0) {
+        <div class="objectives-grid">
+          @for (goal of prog.goals; track goal.id; let i = $index) {
+          <div class="objective-item">
+            <div class="objective-number">{{ goal.index || i + 1 }}</div>
+            <div class="objective-content">
+              <p>{{ goal.goalName }}</p>
+            </div>
+          </div>
+          }
+        </div>
+        } @else {
+        <p class="text-muted">No goals available.</p>
+        }
+      </div>
+    </div>
+    }
+
+    <!-- Details Section -->
+    @if (isActiveSection('details')) {
+    <div class="content-section">
+      <div class="section-header">
+        <h3 class="section-title-left">
+          <i class="fas fa-list text-primary-custom me-3"></i>
+          Program Details
+        </h3>
+      </div>
+
+      <div class="content-body">
+        @if (detailsLoading()) {
+        <div class="text-center py-4">
+          <p-skeleton height="5rem" styleClass="mb-2" />
+          <p-skeleton height="5rem" />
+        </div>
+        } @else if (hasDetails()) {
+        <div class="details-list">
+          @for (detail of programDetails(); track detail.id) {
+          <div class="detail-item">
+            <div class="detail-header">
+              <h5 class="detail-title">{{ detail.title }}</h5>
+              @if (detail.programCategory) {
+              <p-tag [value]="detail.programCategory" severity="info" />
+              }
+            </div>
+            <div class="detail-content" [innerHTML]="detail.content"></div>
+          </div>
+          }
+        </div>
+        } @else {
+        <p class="text-muted">No details available.</p>
+        }
+      </div>
+    </div>
+    }
+
+    <!-- Team Section -->
+    @if (isActiveSection('team')) {
+    <div class="content-section">
+      <div class="section-header">
+        <h3 class="section-title-left">
+          <i class="fas fa-users text-primary-custom me-3"></i>
+          Program Team
+        </h3>
+      </div>
+
+      <div class="content-body">
+        @if (hasMembers()) {
+        <div class="team-grid">
+          @for (member of programMembers(); track member.id) {
+          <div class="team-card" [class.leader]="member.isLeader">
+            <div class="team-avatar">
+              <p-avatar
+                [label]="member.memberName.charAt(0)"
+                size="large"
+                shape="circle"
+              />
+            </div>
+            <div class="team-info">
+              <h6 class="team-name">{{ member.memberName }}</h6>
+              @if (member.isLeader) {
+              <p-tag value="Coordinator" severity="success" />
+              }
+            </div>
+          </div>
+          }
+        </div>
+        } @else {
+        <p class="text-muted">No team members available.</p>
+        }
+      </div>
+    </div>
+    }
+  </div>
+</div>
+} @else {
+<!-- No Program Selected -->
+<div class="no-selection text-center py-5">
+  <i class="fas fa-graduation-cap fa-3x text-muted mb-3"></i>
+  <h4>Select a Program</h4>
+  <p class="text-muted">
+    Choose a program from the sidebar to view detailed information.
+  </p>
+</div>
+}

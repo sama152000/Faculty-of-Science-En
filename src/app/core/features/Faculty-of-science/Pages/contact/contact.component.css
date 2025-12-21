@@ -4,10 +4,8 @@
   width: 100%;
   min-width: 100%;
   min-height: 100vh;
-  padding-left: 15rem;
-  padding-right: 15rem;
-  padding-bottom: 3rem;
-  padding-top: 3rem;
+  padding-inline: 3rem;
+  padding-block: 3rem;
 }
 
 /* Contact Sidebar */
@@ -98,20 +96,244 @@
 
 /* Quick Actions */
 .quick-actions {
-  border-top: 1px solid rgba(13, 79, 139, 0.1);
-  padding-top: 1rem;
+  padding-top: 0.5rem;
 }
 
-.actions-title {
+.quick-title {
   color: var(--dark-blue);
-  font-size: 1.1rem;
-  margin-bottom: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
 }
 
-.action-buttons {
+/* Section Buttons */
+.section-buttons {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.section-btn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid rgba(13, 79, 139, 0.2);
+  color: var(--text-dark);
+  padding: 0.8rem 1rem;
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  transition: var(--transition);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  text-align: left;
+}
+
+.section-btn:hover {
+  background: rgba(13, 79, 139, 0.1);
+  border-color: var(--primary-blue);
+  color: var(--primary-blue);
+}
+
+.section-btn.active {
+  background: var(--primary-blue);
+  border-color: var(--primary-blue);
+  color: var(--white);
+}
+
+/* Header Icons */
+.header-icon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: var(--white);
+  flex-shrink: 0;
+}
+
+/* Contact Header */
+.contact-header,
+.staff-header,
+.location-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Detail Cards */
+.detail-link {
+  color: var(--primary-blue);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.detail-link:hover {
+  color: var(--dark-blue);
+  text-decoration: underline;
+}
+
+.detail-text {
+  color: var(--text-dark);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Detail Icon Colors */
+.phone-icon {
+  background: linear-gradient(135deg, #4caf50, #2e7d32) !important;
+  color: white !important;
+}
+
+.email-icon {
+  background: linear-gradient(135deg, #2196f3, #1565c0) !important;
+  color: white !important;
+}
+
+.address-icon {
+  background: linear-gradient(135deg, #ff5722, #e64a19) !important;
+  color: white !important;
+}
+
+.fax-icon {
+  background: linear-gradient(135deg, #607d8b, #455a64) !important;
+  color: white !important;
+}
+
+.website-icon {
+  background: linear-gradient(135deg, #9c27b0, #7b1fa2) !important;
+  color: white !important;
+}
+
+/* Social Links */
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* President Section */
+.president-section {
+  margin-bottom: 2rem;
+}
+
+.section-subtitle {
+  color: var(--dark-blue);
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.president-card {
+  background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  color: white;
+  box-shadow: var(--shadow-medium);
+}
+
+.president-image {
+  flex-shrink: 0;
+}
+
+.president-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+}
+
+.president-avatar-fallback {
+  width: 150px !important;
+  height: 150px !important;
+  font-size: 3rem !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+}
+
+.president-info {
+  flex: 1;
+}
+
+.president-name {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.president-specialization {
+  opacity: 0.9;
+  margin-bottom: 0;
+}
+
+/* Staff Cards Improvements */
+.staff-card {
+  background: var(--white);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-light);
+  transition: var(--transition);
+  overflow: hidden;
+  height: 100%;
+  text-align: center;
+  padding: 1.5rem;
+}
+
+.staff-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-medium);
+}
+
+.staff-image {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.staff-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary-blue);
+}
+
+.staff-info {
+  padding: 0;
+}
+
+.staff-name {
+  color: var(--dark-blue);
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  font-size: 1rem;
+}
+
+.staff-position {
+  color: var(--primary-blue);
+  font-weight: 500;
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+}
+
+.staff-specialization {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-bottom: 0;
+}
+
+/* No Members */
+.no-members {
+  background: var(--white);
+  border-radius: var(--border-radius);
+  padding: 3rem;
 }
 
 .action-btn {
@@ -215,7 +437,11 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent-orange), var(--secondary-beige));
+  background: linear-gradient(
+    135deg,
+    var(--accent-orange),
+    var(--secondary-beige)
+  );
   color: var(--text-dark);
   display: flex;
   align-items: center;
@@ -286,12 +512,6 @@
 .staff-image {
   height: 200px;
   overflow: hidden;
-}
-
-.staff-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .staff-info {
@@ -433,7 +653,11 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent-orange), var(--secondary-beige));
+  background: linear-gradient(
+    135deg,
+    var(--accent-orange),
+    var(--secondary-beige)
+  );
   color: var(--text-dark);
   display: flex;
   align-items: center;
@@ -480,24 +704,24 @@
     padding-bottom: 1rem;
     padding-top: 1rem;
   }
-  
+
   .contact-sidebar {
     position: static;
     margin-bottom: 2rem;
   }
-  
+
   .header-content {
     flex-direction: column;
     text-align: center;
     gap: 1rem;
   }
-  
+
   .contact-title,
   .staff-title,
   .location-title {
     font-size: 1.7rem;
   }
-  
+
   .action-buttons {
     flex-direction: row;
     flex-wrap: wrap;
@@ -511,7 +735,7 @@
   .campus-info {
     padding: 0 1.5rem 1.5rem;
   }
-  
+
   .contact-header,
   .staff-header,
   .location-header,
@@ -519,22 +743,22 @@
   .staff-table-container {
     padding: 1.5rem;
   }
-  
+
   .contact-title,
   .staff-title,
   .location-title {
     font-size: 1.5rem;
   }
-  
+
   .detail-card {
     flex-direction: column;
     text-align: center;
   }
-  
+
   .staff-table {
     font-size: 0.9rem;
   }
-  
+
   .staff-name-cell {
     flex-direction: column;
     gap: 0.5rem;
@@ -549,14 +773,14 @@
   .staff-table-container {
     padding: 1rem;
   }
-  
+
   .contact-details,
   .key-staff-section,
   .all-staff-section,
   .campus-info {
     padding: 0 1rem 1rem;
   }
-  
+
   .contact-icon-large,
   .staff-icon-large,
   .location-icon-large {
@@ -564,23 +788,23 @@
     height: 60px;
     font-size: 1.5rem;
   }
-  
+
   .contact-title,
   .staff-title,
   .location-title {
     font-size: 1.3rem;
   }
-  
+
   .contact-subtitle,
   .staff-subtitle,
   .location-subtitle {
     font-size: 1rem;
   }
-  
+
   .action-buttons {
     flex-direction: column;
   }
-  
+
   .staff-table-container {
     overflow-x: auto;
   }

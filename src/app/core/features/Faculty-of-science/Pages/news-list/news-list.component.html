@@ -2,43 +2,103 @@
   <div class="container-fluid">
     <h2 class="section-title">Latest News & Articles</h2>
 
-    <!-- Category Sidebar and Content -->
+    <!-- ============================================ -->
+    <!-- LOADING STATE - Using PrimeNG Skeleton -->
+    <!-- ============================================ -->
+    @if (isLoading()) {
     <div class="row">
-      <!-- Sidebar -->
+      <!-- Sidebar Skeleton -->
+      <div class="col-lg-3 col-md-4 mb-4">
+        <p-card header="Categories">
+          @for (i of [1, 2, 3, 4]; track i) {
+          <p-skeleton height="3rem" styleClass="mb-2" />
+          }
+        </p-card>
+      </div>
+      <!-- Content Skeleton -->
+      <div class="col-lg-9 col-md-8">
+        <div class="blog-grid">
+          @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+          <div class="blog-card-skeleton">
+            <p-skeleton height="200px" styleClass="mb-3" />
+            <p-skeleton height="1.5rem" width="40%" styleClass="mb-2" />
+            <p-skeleton height="1.2rem" styleClass="mb-2" />
+            <p-skeleton height="1rem" width="80%" />
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+    }
+
+    <!-- ============================================ -->
+    <!-- ERROR STATE -->
+    <!-- ============================================ -->
+    @if (hasError()) {
+    <div class="row justify-content-center">
+      <div class="col-md-6 text-center py-5">
+        <i class="pi pi-exclamation-triangle text-6xl text-red-500 mb-4"></i>
+        <h4 class="mb-3">Failed to Load News</h4>
+        <p class="text-muted mb-4">{{ error() }}</p>
+        <p-button
+          label="Try Again"
+          icon="pi pi-refresh"
+          (onClick)="retry()"
+          severity="danger"
+        />
+      </div>
+    </div>
+    }
+
+    <!-- ============================================ -->
+    <!-- SUCCESS STATE -->
+    <!-- ============================================ -->
+    @if (isSuccess()) {
+    <div class="row">
+      <!-- Sidebar - Categories -->
       <div class="col-lg-3 col-md-4 mb-4">
         <div class="category-sidebar card-custom">
-          <h4 class="sidebar-title">Categories</h4>
+          <h4 class="sidebar-title">
+            <i class="pi pi-folder mr-2"></i>
+            Categories
+          </h4>
           <ul class="category-list">
+            <!-- All Items -->
             <li>
-              <button 
+              <button
+                type="button"
                 class="category-btn"
-                [class.active]="selectedType === 'all'"
-                (click)="onTypeChange('all')">
-                <i class="fas fa-list me-2"></i>
+                [class.active]="isCategorySelected('all')"
+                (click)="onCategoryChange('all')"
+              >
+                <i class="pi pi-list mr-2"></i>
                 All Items
-                <span class="count">({{ allNews.length }})</span>
+                <p-tag
+                  [value]="totalNewsCount().toString()"
+                  [rounded]="true"
+                  styleClass="ml-auto"
+                />
               </button>
             </li>
+            <!-- Category Items -->
+            @for (category of categories(); track category.id) {
             <li>
-              <button 
+              <button
+                type="button"
                 class="category-btn"
-                [class.active]="selectedType === 'news'"
-                (click)="onTypeChange('news')">
-                <i class="fas fa-newspaper me-2"></i>
-                News
-                <span class="count">({{ newsService.getByType('news').length }})</span>
+                [class.active]="isCategorySelected(category.id)"
+                (click)="onCategoryChange(category.id)"
+              >
+                <i class="pi pi-folder mr-2"></i>
+                {{ category.name }}
+                <p-tag
+                  [value]="getCategoryCount(category.id).toString()"
+                  [rounded]="true"
+                  styleClass="ml-auto"
+                />
               </button>
             </li>
-            <li>
-              <button 
-                class="category-btn"
-                [class.active]="selectedType === 'article'"
-                (click)="onTypeChange('article')">
-                <i class="fas fa-file-alt me-2"></i>
-                Articles
-                <span class="count">({{ newsService.getByType('article').length }})</span>
-              </button>
-            </li>
+            }
           </ul>
         </div>
       </div>
@@ -46,92 +106,130 @@
       <!-- Main Content -->
       <div class="col-lg-9 col-md-8">
         <!-- Results Header -->
-        <div class="results-header mb-4">
-          <h3 class="results-title">
-            <span *ngIf="selectedType === 'all'">All News & Articles</span>
-            <span *ngIf="selectedType === 'news'">Latest News</span>
-            <span *ngIf="selectedType === 'article'">Academic Articles</span>
-          </h3>
-          <p class="results-count">Showing {{ filteredNews.length }} items</p>
-        </div>
+        <header class="results-header mb-4">
+          <h3 class="results-title">{{ selectedCategoryName() }}</h3>
+          <p class="results-count">
+            Showing {{ paginatedNews().length }} of {{ totalRecords() }} items
+          </p>
+        </header>
 
         <!-- News Grid -->
-        <div class="blog-grid" *ngIf="getPaginatedNews().length > 0">
-          <article class="blog-card hover-lift" *ngFor="let item of getPaginatedNews()">
+        @if (hasNews()) {
+        <div class="blog-grid">
+          @for (item of paginatedNews(); track item.id) {
+          <article class="blog-card hover-lift">
+            <!-- Image Container -->
             <div class="blog-image-container">
-              <img [src]="item.image" [alt]="item.title" class="blog-img">
-              <div class="blog-type-badge" [class]="item.type">
-                <i class="fas" [class.fa-newspaper]="item.type === 'news'" [class.fa-file-alt]="item.type === 'article'"></i>
-                {{ item.type | titlecase }}
+              <img
+                [src]="getFeaturedImage(item)"
+                [alt]="item.title"
+                class="blog-img"
+                loading="lazy"
+              />
+              <!-- Categories Badges -->
+              @if (hasCategories(item)) {
+              <div class="blog-categories-badges">
+                @for (cat of getItemCategories(item); track cat.id) {
+
+                <p-tag
+                  [value]="cat.name"
+                  severity="info"
+                  icon="pi pi-bookmark"
+                  styleClass="mr-1 mb-1"
+                />
+                }
               </div>
+              }
             </div>
-            
+
+            <!-- Content -->
             <div class="blog-content">
+              <!-- Meta -->
               <div class="blog-meta">
-                <span class="blog-date">
-                  <i class="fas fa-calendar-alt me-1"></i>
-                  {{ formatDate(item.date) }}
-                </span>
-                <span class="blog-author" *ngIf="item.author">
-                  <i class="fas fa-user me-1"></i>
-                  {{ item.author }}
-                </span>
+                <p-tag
+                  [value]="formatDate(item.createdDate)"
+                  icon="pi pi-calendar"
+                  severity="secondary"
+                  styleClass="mr-2"
+                />
+                @if (item.status) {
+                <p-tag
+                  [value]="item.status"
+                  [severity]="getStatusSeverity(item.status)"
+                />
+                }
               </div>
-              
+
+              <!-- Title -->
               <h3 class="blog-title">
                 <a [routerLink]="['/news', item.id]">{{ item.title }}</a>
               </h3>
-              
-              <p class="blog-excerpt">{{ item.excerpt }}</p>
-              
-              <div class="blog-tags" *ngIf="item.tags && item.tags.length > 0">
-                <span class="tag" *ngFor="let tag of item.tags.slice(0, 3)">
-                  {{ tag }}
-                </span>
+
+              <!-- Excerpt -->
+              <p class="blog-excerpt">{{ getExcerpt(item.content) }}</p>
+
+              <!-- Tags -->
+              @if (hasTags(item)) {
+              <div class="blog-tags">
+                @for (tag of getVisibleTags(item); track tag.id) {
+                <p-tag
+                  [value]="tag.name"
+                  severity="info"
+                  [rounded]="true"
+                  styleClass="mr-1 mb-1"
+                />
+                }
               </div>
-              
+              }
+
+              <!-- Footer -->
               <div class="blog-footer">
-                <a [routerLink]="['/news', item.id]" class="read-more btn-outline-custom">
-                  Read More
-                  <i class="fas fa-arrow-right ms-1"></i>
-                </a>
+                <p-button
+                  label="Read More"
+                  icon="pi pi-arrow-right"
+                  iconPos="right"
+                  [outlined]="true"
+                  [routerLink]="['/news', item.id]"
+                  styleClass="p-button-sm"
+                />
               </div>
             </div>
           </article>
+          }
         </div>
 
+        <!-- Pagination (PrimeNG Paginator) -->
+        @if (showPagination()) {
+        <div class="pagination-wrapper mt-4">
+          <p-paginator
+            [first]="first()"
+            [rows]="rows()"
+            [totalRecords]="totalRecords()"
+            [showCurrentPageReport]="true"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} articles"
+            (onPageChange)="onPageChange($event)"
+            styleClass="justify-content-center"
+          />
+        </div>
+        } } @else {
         <!-- No Results -->
-        <div class="no-results text-center py-5" *ngIf="getPaginatedNews().length === 0">
-          <i class="fas fa-search fa-3x text-muted mb-3"></i>
-          <h4>No items found</h4>
-          <p class="text-muted">Try selecting a different category or check back later for new content.</p>
+        <div class="no-results text-center py-5">
+          <i class="pi pi-search text-6xl text-gray-400 mb-4"></i>
+          <h4 class="mb-3">No items found</h4>
+          <p class="text-muted mb-4">
+            Try selecting a different category or check back later for new
+            content.
+          </p>
+          <p-button
+            label="View All News"
+            icon="pi pi-list"
+            (onClick)="onCategoryChange('all')"
+            [outlined]="true"
+          />
         </div>
-
-        <!-- Pagination -->
-        <div class="pagination-wrapper" *ngIf="totalPages > 1">
-          <nav aria-label="News pagination">
-            <ul class="pagination justify-content-center">
-              <li class="page-item" [class.disabled]="currentPage === 1">
-                <button class="page-link" (click)="onPageChange(currentPage - 1)" [disabled]="currentPage === 1">
-                  <i class="fas fa-chevron-left"></i>
-                  Previous
-                </button>
-              </li>
-              
-              <li class="page-item" *ngFor="let page of getPageNumbers()" [class.active]="page === currentPage">
-                <button class="page-link" (click)="onPageChange(page)">{{ page }}</button>
-              </li>
-              
-              <li class="page-item" [class.disabled]="currentPage === totalPages">
-                <button class="page-link" (click)="onPageChange(currentPage + 1)" [disabled]="currentPage === totalPages">
-                  Next
-                  <i class="fas fa-chevron-right"></i>
-                </button>
-              </li>
-            </ul>
-          </nav>
-        </div>
+        }
       </div>
     </div>
+    }
   </div>
 </section>

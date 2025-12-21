@@ -4,10 +4,8 @@
   width: 100%;
   min-width: 100%;
   min-height: 100vh;
-  padding-left: 15rem;
-  padding-right: 15rem;
-  padding-bottom: 3rem;
-  padding-top: 3rem;
+  padding-inline: 2rem;
+  padding-block: 3rem;
 }
 
 /* Tab Navigation */
@@ -70,6 +68,27 @@
   position: sticky;
   top: 2rem;
   height: fit-content;
+  max-height: calc(100vh - 4rem);
+  overflow-y: scroll;
+}
+
+/* Custom scrollbar */
+.items-sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.items-sidebar::-webkit-scrollbar-track {
+  background: rgba(13, 79, 139, 0.05);
+  border-radius: 3px;
+}
+
+.items-sidebar::-webkit-scrollbar-thumb {
+  background: var(--primary-blue);
+  border-radius: 3px;
+}
+
+.items-sidebar::-webkit-scrollbar-thumb:hover {
+  background: var(--dark-blue);
 }
 
 .sidebar-title {
@@ -347,7 +366,11 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent-orange), var(--secondary-beige));
+  background: linear-gradient(
+    135deg,
+    var(--accent-orange),
+    var(--secondary-beige)
+  );
   color: var(--text-dark);
   display: flex;
   align-items: center;
@@ -434,7 +457,11 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent-orange), var(--secondary-beige));
+  background: linear-gradient(
+    135deg,
+    var(--accent-orange),
+    var(--secondary-beige)
+  );
   color: var(--text-dark);
   display: flex;
   align-items: center;
@@ -489,30 +516,30 @@
     padding-bottom: 1rem;
     padding-top: 1rem;
   }
-  
+
   .items-sidebar {
     position: static;
     margin-bottom: 2rem;
   }
-  
+
   .header-content {
     flex-direction: column;
     text-align: center;
     gap: 1rem;
   }
-  
+
   .item-title {
     font-size: 1.7rem;
   }
-  
+
   .item-stats {
     justify-content: center;
   }
-  
+
   .nav-buttons {
     justify-content: center;
   }
-  
+
   .tab-buttons {
     flex-direction: column;
     align-items: center;
@@ -524,28 +551,28 @@
   .section-content {
     padding: 1.5rem;
   }
-  
+
   .item-title {
     font-size: 1.5rem;
   }
-  
+
   .nav-buttons {
     flex-direction: column;
   }
-  
+
   .nav-btn {
     justify-content: center;
   }
-  
+
   .services-grid {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
-  
+
   .item-stats {
     flex-direction: column;
     gap: 1rem;
   }
-  
+
   .tab-btn {
     padding: 0.8rem 1.5rem;
     font-size: 1rem;
@@ -557,25 +584,25 @@
   .section-content {
     padding: 1rem;
   }
-  
+
   .item-icon-large {
     width: 60px;
     height: 60px;
     font-size: 1.5rem;
   }
-  
+
   .item-title {
     font-size: 1.3rem;
   }
-  
+
   .item-subtitle {
     font-size: 1rem;
   }
-  
+
   .services-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .objective-item,
   .facility-item {
     flex-direction: column;

@@ -1,23 +1,33 @@
+/**
+ * Contact Model
+ * Matches the API response structure for contact information
+ */
+
+/**
+ * Contact Info Interface - matches API response
+ */
 export interface ContactInfo {
   id: string;
-  title: string;
-  description: string;
-  phone: string[];
-  email: string[];
   address: string;
-  officeHours: string;
-  mapUrl?: string;
+  phone: string;
+  email: string;
+  facebook: string;
+  twitter: string;
+  instagram: string;
+  linkedIn: string;
+  youTube: string;
+  whatsApp: string;
+  mapLocation: string;
+  webSite: string;
+  fax: string;
 }
 
-export interface StaffContact {
-  id: string;
-  name: string;
-  position: string;
-  department: string;
-  email: string;
-  phone?: string;
-  officeLocation?: string;
-  officeHours?: string;
-  specialization?: string;
-  image?: string;
+/**
+ * Social Media Link interface for component use
+ */
+export interface SocialLink {
+  platform: string;
+  url: string;
+  icon: string;
+  color: string;
 }

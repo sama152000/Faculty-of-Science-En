@@ -1,14 +1,11 @@
 .site-footer {
   margin-top: auto;
   background-color: var(--accent-orange);
-   
 }
 
 .container-fluid {
-   padding-left: 17rem ;
-  padding-right: 17rem;
-  padding-bottom: 3rem;
-padding-top: 3rem;
+  padding-inline: 7rem;
+  padding-block: 3rem;
 }
 .footer-title {
   font-weight: 600;
@@ -16,7 +13,7 @@ padding-top: 3rem;
 }
 
 .footer-title::after {
-  content: '';
+  content: "";
   position: absolute;
   left: 0;
   bottom: -5px;
@@ -85,13 +82,13 @@ padding-top: 3rem;
   .footer-title::after {
     width: 30px;
   }
-  
+
   .social-link {
     width: 35px;
     height: 35px;
     font-size: 0.9rem;
   }
-  
+
   /* .scroll-to-top {
     width: 45px;
     height: 45px;
@@ -105,21 +102,20 @@ padding-top: 3rem;
     text-align: center;
     margin-bottom: 2rem;
   }
-  
+
   .footer-title::after {
     left: 50%;
     transform: translateX(-50%);
   }
-  
+
   .social-icons {
     justify-content: center;
   }
 
-  
-.container-fluid {
-   padding-left: 1rem ;
-  padding-right: 1rem;
-  padding-bottom: 1rem;
-padding-top: 5rem;
-}
+  .container-fluid {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 1rem;
+    padding-top: 5rem;
+  }
 }

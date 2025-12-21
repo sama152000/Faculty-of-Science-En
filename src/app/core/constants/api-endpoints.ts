@@ -136,7 +136,7 @@ export const API_ENDPOINTS = {
   // Programs
   PROGRAM: {
     BASE: '/program',
-    GET_ALL: '/programs/getall',
+    GET_ALL: '/program/getall',
     GET_PAGED: '/program/getpaged',
     GET_BY_ID: (id: string) => `/program/get/${id}`,
   },
@@ -203,5 +203,101 @@ export const API_ENDPOINTS = {
     GET_ALL: '/sectorunits/getall',
     GET_PAGED: '/sectorunits/getpaged',
     GET_BY_ID: (id: string) => `/sectorunits/get/${id}`,
+  },
+
+  // Departments
+  DEPARTMENTS: {
+    BASE: '/departments',
+    GET_ALL: '/departments/getall',
+    GET_PAGED: '/departments/getpaged',
+    GET_BY_ID: (id: string) => `/departments/get/${id}`,
+  },
+
+  // Department Details
+  DEPARTMENTDETAILS: {
+    BASE: '/departmentdetails',
+    GET_ALL: '/departmentdetails/getall',
+    GET_PAGED: '/departmentdetails/getpaged',
+    GET_BY_ID: (id: string) => `/departmentdetails/get/${id}`,
+  },
+
+  // Department Members
+  DEPARTMENTMEMBERS: {
+    BASE: '/departmentmembers',
+    GET_ALL: '/departmentmembers/getall',
+    GET_PAGED: '/departmentmembers/getpaged',
+    GET_BY_ID: (id: string) => `/departmentmembers/get/${id}`,
+  },
+
+  // Department Programs
+  DEPARTMENTPROGRAMS: {
+    BASE: '/departmentprograms',
+    GET_ALL: '/departmentprograms/getall',
+    GET_PAGED: '/departmentprograms/getpaged',
+    GET_BY_ID: (id: string) => `/departmentprograms/get/${id}`,
+  },
+
+  // Department Services
+  DEPARTMENTSERVICES: {
+    BASE: '/departmentservices',
+    GET_ALL: '/departmentservices/getall',
+    GET_PAGED: '/departmentservices/getpaged',
+    GET_BY_ID: (id: string) => `/departmentservices/get/${id}`,
+  },
+
+  // Members
+  MEMBERS: {
+    BASE: '/member',
+    GET_ALL: '/member/getall',
+    GET_PAGED: '/member/getpaged',
+    GET_BY_ID: (id: string) => `/member/get/${id}`,
+  },
+
+  // Services
+  SERVICES: {
+    BASE: '/services',
+    GET_ALL: '/services/getall',
+    GET_PAGED: '/services/getpaged',
+    GET_BY_ID: (id: string) => `/services/get/${id}`,
+  },
+
+  // Center Details
+  CENTERDETAIL: {
+    BASE: '/centerdetail',
+    GET_ALL: '/centerdetail/getall',
+    GET_PAGED: '/centerdetail/getpaged',
+    GET_BY_ID: (id: string) => `/centerdetail/get/${id}`,
+  },
+
+  // Center Members
+  CENTERMEMBER: {
+    BASE: '/centermember',
+    GET_ALL: '/centermember/getall',
+    GET_PAGED: '/centermember/getpaged',
+    GET_BY_ID: (id: string) => `/centermember/get/${id}`,
+  },
+
+  // Units
+  UNITS: {
+    BASE: '/unit',
+    GET_ALL: '/unit/getall',
+    GET_PAGED: '/unit/getpaged',
+    GET_BY_ID: (id: string) => `/unit/get/${id}`,
+  },
+
+  // Unit Details
+  UNITDETAIL: {
+    BASE: '/unitdetail',
+    GET_ALL: '/unitdetail/getall',
+    GET_PAGED: '/unitdetail/getpaged',
+    GET_BY_ID: (id: string) => `/unitdetail/get/${id}`,
+  },
+
+  // Unit Members
+  UNITMEMBER: {
+    BASE: '/unitmember',
+    GET_ALL: '/unitmember/getall',
+    GET_PAGED: '/unitmember/getpaged',
+    GET_BY_ID: (id: string) => `/unitmember/get/${id}`,
   },
 } as const;

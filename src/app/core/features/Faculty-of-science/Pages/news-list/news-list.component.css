@@ -3,10 +3,8 @@
   background: var(--light-beige);
   min-height: 100vh;
   min-width: 100%;
-    padding-left: 15rem ;
-  padding-right: 15rem;
-  padding-bottom: 3rem;
-padding-top: 3rem;
+  padding-inline: 2rem;
+  padding-block: 3rem;
 }
 
 /* Sidebar Styles */
@@ -152,6 +150,17 @@ padding-top: 3rem;
   color: var(--white);
 }
 
+/* Categories Badges Container */
+.blog-categories-badges {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  right: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
 .blog-type-badge.article {
   background: var(--accent-orange);
   color: var(--text-dark);
@@ -274,47 +283,57 @@ padding-top: 3rem;
   border-color: rgba(13, 79, 139, 0.1);
 }
 
+/* Shimmer Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 992px) {
   .category-sidebar {
     position: static;
     margin-bottom: 2rem;
   }
-  
+
   .results-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
   }
-  
+
   .blog-grid {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1.5rem;
   }
   .blog-grid-section {
-  background: var(--light-beige);
-  min-height: 100vh;
-    padding-left: 1rem ;
-  padding-right: 1rem;
-  padding-bottom: 3rem;
-padding-top: 3rem;
-}
+    background: var(--light-beige);
+    min-height: 100vh;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 3rem;
+    padding-top: 3rem;
+  }
 }
 
 @media (max-width: 768px) {
   .blog-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .blog-meta {
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   .category-btn {
     padding: 0.8rem;
   }
-  
+
   .pagination .page-link {
     padding: 0.5rem 0.8rem;
     font-size: 0.9rem;
@@ -325,15 +344,15 @@ padding-top: 3rem;
   .blog-content {
     padding: 1rem;
   }
-  
+
   .blog-title a {
     font-size: 1.1rem;
   }
-  
+
   .blog-tags {
     gap: 0.3rem;
   }
-  
+
   .tag {
     font-size: 0.7rem;
     padding: 0.2rem 0.6rem;

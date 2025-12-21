@@ -1,29 +1,109 @@
 <section id="dean" class="dean-section bg-beige-custom section-padding">
   <div class="container-fluid">
+    <!-- Loading State -->
+    @if (loading) {
+    <div class="row align-items-center">
+      <div class="col-lg-5 mb-4 mb-lg-0">
+        <div class="dean-image text-center">
+          <div
+            class="skeleton-image rounded shadow-lg"
+            style="
+              width: 400px;
+              height: 400px;
+              background: linear-gradient(
+                90deg,
+                #f0f0f0 25%,
+                #e0e0e0 50%,
+                #f0f0f0 75%
+              );
+              animation: shimmer 1.5s infinite;
+            "
+          ></div>
+        </div>
+      </div>
+      <div class="col-lg-7">
+        <div class="dean-content">
+          <div
+            class="skeleton-title mb-4"
+            style="
+              height: 40px;
+              width: 200px;
+              background: linear-gradient(
+                90deg,
+                #f0f0f0 25%,
+                #e0e0e0 50%,
+                #f0f0f0 75%
+              );
+              animation: shimmer 1.5s infinite;
+              border-radius: 4px;
+            "
+          ></div>
+          <div
+            class="skeleton-text mb-3"
+            style="
+              height: 100px;
+              background: linear-gradient(
+                90deg,
+                #f0f0f0 25%,
+                #e0e0e0 50%,
+                #f0f0f0 75%
+              );
+              animation: shimmer 1.5s infinite;
+              border-radius: 4px;
+            "
+          ></div>
+          <div
+            class="skeleton-name"
+            style="
+              height: 24px;
+              width: 250px;
+              background: linear-gradient(
+                90deg,
+                #f0f0f0 25%,
+                #e0e0e0 50%,
+                #f0f0f0 75%
+              );
+              animation: shimmer 1.5s infinite;
+              border-radius: 4px;
+            "
+          ></div>
+        </div>
+      </div>
+    </div>
+    }
+
+    <!-- Content State -->
+    @if (!loading) {
     <div class="row align-items-center">
       <!-- Dean Image -->
       <div class="col-lg-5 mb-4 mb-lg-0">
         <div class="dean-image text-center">
-          <img [src]="deanInfo.image" 
-               [alt]="deanInfo.name"
-               class="img-fluid rounded shadow-lg hover-scale"
-               style="max-width: 400px;">
+          <img
+            [src]="deanImage"
+            [alt]="deanName"
+            class="img-fluid rounded shadow-lg hover-scale"
+            style="max-width: 400px"
+            (error)="$event.target.src = './assets/deanp.jpg'"
+          />
         </div>
       </div>
 
       <!-- Dean Content -->
       <div class="col-lg-7">
         <div class="dean-content">
-          <h2 class="section-title section-title-left text-dark-blue mb-4">Dean's Word</h2>
-          
-          <p class="lead text-primary-custom mb-4">{{ deanInfo.message }}</p>
-          
+          <h2 class="section-title section-title-left text-dark-blue mb-4">
+            Dean's Word
+          </h2>
+
+          <p class="lead text-primary-custom mb-4">{{ deanMessage }}</p>
+
           <div class="dean-signature mt-4">
-            <h4 class="text-dark-blue mb-1">{{ deanInfo.name }}</h4>
-            <p class="text-muted mb-0">{{ deanInfo.title }}</p>
+            <h4 class="text-dark-blue mb-1">{{ deanName }}</h4>
+            <p class="text-muted mb-0">{{ deanTitle }}</p>
           </div>
         </div>
       </div>
     </div>
+    }
   </div>
 </section>

@@ -1,17 +1,17 @@
+<app-loading></app-loading>
 <main>
-    <app-header></app-header>
+  <app-header></app-header>
   <router-outlet></router-outlet>
   <app-quick-nav-sidebar></app-quick-nav-sidebar>
 </main>
-<div 
-  *ngIf="showScrollButton" 
-  (click)="scrollToTop()" 
-  class="scroll-to-top-btn show">
-  
+<div
+  *ngIf="showScrollButton"
+  (click)="scrollToTop()"
+  class="scroll-to-top-btn show"
+>
   <div class="scroll-arrow">
     <i class="pi pi-chevron-up"></i>
   </div>
   <p class="scroll-text">Top</p>
 </div>
 <app-footer></app-footer>
-

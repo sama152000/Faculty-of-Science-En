@@ -30,6 +30,13 @@ export interface ProgramAttachment {
   programId: string;
 }
 
+export interface ProgramGoal {
+  id: string;
+  index: number;
+  goalName: string;
+  programId: string;
+}
+
 export interface Program {
   id: string;
   pageId: string;
@@ -38,7 +45,7 @@ export interface Program {
   about: string;
   mission: string;
   vision: string;
-  goals: string[];
+  goals: ProgramGoal[];
   programAttachments: ProgramAttachment[];
 }
 
