@@ -5,7 +5,7 @@
     <!-- Loading State -->
     @if (isLoading()) {
     <div class="row">
-      <div class="col-lg-3 col-md-4 mb-4">
+      <div class="mb-4 col-lg-3 col-md-4">
         <div class="departments-sidebar card-custom">
           <h4 class="sidebar-title">
             <i class="fas fa-building me-2"></i>
@@ -91,8 +91,8 @@
     <!-- Error State -->
     @if (hasError()) {
     <div class="row justify-content-center">
-      <div class="col-md-6 text-center py-5">
-        <i class="fas fa-exclamation-triangle fa-3x text-danger mb-3"></i>
+      <div class="text-center py-5 col-md-6">
+        <i class="text-danger mb-3 fas fa-exclamation-triangle fa-3x"></i>
         <h4>Failed to Load Departments</h4>
         <p class="text-muted">{{ error() }}</p>
         <button class="btn btn-primary" (click)="retry()">
@@ -107,7 +107,7 @@
     @if (isSuccess()) {
     <div class="row">
       <!-- Departments Sidebar -->
-      <div class="col-lg-3 col-md-4 mb-4">
+      <div class="mb-4 col-lg-3 col-md-4">
         <div class="departments-sidebar card-custom">
           <h4 class="sidebar-title">
             <i class="fas fa-building me-2"></i>
@@ -141,7 +141,7 @@
         @if (selectedDepartment(); as dept) {
         <div class="department-content">
           <!-- Department Header -->
-          <div class="department-header card-custom mb-4">
+          <div class="mb-4 department-header card-custom">
             <div class="header-content">
               <div class="dept-icon-large">
                 @if (featuredImage()) {
@@ -187,22 +187,10 @@
                 </div>
               </div>
             </div>
-
-            <!-- About Section in Header -->
-            @if (dept.about) {
-            <div
-              class="header-about mt-4 pt-4"
-              style="border-top: 1px solid rgba(13, 79, 139, 0.1)"
-            >
-              <p class="mb-0" style="color: var(--text-dark); line-height: 1.7">
-                {{ dept.about }}
-              </p>
-            </div>
-            }
           </div>
 
           <!-- Section Navigation -->
-          <div class="section-nav card-custom mb-4">
+          <div class="mb-4 section-nav card-custom">
             <div class="nav-buttons">
               <button
                 class="nav-btn"
@@ -262,16 +250,26 @@
             <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
-                  <i class="fas fa-info-circle text-primary-custom me-3"></i>
+                  <i class="text-primary-custom fas fa-info-circle me-3"></i>
                   Department Overview
                 </h3>
               </div>
 
               <div class="content-body">
-                <p class="lead">{{ dept.about }}</p>
-
+                <div
+                  class="lead"
+                  [innerHTML]="
+                    dept.about
+                      | cleanHtml
+                        : {
+                            stripStyles: true,
+                            stripClasses: false,
+                            preserveLineBreaks: true
+                          }
+                  "
+                ></div>
                 @if (departmentHead()) {
-                <div class="row mt-4">
+                <div class="mt-4 row">
                   <div class="col-md-6">
                     <div class="info-card">
                       <h5 class="text-primary-custom">
@@ -288,12 +286,22 @@
 
                 <!-- Department Details -->
                 @if (departmentDetails().length) {
-                <div class="row mt-4">
+                <div class="mt-4 row">
                   @for (detail of departmentDetails(); track detail.id) {
-                  <div class="col-md-6 mb-3">
+                  <div class="mb-3 col-md-6">
                     <div class="info-card">
                       <h5 class="text-primary-custom">{{ detail.title }}</h5>
-                      <p>{{ detail.content }}</p>
+                      <div
+                        [innerHTML]="
+                          detail.content
+                            | cleanHtml
+                              : {
+                                  stripStyles: true,
+                                  stripClasses: false,
+                                  preserveLineBreaks: true
+                                }
+                        "
+                      ></div>
                     </div>
                   </div>
                   }
@@ -308,29 +316,49 @@
             <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
-                  <i class="fas fa-eye text-primary-custom me-3"></i>
+                  <i class="text-primary-custom fas fa-eye me-3"></i>
                   Vision & Mission
                 </h3>
               </div>
 
               <div class="content-body">
                 <div class="row">
-                  <div class="col-md-6 mb-4">
+                  <div class="mb-4 col-md-6">
                     <div class="vision-card">
                       <div class="vision-icon">
                         <i class="fas fa-lightbulb"></i>
                       </div>
                       <h4>Our Vision</h4>
-                      <p>{{ dept.vision }}</p>
+                      <div
+                        [innerHTML]="
+                          dept.vision
+                            | cleanHtml
+                              : {
+                                  stripStyles: true,
+                                  stripClasses: false,
+                                  preserveLineBreaks: true
+                                }
+                        "
+                      ></div>
                     </div>
                   </div>
-                  <div class="col-md-6 mb-4">
+                  <div class="mb-4 col-md-6">
                     <div class="mission-card">
                       <div class="mission-icon">
                         <i class="fas fa-rocket"></i>
                       </div>
                       <h4>Our Mission</h4>
-                      <p>{{ dept.mission }}</p>
+                      <div
+                        [innerHTML]="
+                          dept.mission
+                            | cleanHtml
+                              : {
+                                  stripStyles: true,
+                                  stripClasses: false,
+                                  preserveLineBreaks: true
+                                }
+                        "
+                      ></div>
                     </div>
                   </div>
                 </div>
@@ -339,20 +367,22 @@
             }
 
             <!-- Objectives Section -->
+            @if (dept.goals.length > 0 ) {
+            <!--  -->
             @if (isActiveSection('objectives')) {
             <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
-                  <i class="fas fa-bullseye text-primary-custom me-3"></i>
+                  <i class="text-primary-custom fas fa-bullseye me-3"></i>
                   Department Objectives
                 </h3>
               </div>
 
               <div class="content-body">
                 <div class="objectives-grid">
-                  @for (goal of dept.goals; track goal.id; let i = $index) {
+                  @for (goal of dept.goals; track goal.id) {
                   <div class="objective-item">
-                    <div class="objective-number">{{ i + 1 }}</div>
+                    <div class="objective-number">{{ $index + 1 }}</div>
                     <div class="objective-content">
                       <p>{{ goal.goalName }}</p>
                     </div>
@@ -362,13 +392,15 @@
               </div>
             </div>
             }
+            <!--  -->
+            }
 
             <!-- Programs Section -->
             @if (isActiveSection('programs')) {
             <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
-                  <i class="fas fa-book text-primary-custom me-3"></i>
+                  <i class="text-primary-custom fas fa-book me-3"></i>
                   Academic Programs
                 </h3>
               </div>
@@ -387,7 +419,7 @@
                 </div>
                 } @else {
                 <div class="text-center py-4">
-                  <i class="fas fa-book fa-2x text-muted mb-3"></i>
+                  <i class="text-muted mb-3 fas fa-book fa-2x"></i>
                   <p class="text-muted">
                     No programs available for this department.
                   </p>
@@ -402,7 +434,7 @@
             <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
-                  <i class="fas fa-users text-primary-custom me-3"></i>
+                  <i class="text-primary-custom fas fa-users me-3"></i>
                   Department Members
                 </h3>
               </div>
@@ -419,7 +451,7 @@
                       <h6 class="research-title">{{ member.memberName }}</h6>
                       <p class="research-desc">
                         @if (member.isLeader) {
-                        <span class="badge bg-primary me-2"
+                        <span class="bg-primary badge me-2"
                           >Head of Department</span
                         >
                         } Department Member
@@ -430,7 +462,7 @@
                 </div>
                 } @else {
                 <div class="text-center py-4">
-                  <i class="fas fa-users fa-2x text-muted mb-3"></i>
+                  <i class="text-muted mb-3 fas fa-users fa-2x"></i>
                   <p class="text-muted">
                     No members available for this department.
                   </p>
@@ -445,7 +477,7 @@
             <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
-                  <i class="fas fa-cogs text-primary-custom me-3"></i>
+                  <i class="text-primary-custom fas fa-cogs me-3"></i>
                   Department Services
                 </h3>
               </div>
@@ -467,23 +499,23 @@
                       <p class="research-desc">{{ service.details }}</p>
                       <div class="mt-2">
                         @if (service.duration) {
-                        <span class="badge bg-secondary me-2">
+                        <span class="bg-secondary badge me-2">
                           <i class="fas fa-clock me-1"></i
                           >{{ service.duration }}
                         </span>
                         } @if (service.fees) {
-                        <span class="badge bg-info me-2">
+                        <span class="bg-info badge me-2">
                           <i class="fas fa-money-bill me-1"></i
                           >{{ service.fees }} EGP
                         </span>
                         } @if (service.isOnline) {
-                        <span class="badge bg-success">
+                        <span class="bg-success badge">
                           <i class="fas fa-wifi me-1"></i>Available Online
                         </span>
                         }
                       </div>
                       @if (service.contactPerson) {
-                      <p class="mt-2 mb-0 small text-muted">
+                      <p class="mt-2 text-muted mb-0 small">
                         <i class="fas fa-user me-1"></i
                         >{{ service.contactPerson }} @if (service.contactPhone)
                         { - <i class="fas fa-phone me-1"></i
@@ -497,7 +529,7 @@
                 </div>
                 } @else {
                 <div class="text-center py-4">
-                  <i class="fas fa-cogs fa-2x text-muted mb-3"></i>
+                  <i class="text-muted mb-3 fas fa-cogs fa-2x"></i>
                   <p class="text-muted">
                     No services available for this department.
                   </p>
@@ -510,8 +542,8 @@
         </div>
         } @else {
         <!-- No Department Selected -->
-        <div class="no-selection text-center py-5">
-          <i class="fas fa-building fa-3x text-muted mb-3"></i>
+        <div class="text-center py-5 no-selection">
+          <i class="text-muted mb-3 fas fa-building fa-3x"></i>
           <h4>Select a Department</h4>
           <p class="text-muted">
             Choose a department from the sidebar to view detailed information.

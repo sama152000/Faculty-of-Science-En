@@ -90,46 +90,46 @@ export class ContactComponent extends BaseComponent implements OnInit {
         color: '#1877F2',
       });
     }
-    if (contact.twitter) {
-      links.push({
-        platform: 'Twitter',
-        url: contact.twitter,
-        icon: 'pi pi-twitter',
-        color: '#1DA1F2',
-      });
-    }
-    if (contact.instagram) {
-      links.push({
-        platform: 'Instagram',
-        url: contact.instagram,
-        icon: 'pi pi-instagram',
-        color: '#E4405F',
-      });
-    }
-    if (contact.linkedIn) {
-      links.push({
-        platform: 'LinkedIn',
-        url: contact.linkedIn,
-        icon: 'pi pi-linkedin',
-        color: '#0A66C2',
-      });
-    }
-    if (contact.youTube) {
-      links.push({
-        platform: 'YouTube',
-        url: contact.youTube,
-        icon: 'pi pi-youtube',
-        color: '#FF0000',
-      });
-    }
-    if (contact.whatsApp) {
-      links.push({
-        platform: 'WhatsApp',
-        url: `https://wa.me/${contact.whatsApp.replace(/\D/g, '')}`,
-        icon: 'pi pi-whatsapp',
-        color: '#25D366',
-      });
-    }
+    // if (contact.twitter) {
+    //   links.push({
+    //     platform: 'Twitter',
+    //     url: contact.twitter,
+    //     icon: 'pi pi-twitter',
+    //     color: '#1DA1F2',
+    //   });
+    // }
+    // if (contact.instagram) {
+    //   links.push({
+    //     platform: 'Instagram',
+    //     url: contact.instagram,
+    //     icon: 'pi pi-instagram',
+    //     color: '#E4405F',
+    //   });
+    // }
+    // if (contact.linkedIn) {
+    //   links.push({
+    //     platform: 'LinkedIn',
+    //     url: contact.linkedIn,
+    //     icon: 'pi pi-linkedin',
+    //     color: '#0A66C2',
+    //   });
+    // }
+    // if (contact.youTube) {
+    //   links.push({
+    //     platform: 'YouTube',
+    //     url: contact.youTube,
+    //     icon: 'pi pi-youtube',
+    //     color: '#FF0000',
+    //   });
+    // }
+    // if (contact.whatsApp) {
+    //   links.push({
+    //     platform: 'WhatsApp',
+    //     url: `https://wa.me/${contact.whatsApp.replace(/\D/g, '')}`,
+    //     icon: 'pi pi-whatsapp',
+    //     color: '#25D366',
+    //   });
+    // }
 
     return links;
   });

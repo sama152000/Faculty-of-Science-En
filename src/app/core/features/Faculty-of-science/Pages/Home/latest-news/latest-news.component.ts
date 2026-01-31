@@ -7,9 +7,8 @@ import {
   computed,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, SlicePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 // Base Component
 import { BaseComponent } from '../../../../../../shared/components/base.component';
@@ -17,11 +16,14 @@ import { BaseComponent } from '../../../../../../shared/components/base.componen
 // Services & Models
 import { NewsService } from '../../../Services/real-services/news.service';
 import { News } from '../../../model/news.model';
+import { NewsTypeEnum } from '../../../../../enums/newsType.enum';
+import { PageRequest } from '../../../model/real model/page-request.model';
+import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
 
 @Component({
   selector: 'app-latest-news',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, CleanHtmlPipe, SlicePipe],
   templateUrl: './latest-news.component.html',
   styleUrls: ['./latest-news.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,14 +36,14 @@ export class LatestNewsComponent
   private readonly newsService = inject(NewsService);
 
   // State Signals
-  protected news = signal<News[]>([]);
+  protected newsList = signal<News[]>([]);
   protected currentIndex = signal<number>(0);
 
   // Autoplay timer
   private autoplayIntervalId: any;
 
   // Computed: Total slides count
-  protected totalSlides = computed(() => this.news().length);
+  protected totalSlides = computed(() => this.newsList().length);
 
   // Signal: Is mobile view
   protected isMobile = signal<boolean>(false);
@@ -53,6 +55,13 @@ export class LatestNewsComponent
     return 4;
   });
 
+  paged: PageRequest = {
+    pageNumber: 1,
+    pageSize: 5,
+    filter: { status: 'Published', type: NewsTypeEnum.NEWS, isDeleted: false },
+    orderByValue: [{ colId: 'publishedDate', sort: 'desc' }],
+  };
+
   // Computed: Maximum index for slider (prevents scrolling past last cards)
   protected maxIndex = computed(() => {
     const total = this.totalSlides();
@@ -62,13 +71,13 @@ export class LatestNewsComponent
 
   // Computed: Is slider mode (5 or more news items OR mobile view with more than 1 item)
   protected isSliderMode = computed(() => {
-    const newsCount = this.news().length;
+    const newsCount = this.newsList().length;
     return newsCount >= 5 || (this.isMobile() && newsCount > 1);
   });
 
   // Computed: Should show navigation buttons
   protected showNavButtons = computed(
-    () => this.news().length > this.visibleSlides()
+    () => this.newsList().length > this.visibleSlides()
   );
 
   // Computed: Get slide transform style
@@ -126,38 +135,18 @@ export class LatestNewsComponent
   private loadLatestNews(): void {
     this.setLoading();
 
-    this.newsService
-      .getAll()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (response) => {
-          if (response.success && response.data) {
-            // Filter only items with categoryName === 'News'
-            // Sort by createdDate descending and take latest (up to 10)
-            const latestNews = response.data
-              .filter((item) =>
-                item.postCategories?.some(
-                  (cat: any) => cat.categoryName === 'News'
-                )
-              )
-              .sort(
-                (a, b) =>
-                  new Date(b.createdDate).getTime() -
-                  new Date(a.createdDate).getTime()
-              )
-              .slice(0, 10);
-
-            this.news.set(latestNews);
-            this.startAutoplay();
-            this.setSuccess();
-          } else {
-            this.setError('No news found');
-          }
-        },
-        error: (error) => {
-          this.handleError(error, 'Failed to load news');
-        },
-      });
+    this.newsService.getPaged(this.paged).subscribe({
+      next: (response: any) => {
+        // Find featured news or use first one
+        this.newsList.set(response.data);
+        // Get small news (excluding featured)
+        this.startAutoplay();
+        this.setSuccess();
+      },
+      error: (error) => {
+        console.error('Error loading latest news From Server');
+      },
+    });
   }
 
   /**
@@ -229,15 +218,6 @@ export class LatestNewsComponent
       month: 'short',
       day: 'numeric',
     });
-  }
-
-  /**
-   * Get excerpt from content
-   */
-  getExcerpt(content: string, maxLength: number = 100): string {
-    if (!content) return '';
-    if (content.length <= maxLength) return content;
-    return content.substring(0, maxLength).trim() + '...';
   }
 
   /**

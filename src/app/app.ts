@@ -11,12 +11,12 @@ import { LoadingComponent } from './shared/components/loading.component';
   selector: 'app-root',
   imports: [
     ButtonModule,
+    LoadingComponent,
     CommonModule,
     RouterModule,
     QuickNavSidebarComponent,
     HeaderComponent,
     FooterComponent,
-    LoadingComponent,
   ],
   templateUrl: './app.html',
   styleUrl: './app.css',

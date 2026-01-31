@@ -23,6 +23,8 @@ import { BaseComponent } from '../../../../../shared/components/base.component';
 // Services & Models
 import { NewsService } from '../../Services/real-services/news.service';
 import { News, Category } from '../../model/news.model';
+import { CleanHtmlPipe } from '../../../../pipes/clean-html.pipe';
+import { filter, map } from 'rxjs';
 
 // Constants
 const DEFAULT_ITEMS_PER_PAGE = 6;
@@ -40,6 +42,7 @@ const EXCERPT_MAX_LENGTH = 150;
     ButtonModule,
     CardModule,
     PaginatorModule,
+    CleanHtmlPipe,
   ],
   templateUrl: './news-list.component.html',
   styleUrls: ['./news-list.component.css'],
@@ -136,16 +139,23 @@ export class NewsListComponent extends BaseComponent implements OnInit {
 
     this.newsService
       .getAll()
-      .pipe(takeUntilDestroyed(this.destroyRef))
+      .pipe(
+        takeUntilDestroyed(this.destroyRef),
+
+        // تأكد إن فيه داتا
+        filter((response) => response.success && Array.isArray(response.data)),
+
+        // فلترة Published + ترتيب بالتاريخ
+        map((response) =>
+          this.sortNewsByDate(
+            response.data.filter((news) => news.status === 'Published')
+          )
+        )
+      )
       .subscribe({
-        next: (response) => {
-          if (response.success && response.data) {
-            const sortedNews = this.sortNewsByDate(response.data);
-            this.allNews.set(sortedNews);
-            this.setSuccess();
-          } else {
-            this.setError('No news found');
-          }
+        next: (publishedNews) => {
+          this.allNews.set(publishedNews);
+          this.setSuccess();
         },
         error: (error: Error) => {
           this.handleError(error, 'Failed to load news');
@@ -180,7 +190,8 @@ export class NewsListComponent extends BaseComponent implements OnInit {
   private sortNewsByDate(news: News[]): News[] {
     return [...news].sort(
       (a, b) =>
-        new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()
+        new Date(b.publishedDate || b.createdDate).getTime() -
+        new Date(a.publishedDate || a.createdDate).getTime()
     );
   }
 
@@ -245,19 +256,6 @@ export class NewsListComponent extends BaseComponent implements OnInit {
       month: 'short',
       day: 'numeric',
     }).format(new Date(date));
-  }
-
-  /**
-   * Get excerpt from content
-   * WHY: Pure utility function for text truncation
-   */
-  protected getExcerpt(
-    content: string | undefined,
-    maxLength = EXCERPT_MAX_LENGTH
-  ): string {
-    if (!content) return '';
-    if (content.length <= maxLength) return content;
-    return content.substring(0, maxLength).trim() + '...';
   }
 
   /**

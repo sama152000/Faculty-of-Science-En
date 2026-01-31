@@ -15,11 +15,14 @@ import { BaseComponent } from '../../../../../../shared/components/base.componen
 // Services & Models
 import { NewsService } from '../../../Services/real-services/news.service';
 import { News } from '../../../model/news.model';
+import { PageRequest } from '../../../model/real model/page-request.model';
+import { NewsTypeEnum } from '../../../../../enums/newsType.enum';
+import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
 
 @Component({
   selector: 'app-upcoming-events',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, CleanHtmlPipe],
   templateUrl: './upcoming-events.component.html',
   styleUrls: ['./upcoming-events.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -30,7 +33,16 @@ export class UpcomingEventsComponent extends BaseComponent implements OnInit {
 
   // State Signals
   protected events = signal<News[]>([]);
-
+  paged: PageRequest = {
+    pageNumber: 1,
+    pageSize: 5,
+    filter: {
+      status: 'Published',
+      type: NewsTypeEnum.EVENTS,
+      isDeleted: false,
+    },
+    orderByValue: [{ colId: 'publishedDate', sort: 'desc' }],
+  };
   ngOnInit(): void {
     this.loadEvents();
   }
@@ -41,50 +53,17 @@ export class UpcomingEventsComponent extends BaseComponent implements OnInit {
   private loadEvents(): void {
     this.setLoading();
 
-    this.newsService
-      .getAll()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (response) => {
-          if (response.success && response.data) {
-            // Debug: Log all category names to see what exists
-            console.log(
-              'All posts categories:',
-              response.data.map((item) => ({
-                title: item.title,
-                categories: item.postCategories?.map(
-                  (c: any) => c.categoryName
-                ),
-              }))
-            );
-
-            // Filter only items with categoryName containing 'event'
-            // Sort by createdDate descending and take latest 4
-            const latestEvents = response.data
-              .filter((item) =>
-                item.postCategories?.some((cat: any) =>
-                  cat.categoryName?.toLowerCase().includes('event')
-                )
-              )
-              .sort(
-                (a, b) =>
-                  new Date(b.createdDate).getTime() -
-                  new Date(a.createdDate).getTime()
-              )
-              .slice(0, 4);
-
-            console.log('Filtered events:', latestEvents);
-
-            this.events.set(latestEvents);
-            this.setSuccess();
-          } else {
-            this.setError('No events found');
-          }
-        },
-        error: (error) => {
-          this.handleError(error, 'Failed to load events');
-        },
-      });
+    this.newsService.getPaged(this.paged).subscribe({
+      next: (response: any) => {
+        // Find featured news or use first one
+        this.events.set(response.data);
+        // Get small news (excluding featured)
+        this.setSuccess();
+      },
+      error: (error) => {
+        console.error('Error loading latest news From Server');
+      },
+    });
   }
 
   /**

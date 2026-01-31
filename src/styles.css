@@ -443,16 +443,6 @@ small {
   background: var(--dark-blue);
 }
 
-/* ===== Focus States for Accessibility ===== */
-button:focus,
-a:focus,
-input:focus,
-textarea:focus,
-select:focus {
-  outline: 2px solid var(--primary-blue);
-  outline-offset: 2px;
-}
-
 /* ===== Responsive Design ===== */
 @media (max-width: 1200px) {
   .grid-4-cols {
@@ -562,5 +552,9 @@ select:focus {
 }
 
 a {
-  text-decoration: none;
+  text-decoration: none !important;
+}
+
+ul {
+  list-style-type: none !important;
 }

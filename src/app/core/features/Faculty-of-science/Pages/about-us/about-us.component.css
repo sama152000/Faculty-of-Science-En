@@ -2,16 +2,15 @@
 .about-section {
   background: var(--light-beige);
   min-height: 100vh;
-    min-width: 100%;
-
+  min-width: 100%;
 }
 
-.container-fluid{
-     padding-left: 0 ;
+.container-fluid {
+  padding-left: 0;
   padding-right: 0;
   padding-bottom: 3rem;
-padding-top: 3rem;
-min-width: 100%;
+  padding-top: 3rem;
+  min-width: 100%;
 }
 
 .about-container {
@@ -156,13 +155,17 @@ min-width: 100%;
 }
 
 .vision-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -50%;
   right: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 70%
+  );
   animation: float 6s ease-in-out infinite;
 }
 
@@ -182,7 +185,11 @@ min-width: 100%;
 
 /* Mission Card */
 .mission-card {
-  background: linear-gradient(135deg, var(--accent-orange), var(--secondary-beige));
+  background: linear-gradient(
+    135deg,
+    var(--accent-orange),
+    var(--secondary-beige)
+  );
   color: var(--text-dark);
   padding: 40px;
   border-radius: var(--border-radius);
@@ -255,7 +262,7 @@ min-width: 100%;
 }
 
 .history-timeline::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 15px;
   top: 0;
@@ -308,9 +315,9 @@ min-width: 100%;
 
 .dean-image {
   width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  object-fit: cover;
+  height: 250px;
+  border-radius: 5%;
+  object-fit: fill;
   border: 5px solid var(--white);
   box-shadow: var(--shadow-medium);
 }
@@ -374,7 +381,8 @@ min-width: 100%;
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translateY(0px) rotate(0deg);
   }
   50% {
@@ -395,29 +403,29 @@ min-width: 100%;
     flex-direction: column;
     gap: 30px;
   }
-  
+
   .about-tabs {
     flex-direction: row;
     min-width: 100%;
     position: static;
     overflow-x: auto;
   }
-  
+
   .tab-link {
     flex: 1;
     text-align: center;
     white-space: nowrap;
     padding: 15px 20px;
   }
-  
+
   .tab-link:hover {
     transform: translateY(-2px);
   }
-  
+
   .tab-content {
     max-width: 100%;
   }
-  
+
   .objectives-grid {
     grid-template-columns: 1fr;
   }
@@ -427,35 +435,30 @@ min-width: 100%;
   .tab-content {
     padding: 25px;
   }
-  
+
   .content-title {
     font-size: 1.5rem;
     flex-direction: column;
     text-align: center;
   }
-  
+
   .content-title i {
     margin-bottom: 10px;
   }
-  
+
   .dean-message-container {
     padding: 20px;
   }
-  
-  .dean-image {
-    width: 150px;
-    height: 150px;
-  }
-  
+
   .vision-text,
   .mission-text {
     font-size: 1.1rem;
   }
-  
+
   .history-timeline {
     padding-left: 20px;
   }
-  
+
   .timeline-marker {
     left: -27px;
   }
@@ -465,33 +468,35 @@ min-width: 100%;
   .about-tabs {
     flex-direction: column;
   }
-  
+
   .tab-link {
     font-size: 0.9rem;
     padding: 12px 15px;
   }
-  
+
   .tab-content {
     padding: 20px;
   }
-  
+
   .content-title {
     font-size: 1.3rem;
   }
-  
+
   .vision-card,
   .mission-card {
     padding: 25px;
   }
-  
-  .dean-image {
-    width: 120px;
-    height: 120px;
-  }
-  
+
   .objective-number {
     width: 35px;
     height: 35px;
     font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .dean-image {
+    width: 120px;
+    height: 150px;
   }
 }

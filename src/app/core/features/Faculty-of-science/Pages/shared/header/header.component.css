@@ -201,3 +201,16 @@
     font-size: 0.9rem;
   }
 }
+
+.contact-item {
+  color: black !important;
+}
+.contact-item:hover {
+  transform: translateY(-1px) scale(1.02);
+  transition: all ease-in-out 0.3s;
+
+  a,
+  i {
+    color: var(--primary-blue) !important;
+  }
+}

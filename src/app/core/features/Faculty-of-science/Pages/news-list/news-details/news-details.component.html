@@ -11,7 +11,7 @@
           <!-- Title skeleton -->
           <p-skeleton height="2rem" width="80%" styleClass="mb-3" />
           <!-- Meta skeleton -->
-          <div class="flex gap-2 mb-3">
+          <div class="flex mb-3 gap-2">
             <p-skeleton width="6rem" height="1.5rem" />
             <p-skeleton width="8rem" height="1.5rem" />
           </div>
@@ -42,8 +42,8 @@
     <!-- ERROR STATE -->
     <!-- ============================================ -->
     @if (hasError()) {
-    <div class="error-container text-center py-5">
-      <i class="pi pi-exclamation-triangle text-6xl text-yellow-500 mb-4"></i>
+    <div class="text-center py-5 error-container">
+      <i class="mb-4 text-6xl text-yellow-500 pi pi-exclamation-triangle"></i>
       <h3 class="mb-3">Article Not Found</h3>
       <p class="text-muted mb-4">{{ error() }}</p>
       <p-button
@@ -78,13 +78,6 @@
                 severity="secondary"
                 styleClass="mr-2"
               />
-              @if (article.status) {
-              <p-tag
-                [value]="article.status"
-                [severity]="statusSeverity()"
-                icon="pi pi-circle-fill"
-              />
-              }
             </div>
 
             <!-- Title -->
@@ -119,14 +112,17 @@
 
           <!-- Article Body -->
           <div class="article-content">
-            <div class="article-body" [innerHTML]="article.content"></div>
+            <div
+              class="article-body"
+              [innerHTML]="article.content | cleanHtml: {stripClasses: false,}"
+            ></div>
           </div>
 
           <!-- Gallery (PrimeNG Galleria) -->
           @if (hasGallery()) {
           <div class="article-gallery">
             <h5 class="gallery-title">
-              <i class="pi pi-images mr-2"></i>
+              <i class="mr-2 pi pi-images"></i>
               Gallery
             </h5>
             <p-galleria
@@ -224,13 +220,13 @@
                 styleClass="w-full mb-2"
                 (onClick)="goBack()"
               />
-              <p-button
+              <!-- <p-button
                 [label]="'Back to ' + primaryCategory()"
                 icon="pi pi-folder"
                 [outlined]="true"
                 styleClass="w-full"
                 (onClick)="goBackToCategory()"
-              />
+              /> -->
             </div>
           </p-card>
 
@@ -247,24 +243,28 @@
                     class="img-cover"
                     loading="lazy"
                   />
-                  <p-tag
+                  <!-- <p-tag
                     value=""
                     icon="pi pi-bookmark"
                     severity="info"
                     styleClass="related-type-badge"
-                  />
+                  /> -->
                 </div>
                 <div class="related-content">
                   <h6 class="related-title">
                     <a [routerLink]="['/news', item.id]">{{ item.title }}</a>
                   </h6>
+                  @if (item.publishedDate ) {
                   <p class="related-date">
-                    <i class="pi pi-calendar mr-1"></i>
-                    {{ formatDateValue(item.createdDate) }}
+                    <i class="mr-1 pi pi-calendar"></i>
+                    {{ formatDateValue(item.publishedDate) }}
                   </p>
-                  <p class="related-excerpt">
-                    {{ getExcerpt(item.content, 80) }}
-                  </p>
+                  }
+
+                  <div
+                    class="related-excerpt"
+                    [innerHTML]="(item.content| cleanHtml: {stripClasses: false,} | slice :0:80) + '&nbsp;' + '...'"
+                  ></div>
                 </div>
               </div>
               }
@@ -285,18 +285,7 @@
                 <span class="ms-2">{{ article.pageTittle }}</span>
               </div>
               }
-              <div class="info-item">
-                <strong>Status:</strong>
-                <p-tag
-                  [value]="article.status"
-                  [severity]="statusSeverity()"
-                  styleClass="ms-2"
-                />
-              </div>
-              <div class="info-item">
-                <strong>Published:</strong>
-                <span class="ms-2">{{ formattedDate() }}</span>
-              </div>
+              <!--  -->
               @if (article.publishedDate) {
               <div class="info-item">
                 <strong>Published Date:</strong>

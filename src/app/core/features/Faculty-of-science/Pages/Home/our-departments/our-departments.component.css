@@ -1,9 +1,7 @@
 .departments-section {
   color: var(--white);
-  padding-left: 17rem;
-  padding-right: 17rem;
-  padding-bottom: 3rem;
-  padding-top: 3rem;
+  padding-inline: 5rem;
+  padding-block: 3rem;
 }
 
 .departments-bg {
@@ -77,10 +75,7 @@
   }
   .departments-section {
     color: var(--white);
-    padding-left: 1rem;
-    padding-right: 1rem;
-    padding-bottom: 1rem;
-    padding-top: 1rem;
+    padding: 2rem;
   }
 }
 
@@ -123,4 +118,8 @@
     height: 70px;
     font-size: 1.6rem;
   }
+}
+
+.dept-card-link {
+  cursor: pointer;
 }

@@ -5,7 +5,7 @@
     <!-- Loading State -->
     @if (loading()) {
     <div class="row">
-      <div class="col-lg-3 col-md-4 mb-4">
+      <div class="mb-4 col-lg-3 col-md-4">
         <div class="sectors-sidebar card-custom">
           <p-skeleton height="2rem" width="60%" styleClass="mb-4" />
           @for (i of [1, 2, 3, 4]; track i) {
@@ -14,7 +14,7 @@
         </div>
       </div>
       <div class="col-lg-9 col-md-8">
-        <div class="card-custom p-4">
+        <div class="p-4 card-custom">
           <p-skeleton height="6rem" styleClass="mb-4" />
           <p-skeleton height="3rem" styleClass="mb-2" />
           <p-skeleton height="15rem" />
@@ -26,7 +26,7 @@
     <!-- Error State -->
     @if (error()) {
     <div class="text-center py-5">
-      <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+      <i class="text-warning mb-3 fas fa-exclamation-triangle fa-3x"></i>
       <h4 class="mb-3">{{ error() }}</h4>
       <button class="btn btn-primary" (click)="retry()">
         <i class="fas fa-refresh me-2"></i>Try Again
@@ -38,7 +38,7 @@
     @if (!loading() && !error() && hasData()) {
     <div class="row">
       <!-- Sectors Sidebar -->
-      <div class="col-lg-3 col-md-4 mb-4">
+      <div class="mb-4 col-lg-3 col-md-4">
         <div class="sectors-sidebar card-custom">
           <h4 class="sidebar-title">
             <i class="fas fa-sitemap me-2"></i>
@@ -80,7 +80,7 @@
         @if (selectedSector(); as sector) {
         <div class="sector-content">
           <!-- Sector Header -->
-          <div class="sector-header card-custom mb-4">
+          <div class="mb-4 sector-header card-custom">
             <div class="header-content">
               <div class="sector-icon-large">
                 @if (getSectorImage(sector)) {
@@ -125,7 +125,7 @@
           </div>
 
           <!-- Section Navigation -->
-          <div class="section-nav card-custom mb-4">
+          <div class="mb-4 section-nav card-custom">
             <div class="nav-buttons">
               <button
                 class="nav-btn"
@@ -209,33 +209,63 @@
             <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
-                  <i class="fas fa-info-circle text-primary-custom me-3"></i>
+                  <i class="text-primary-custom fas fa-info-circle me-3"></i>
                   Sector Overview
                 </h3>
               </div>
 
               <div class="content-body">
-                <p class="lead" [innerHTML]="sector.about"></p>
-
-                <div class="row mt-4">
+                <div
+                  class="lead"
+                  [innerHTML]="
+                    sector.about
+                      | cleanHtml
+                        : {
+                            stripStyles: true,
+                            stripClasses: true,
+                            preserveLineBreaks: true
+                          }
+                  "
+                ></div>
+                <div class="mt-4 row">
                   @if (sector.mission) {
-                  <div class="col-md-6 mb-3">
+                  <div class="mb-3 col-md-6">
                     <div class="info-card">
                       <h5 class="text-primary-custom">
                         <i class="fas fa-bullhorn me-2"></i>
                         Mission
                       </h5>
-                      <p [innerHTML]="sector.mission"></p>
+                      <div
+                        [innerHTML]="
+                          sector.mission
+                            | cleanHtml
+                              : {
+                                  stripStyles: true,
+                                  stripClasses: true,
+                                  preserveLineBreaks: true
+                                }
+                        "
+                      ></div>
                     </div>
                   </div>
                   } @if (sector.vision) {
-                  <div class="col-md-6 mb-3">
+                  <div class="mb-3 col-md-6">
                     <div class="info-card">
                       <h5 class="text-primary-custom">
                         <i class="fas fa-eye me-2"></i>
                         Vision
                       </h5>
-                      <p [innerHTML]="sector.vision"></p>
+                      <div
+                        [innerHTML]="
+                          sector.vision
+                            | cleanHtml
+                              : {
+                                  stripStyles: true,
+                                  stripClasses: true,
+                                  preserveLineBreaks: true
+                                }
+                        "
+                      ></div>
                     </div>
                   </div>
                   }
@@ -249,7 +279,7 @@
             <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
-                  <i class="fas fa-bullseye text-primary-custom me-3"></i>
+                  <i class="text-primary-custom fas fa-bullseye me-3"></i>
                   Sector Goals
                 </h3>
               </div>
@@ -257,10 +287,10 @@
               <div class="content-body">
                 @if (sector.goals && sector.goals.length > 0) {
                 <div class="responsibilities-grid">
-                  @for (goal of sector.goals; track goal.id; let i = $index) {
+                  @for (goal of sector.goals; track goal.id) {
                   <div class="responsibility-item">
                     <div class="responsibility-number">
-                      {{ goal.index || i + 1 }}
+                      {{ goal.index || $index + 1 }}
                     </div>
                     <div class="responsibility-content">
                       <p>{{ goal.goalName }}</p>
@@ -280,7 +310,7 @@
             <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
-                  <i class="fas fa-list text-primary-custom me-3"></i>
+                  <i class="text-primary-custom fas fa-list me-3"></i>
                   Sector Details
                 </h3>
               </div>
@@ -298,7 +328,15 @@
                     <h5 class="detail-title">{{ detail.title }}</h5>
                     <div
                       class="detail-content"
-                      [innerHTML]="detail.content"
+                      [innerHTML]="
+                        detail.content
+                          | cleanHtml
+                            : {
+                                stripStyles: true,
+                                stripClasses: true,
+                                preserveLineBreaks: true
+                              }
+                      "
                     ></div>
                   </div>
                   }
@@ -315,7 +353,7 @@
             <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
-                  <i class="fas fa-building text-primary-custom me-3"></i>
+                  <i class="text-primary-custom fas fa-building me-3"></i>
                   Sector Units
                 </h3>
               </div>
@@ -370,7 +408,7 @@
             <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
-                  <i class="fas fa-graduation-cap text-primary-custom me-3"></i>
+                  <i class="text-primary-custom fas fa-graduation-cap me-3"></i>
                   Sector Programs
                 </h3>
               </div>
@@ -402,7 +440,7 @@
             <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
-                  <i class="fas fa-cogs text-primary-custom me-3"></i>
+                  <i class="text-primary-custom fas fa-cogs me-3"></i>
                   Services Provided
                 </h3>
               </div>
@@ -456,7 +494,7 @@
             <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
-                  <i class="fas fa-newspaper text-primary-custom me-3"></i>
+                  <i class="text-primary-custom fas fa-newspaper me-3"></i>
                   Sector Posts
                 </h3>
               </div>
@@ -485,7 +523,7 @@
             <div class="content-section">
               <div class="section-header">
                 <h3 class="section-title-left">
-                  <i class="fas fa-users text-primary-custom me-3"></i>
+                  <i class="text-primary-custom fas fa-users me-3"></i>
                   Sector Team
                 </h3>
               </div>
@@ -521,8 +559,8 @@
         </div>
         } @else {
         <!-- No Sector Selected -->
-        <div class="no-selection text-center py-5">
-          <i class="fas fa-sitemap fa-3x text-muted mb-3"></i>
+        <div class="text-center py-5 no-selection">
+          <i class="text-muted mb-3 fas fa-sitemap fa-3x"></i>
           <h4>Select a Sector</h4>
           <p class="text-muted">
             Choose a sector from the sidebar to view detailed information.
@@ -536,7 +574,7 @@
     <!-- Empty State -->
     @if (!loading() && !error() && !hasData()) {
     <div class="text-center py-5">
-      <i class="fas fa-sitemap fa-3x text-muted mb-3"></i>
+      <i class="text-muted mb-3 fas fa-sitemap fa-3x"></i>
       <h4>No Sectors Available</h4>
       <p class="text-muted">Sectors will be added soon.</p>
     </div>

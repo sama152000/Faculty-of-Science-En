@@ -12,6 +12,7 @@ export interface Contact {
   address?: string;
   fax?: string;
   workingHours?: string;
+  website?: string;
 }
 
 @Component({

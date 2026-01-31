@@ -22,6 +22,7 @@ import {
   UnitMemberService,
   UnitMember,
 } from '../../../Services/real-services/units/unitmember.service';
+import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
 
 @Component({
   selector: 'app-units',
@@ -34,6 +35,7 @@ import {
     ButtonModule,
     TagModule,
     AvatarModule,
+    CleanHtmlPipe,
   ],
   templateUrl: './units.component.html',
   styleUrls: ['../units-centers.component.css'],

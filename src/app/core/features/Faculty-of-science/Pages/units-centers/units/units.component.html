@@ -3,7 +3,7 @@
   @if (loading()) {
   <div class="loading-container">
     <div class="row">
-      <div class="col-lg-3 col-md-4 mb-4">
+      <div class="mb-4 col-lg-3 col-md-4">
         <p-card>
           <p-skeleton height="2rem" width="60%" styleClass="mb-3" />
           @for (i of [1, 2, 3, 4]; track i) {
@@ -24,8 +24,8 @@
 
   <!-- Error State -->
   @if (error()) {
-  <div class="error-container text-center py-5">
-    <i class="pi pi-exclamation-triangle text-6xl text-danger mb-4"></i>
+  <div class="text-center py-5 error-container">
+    <i class="text-danger mb-4 text-6xl pi pi-exclamation-triangle"></i>
     <h4 class="mb-3">{{ error() }}</h4>
     <p-button
       label="Try Again"
@@ -40,7 +40,7 @@
   @if (!loading() && !error() && hasData()) {
   <div class="row">
     <!-- Sidebar -->
-    <div class="col-lg-3 col-md-4 mb-4">
+    <div class="mb-4 col-lg-3 col-md-4">
       <div class="items-sidebar card-custom">
         <h4 class="sidebar-title">
           <i class="fas fa-building me-2"></i>
@@ -59,7 +59,7 @@
                 @if (getUnitImage(unit)) {
                 <img
                   [src]="getUnitImage(unit)"
-                  [alt]="unit.unitTitleEn || unit.unitTitle"
+                  [alt]="unit.unitTitle || unit.unitTitleEn"
                   class="unit-thumb"
                 />
                 } @else {
@@ -68,7 +68,7 @@
               </div>
               <div class="item-info">
                 <h6 class="item-name">
-                  {{ unit.unitTitleEn || unit.unitTitle }}
+                  {{ unit.unitTitle || unit.unitTitleEn }}
                 </h6>
               </div>
             </button>
@@ -83,13 +83,13 @@
       @if (selectedUnit(); as unit) {
       <div class="item-content">
         <!-- Unit Header -->
-        <div class="item-header card-custom mb-4">
+        <div class="mb-4 item-header card-custom">
           <div class="header-content">
             <div class="item-icon-large">
               @if (getUnitImage(unit)) {
               <img
                 [src]="getUnitImage(unit)"
-                [alt]="unit.unitTitleEn || unit.unitTitle"
+                [alt]="unit.unitTitle || unit.unitTitleEn"
                 class="unit-image"
               />
               } @else {
@@ -98,7 +98,7 @@
             </div>
             <div class="header-info">
               <h1 class="item-title">
-                {{ unit.unitTitleEn || unit.unitTitle }}
+                {{ unit.unitTitle || unit.unitTitleEn }}
               </h1>
 
               <div class="item-stats">
@@ -114,7 +114,7 @@
         </div>
 
         <!-- Section Navigation -->
-        <div class="section-nav card-custom mb-4">
+        <div class="mb-4 section-nav card-custom">
           <div class="nav-buttons">
             <button
               class="nav-btn"
@@ -161,43 +161,83 @@
           <div class="content-section">
             <div class="section-header">
               <h3 class="section-title-left">
-                <i class="fas fa-info-circle text-primary-custom me-3"></i>
+                <i class="text-primary-custom fas fa-info-circle me-3"></i>
                 Unit Overview
               </h3>
             </div>
 
             <div class="content-body">
-              <p class="lead" [innerHTML]="unit.content"></p>
-
-              <div class="row mt-4">
+              <div
+                class="lead"
+                [innerHTML]="
+                  unit.content
+                    | cleanHtml
+                      : {
+                          stripStyles: true,
+                          stripClasses: true,
+                          preserveLineBreaks: true
+                        }
+                "
+              ></div>
+              <div class="mt-4 row">
                 @if (unit.mission) {
-                <div class="col-md-6 mb-3">
+                <div class="mb-3 col-md-6">
                   <div class="info-card">
                     <h5 class="text-primary-custom">
                       <i class="fas fa-bullhorn me-2"></i>
                       Mission
                     </h5>
-                    <p [innerHTML]="unit.mission"></p>
+                    <div
+                      [innerHTML]="
+                        unit.mission
+                          | cleanHtml
+                            : {
+                                stripStyles: true,
+                                stripClasses: true,
+                                preserveLineBreaks: true
+                              }
+                      "
+                    ></div>
                   </div>
                 </div>
                 } @if (unit.vision) {
-                <div class="col-md-6 mb-3">
+                <div class="mb-3 col-md-6">
                   <div class="info-card">
                     <h5 class="text-primary-custom">
                       <i class="fas fa-eye me-2"></i>
                       Vision
                     </h5>
-                    <p [innerHTML]="unit.vision"></p>
+                    <div
+                      [innerHTML]="
+                        unit.vision
+                          | cleanHtml
+                            : {
+                                stripStyles: true,
+                                stripClasses: true,
+                                preserveLineBreaks: true
+                              }
+                      "
+                    ></div>
                   </div>
                 </div>
                 } @if (unit.history) {
-                <div class="col-12 mb-3">
+                <div class="mb-3 col-12">
                   <div class="info-card">
                     <h5 class="text-primary-custom">
                       <i class="fas fa-history me-2"></i>
                       History
                     </h5>
-                    <p [innerHTML]="unit.history"></p>
+                    <div
+                      [innerHTML]="
+                        unit.history
+                          | cleanHtml
+                            : {
+                                stripStyles: true,
+                                stripClasses: true,
+                                preserveLineBreaks: true
+                              }
+                      "
+                    ></div>
                   </div>
                 </div>
                 }
@@ -211,7 +251,7 @@
           <div class="content-section">
             <div class="section-header">
               <h3 class="section-title-left">
-                <i class="fas fa-bullseye text-primary-custom me-3"></i>
+                <i class="text-primary-custom fas fa-bullseye me-3"></i>
                 Objectives
               </h3>
             </div>
@@ -240,7 +280,7 @@
           <div class="content-section">
             <div class="section-header">
               <h3 class="section-title-left">
-                <i class="fas fa-list text-primary-custom me-3"></i>
+                <i class="text-primary-custom fas fa-list me-3"></i>
                 Unit Details
               </h3>
             </div>
@@ -281,7 +321,7 @@
           <div class="content-section">
             <div class="section-header">
               <h3 class="section-title-left">
-                <i class="fas fa-users text-primary-custom me-3"></i>
+                <i class="text-primary-custom fas fa-users me-3"></i>
                 Unit Team
               </h3>
             </div>
@@ -317,8 +357,8 @@
       </div>
       } @else {
       <!-- No Unit Selected -->
-      <div class="no-selection text-center py-5">
-        <i class="fas fa-building fa-3x text-muted mb-3"></i>
+      <div class="text-center py-5 no-selection">
+        <i class="text-muted mb-3 fas fa-building fa-3x"></i>
         <h4>Select a Unit</h4>
         <p class="text-muted">
           Choose a unit from the sidebar to view detailed information.
@@ -331,8 +371,8 @@
 
   <!-- Empty State -->
   @if (!loading() && !error() && !hasData()) {
-  <div class="empty-state text-center py-5">
-    <i class="fas fa-building fa-3x text-muted mb-3"></i>
+  <div class="text-center py-5 empty-state">
+    <i class="text-muted mb-3 fas fa-building fa-3x"></i>
     <h4>No Units Available</h4>
     <p class="text-muted">Units will be added soon.</p>
   </div>

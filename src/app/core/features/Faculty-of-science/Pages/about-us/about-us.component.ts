@@ -16,10 +16,11 @@ import { ButtonModule } from 'primeng/button';
 
 // Base Component
 import { BaseComponent } from '../../../../../shared/components/base.component';
-import { PagesService } from '../../Services/real-services/pages.service';
+import { AboutService } from '../../Services/real-services/about.service';
 import { DeanSpeechsService } from '../../Services/real-services/dean-speechs.service';
+import { CleanHtmlPipe } from '../../../../pipes/clean-html.pipe';
 
-// Services & Models
+// الخدمات والنماذج
 
 interface Tab {
   id: string;
@@ -55,25 +56,25 @@ interface Goal {
 @Component({
   selector: 'app-about-us',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CleanHtmlPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 
   templateUrl: './about-us.component.html',
   styleUrls: ['./about-us.component.css'],
 })
 export class AboutUsComponent extends BaseComponent implements OnInit {
-  // Services
-  private readonly pagesService = inject(PagesService);
+  // الخدمات
+  private readonly aboutService = inject(AboutService);
   private readonly deanSpeechsService = inject(DeanSpeechsService);
 
-  // Component-specific State
+  // حالة الكومبوننت
   protected aboutData = signal<AboutPage | null>(null);
   protected presidentData = signal<DeanSpeech | null>(null);
   protected tabs = signal<Tab[]>([]);
   protected activeTab = signal<string>('Dean');
   protected isVisible = signal<boolean>(false);
 
-  // Computed values
+  // القيم المحسوبة
   protected activeTabData = computed(() => {
     const tabId = this.activeTab();
     return this.tabs().find((t) => t.id === tabId);
@@ -92,42 +93,39 @@ export class AboutUsComponent extends BaseComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.loadAboutData();
     this.loadPresidentData();
+    this.loadAboutData();
     setTimeout(() => this.isVisible.set(true), 200);
   }
 
   /**
-   * Load about university data from API
+   * تحميل بيانات "عن الكلية" من API
    */
   private loadAboutData(): void {
     this.setLoading();
 
-    this.pagesService
-      .getAllPages()
+    this.aboutService
+      .getAboutFaculty()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (response) => {
-          const data = response.data?.find(
-            (item: any) => item.pageName === 'عن الكلية' || 'About Faculty'
-          );
-
-          if (data) {
-            this.aboutData.set(data);
-            this.buildTabs();
-            this.setSuccess();
-          } else {
-            this.setError('لم يتم العثور على بيانات عن الكلية');
+        next: (data) => {
+          if (!data) {
+            this.setError('Faculty data was not found');
+            return;
           }
+
+          this.aboutData.set(data);
+          this.buildTabs();
+          this.setSuccess();
         },
         error: (error) => {
-          this.handleError(error, 'فشل تحميل بيانات عن الكلية');
+          this.handleError(error, 'Failed to load faculty data');
         },
       });
   }
 
   /**
-   * Load president message data from API
+   * تحميل بيانات كلمة العميد من API
    */
   private loadPresidentData(): void {
     this.deanSpeechsService
@@ -142,14 +140,14 @@ export class AboutUsComponent extends BaseComponent implements OnInit {
           }
         },
         error: (error) => {
-          console.error('Failed to load president message:', error);
-          // Don't set error state, just continue without president message
+          console.error("Failed to load Dean's speech:", error);
+          // عدم تعيين حالة الخطأ، الاستمرار بدون كلمة العميد
         },
       });
   }
 
   /**
-   * Build tabs from loaded data
+   * بناء التبويبات من البيانات المحملة
    */
   private buildTabs(): void {
     const data = this.aboutData();
@@ -157,52 +155,52 @@ export class AboutUsComponent extends BaseComponent implements OnInit {
 
     const newTabs: Tab[] = [];
 
-    // Add president message tab first if available
+    // إضافة تبويب كلمة العميد أولاً إذا كان متاحاً
     const deanSpeech = this.presidentData();
     if (deanSpeech) {
       newTabs.push({
         id: 'Dean',
-        title: "Dean's Message",
+        title: "Dean's Speech",
         icon: 'pi pi-user',
-        content: deanSpeech.speech ?? 'Not Found Speech',
+        content: deanSpeech.speech ?? "Dean's speech was not found",
         type: 'Dean',
       });
     } else {
-      // If no president data, set vision as active tab
+      // إذا لم تكن هناك بيانات العميد، تعيين التبويب النشط إلى "المقدمة"
       this.activeTab.set('introduction');
     }
 
-    // Add other tabs
+    // إضافة التبويبات الأخرى
     newTabs.push(
       {
         id: 'introduction',
         title: 'Introduction',
-        icon: 'pi pi-eye',
-        content: data.content ?? 'Not Found Content',
+        icon: 'pi pi-book', // كتاب = تقديم / تعريف
+        content: data.content ?? 'Content was not found',
       },
       {
         id: 'vision',
         title: 'Vision',
-        icon: 'pi pi-eye',
-        content: data.vision ?? 'Not Found Vision',
+        icon: 'pi pi-eye', // عين = رؤية
+        content: data.vision ?? 'Vision was not found',
       },
       {
         id: 'mission',
         title: 'Mission',
-        icon: 'pi pi-flag',
-        content: data.mission ?? 'Not Found Mission',
+        icon: 'pi pi-send', // إرسال = رسالة / مهمة
+        content: data.mission ?? 'Mission was not found',
       },
       {
         id: 'history',
         title: 'History',
-        icon: 'pi pi-history',
-        content: data.history ?? 'Not Found History',
+        icon: 'pi pi-clock', // ساعة = تاريخ / زمن
+        content: data.history ?? 'History was not found',
         type: 'text',
       },
       {
         id: 'goals',
-        title: 'Objectives',
-        icon: 'pi pi-bullseye',
+        title: 'Goals',
+        icon: 'pi pi-bullseye', // هدف = أهداف
         content: data.goals ?? [],
         type: 'array',
       }
@@ -212,21 +210,21 @@ export class AboutUsComponent extends BaseComponent implements OnInit {
   }
 
   /**
-   * Set active tab
+   * تعيين التبويب النشط
    */
   protected setActiveTab(tabId: string): void {
     this.activeTab.set(tabId);
   }
 
   /**
-   * Retry loading (from BaseComponent)
+   * إعادة محاولة التحميل (من BaseComponent)
    */
   protected override retry(): void {
     this.loadAboutData();
   }
 
   /**
-   * Check if content is array (for goals)
+   * التحقق من أن المحتوى عبارة عن مصفوفة (للأهداف)
    */
   protected isArray(content: any): boolean {
     return Array.isArray(content);

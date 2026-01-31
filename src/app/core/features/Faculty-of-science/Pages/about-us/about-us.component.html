@@ -1,10 +1,9 @@
 <section class="about-section">
   <div class="container-fluid">
     <!-- Page Header -->
-    <div class="row mb-5">
-      <div class="col-12 text-center">
+    <div class="mb-5 row">
+      <div class="text-center col-12">
         <h1 class="section-title">About Faculty of Science</h1>
-        <p class="lead text-muted">Luxor University</p>
       </div>
     </div>
 
@@ -31,7 +30,7 @@
         <div class="tab-panel active">
           <div class="content-header">
             <h2 class="content-title">
-              <i class="fas fa-user-tie text-primary-custom me-3"></i>
+              <i class="text-primary-custom fas fa-user-tie me-3"></i>
               Message from the Dean
             </h2>
           </div>
@@ -39,7 +38,7 @@
           <div class="content-body">
             <div class="dean-message-container">
               <div class="row align-items-center">
-                <div class="col-md-4 text-center mb-4 mb-md-0">
+                <div class="text-center mb-4 mb-md-0 col-12">
                   <div class="dean-image-wrapper">
                     <img
                       [src]="presidentData()?.deanSpeechAttachments?.[0]?.url"
@@ -47,20 +46,22 @@
                       class="dean-image"
                     />
                   </div>
-                  <div class="dean-info mt-3">
+                  <div class="mt-3 dean-info">
                     <h4 class="dean-name">{{ presidentData()?.memberName }}</h4>
-                    <p class="dean-title text-muted">
+                    <p class="text-muted dean-title">
                       {{ presidentData()?.memberPosition }}
                     </p>
                   </div>
                 </div>
 
-                <div class="col-md-8">
+                <div class="col-12">
                   <div class="dean-message">
                     <div class="quote-icon">
                       <i class="fas fa-quote-left"></i>
                     </div>
-                    <p class="message-text">{{ presidentData()?.speech }}</p>
+                    <div
+                      [innerHTML]="presidentData()?.speech| cleanHtml: {stripClasses: false,}"
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -74,13 +75,24 @@
         <div class="tab-panel active">
           <div class="content-header">
             <h2 class="content-title">
-              <i class="fas fa-university text-primary-custom me-3"></i>
+              <i class="text-primary-custom fas fa-university me-3"></i>
               Introduction
             </h2>
           </div>
 
           <div class="content-body">
-            <p class="lead mb-4">{{ aboutData()?.content }}</p>
+            <div
+              class="mb-4 lead"
+              [innerHTML]="
+                aboutData()?.content
+                  | cleanHtml
+                    : {
+                        stripStyles: true,
+                        stripClasses: false,
+                        preserveLineBreaks: true
+                      }
+              "
+            ></div>
           </div>
         </div>
         }
@@ -90,7 +102,7 @@
         <div class="tab-panel active">
           <div class="content-header">
             <h2 class="content-title">
-              <i class="fas fa-eye text-primary-custom me-3"></i>
+              <i class="text-primary-custom fas fa-eye me-3"></i>
               Our Vision
             </h2>
           </div>
@@ -100,7 +112,18 @@
               <div class="vision-icon">
                 <i class="fas fa-lightbulb"></i>
               </div>
-              <p class="vision-text">{{ aboutData()?.vision }}</p>
+              <div
+                class="vision-text"
+                [innerHTML]="
+                  aboutData()?.vision
+                    | cleanHtml
+                      : {
+                          stripStyles: true,
+                          stripClasses: false,
+                          preserveLineBreaks: true
+                        }
+                "
+              ></div>
             </div>
           </div>
         </div>
@@ -111,7 +134,7 @@
         <div class="tab-panel active">
           <div class="content-header">
             <h2 class="content-title">
-              <i class="fas fa-flag text-primary-custom me-3"></i>
+              <i class="text-primary-custom fas fa-flag me-3"></i>
               Our Mission
             </h2>
           </div>
@@ -121,7 +144,18 @@
               <div class="mission-icon">
                 <i class="fas fa-rocket"></i>
               </div>
-              <p class="mission-text">{{ aboutData()?.mission }}</p>
+              <div
+                class="mission-text"
+                [innerHTML]="
+                  aboutData()?.mission
+                    | cleanHtml
+                      : {
+                          stripStyles: true,
+                          stripClasses: false,
+                          preserveLineBreaks: true
+                        }
+                "
+              ></div>
             </div>
           </div>
         </div>
@@ -132,7 +166,7 @@
         <div class="tab-panel active">
           <div class="content-header">
             <h2 class="content-title">
-              <i class="fas fa-history text-primary-custom me-3"></i>
+              <i class="text-primary-custom fas fa-history me-3"></i>
               Faculty History
             </h2>
           </div>
@@ -143,7 +177,18 @@
                 <div class="timeline-item">
                   <div class="timeline-marker"></div>
                   <div class="timeline-content">
-                    <p class="history-text">{{ aboutData()?.history }}</p>
+                    <div
+                      class="history-text"
+                      [innerHTML]="
+                        aboutData()?.history
+                          | cleanHtml
+                            : {
+                                stripStyles: true,
+                                stripClasses: false,
+                                preserveLineBreaks: true
+                              }
+                      "
+                    ></div>
                   </div>
                 </div>
               </div>
@@ -157,16 +202,16 @@
         <div class="tab-panel active">
           <div class="content-header">
             <h2 class="content-title">
-              <i class="fas fa-bullseye text-primary-custom me-3"></i>
+              <i class="text-primary-custom fas fa-bullseye me-3"></i>
               Our Objectives
             </h2>
           </div>
 
           <div class="content-body">
             <div class="objectives-grid">
-              @for (goal of aboutData()?.goals; track goal.id; let i = $index) {
+              @for (goal of aboutData()?.goals; track goal.id; ) {
               <div class="objective-item">
-                <div class="objective-number">{{ i + 1 }}</div>
+                <div class="objective-number">{{ $index + 1 }}</div>
                 <div class="objective-content">
                   <p>{{ goal.goalName }}</p>
                 </div>

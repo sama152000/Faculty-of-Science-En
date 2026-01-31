@@ -27,11 +27,12 @@ import {
   DepartmentServicesService,
   DepartmentService as DeptService,
 } from '../../Services/real-services/departments';
+import { CleanHtmlPipe } from '../../../../pipes/clean-html.pipe';
 
 @Component({
   selector: 'app-departments',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, CleanHtmlPipe],
   templateUrl: './departments.component.html',
   styleUrls: ['./departments.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -139,34 +140,25 @@ export class DepartmentsComponent extends BaseComponent implements OnInit {
       .subscribe({
         next: (response) => {
           // Filter data by departmentId
-          if (response.details.success && response.details.data) {
-            this.departmentDetails.set(
-              response.details.data.filter(
-                (d) => d.departmentId === departmentId
-              )
-            );
-          }
-          if (response.members.success && response.members.data) {
-            this.departmentMembers.set(
-              response.members.data.filter(
-                (m) => m.departmentId === departmentId
-              )
-            );
-          }
-          if (response.programs.success && response.programs.data) {
-            this.departmentPrograms.set(
-              response.programs.data.filter(
-                (p) => p.departmentId === departmentId
-              )
-            );
-          }
-          if (response.services.success && response.services.data) {
-            this.departmentServices.set(
-              response.services.data.filter(
-                (s) => s.departmentId === departmentId
-              )
-            );
-          }
+          this.departmentDetails.set(
+            response.details.data.filter((d) => d.departmentId === departmentId)
+          );
+
+          this.departmentMembers.set(
+            response.members.data.filter((m) => m.departmentId === departmentId)
+          );
+
+          this.departmentPrograms.set(
+            response.programs.data.filter(
+              (p) => p.departmentId === departmentId
+            )
+          );
+
+          this.departmentServices.set(
+            response.services.data.filter(
+              (s) => s.departmentId === departmentId
+            )
+          );
         },
         error: (error) => {
           console.error('Failed to load department related data:', error);

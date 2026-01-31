@@ -2,11 +2,13 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DeanSpeechsService } from '../../../Services/real-services/dean-speechs.service';
 import { DeanSpeech } from '../../../model/deanspeech.model';
+import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-dean-word',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CleanHtmlPipe, RouterLink],
   templateUrl: './dean-word.component.html',
   styleUrls: ['./dean-word.component.css'],
 })

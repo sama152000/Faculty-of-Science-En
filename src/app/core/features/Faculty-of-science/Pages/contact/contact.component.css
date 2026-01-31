@@ -245,10 +245,10 @@
 }
 
 .president-avatar {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
+  width: 200px;
+  height: 250px;
+  border-radius: 5%;
+  object-fit: fill;
   border: 4px solid rgba(255, 255, 255, 0.3);
 }
 

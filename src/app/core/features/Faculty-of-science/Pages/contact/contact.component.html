@@ -8,7 +8,7 @@
     @if (isLoading()) {
     <div class="row">
       <!-- Sidebar Skeleton -->
-      <div class="col-lg-3 col-md-4 mb-4">
+      <div class="mb-4 col-lg-3 col-md-4">
         <p-card>
           <p-skeleton height="2rem" width="60%" styleClass="mb-3" />
           <p-skeleton height="3rem" styleClass="mb-2" />
@@ -22,7 +22,7 @@
           <p-skeleton height="4rem" styleClass="mb-4" />
           <div class="row">
             @for (i of [1, 2, 3, 4]; track i) {
-            <div class="col-6 mb-3">
+            <div class="mb-3 col-6">
               <p-skeleton height="5rem" />
             </div>
             }
@@ -37,8 +37,8 @@
     <!-- ============================================ -->
     @if (hasError()) {
     <div class="row justify-content-center">
-      <div class="col-md-6 text-center py-5">
-        <i class="pi pi-exclamation-triangle text-6xl text-red-500 mb-4"></i>
+      <div class="text-center py-5 col-md-6">
+        <i class="mb-4 text-6xl text-red-500 pi pi-exclamation-triangle"></i>
         <h4 class="mb-3">Failed to Load Contact Information</h4>
         <p class="text-muted mb-4">{{ error() }}</p>
         <p-button
@@ -57,10 +57,10 @@
     @if (isSuccess() && hasContactInfo()) {
     <div class="row">
       <!-- Sidebar -->
-      <div class="col-lg-3 col-md-4 mb-4">
+      <div class="mb-4 col-lg-3 col-md-4">
         <div class="contact-sidebar card-custom">
           <h4 class="sidebar-title">
-            <i class="pi pi-phone mr-2 inline-block"></i>
+            <i class="mr-2 pi pi-phone inline-block"></i>
             <span class="inline-block ms-3"> Quick Navigation </span>
           </h4>
 
@@ -72,7 +72,7 @@
               [class.active]="isActiveSection('general')"
               (click)="setActiveSection('general')"
             >
-              <i class="pi pi-info-circle mr-2"></i>
+              <i class="mr-2 pi pi-info-circle"></i>
               General Info
             </button>
             <button
@@ -81,7 +81,7 @@
               [class.active]="isActiveSection('staff')"
               (click)="setActiveSection('staff')"
             >
-              <i class="pi pi-users mr-2"></i>
+              <i class="mr-2 pi pi-users"></i>
               Staff Directory @if (hasMembers()) {
               <p-tag
                 [value]="totalMembersCount().toString()"
@@ -96,7 +96,7 @@
               [class.active]="isActiveSection('location')"
               (click)="setActiveSection('location')"
             >
-              <i class="pi pi-map-marker mr-2"></i>
+              <i class="mr-2 pi pi-map-marker"></i>
               Location & Map
             </button>
           </div>
@@ -319,12 +319,12 @@
 
           <!-- Dean / President -->
           @if (president(); as dean) {
-          <div class="president-section mb-4">
+          <div class="mb-4 president-section">
             <h3 class="section-subtitle">
-              <i class="pi pi-star mr-2 text-warning"></i>
+              <i class="mr-2 text-warning pi pi-star"></i>
               Dean of Faculty
             </h3>
-            <div class="president-card">
+            <div class="flex flex-column flex-sm-row president-card">
               <div class="president-image">
                 @if (hasAvatar(dean)) {
                 <img
@@ -349,7 +349,7 @@
                   styleClass="mb-2"
                 />
                 <p class="president-specialization">
-                  <i class="pi pi-book mr-1"></i>
+                  <i class="mr-1 pi pi-book"></i>
                   {{ dean.specialization }}
                 </p>
               </div>
@@ -359,9 +359,9 @@
 
           <!-- Key Staff (Vice Deans) -->
           @if (keyStaff().length > 0) {
-          <div class="key-staff-section mb-4">
+          <div class="mb-4 key-staff-section">
             <h3 class="section-subtitle">
-              <i class="pi pi-users mr-2"></i>
+              <i class="mr-2 pi pi-users"></i>
               Key Personnel
             </h3>
             <div class="row g-4">
@@ -385,9 +385,8 @@
                   </div>
                   <div class="staff-info">
                     <h5 class="staff-name">{{ member.fullName }}</h5>
-                    <p class="staff-position">{{ member.position }}</p>
                     <p-tag
-                      [value]="member.memberType"
+                      [value]="member.position"
                       [severity]="getMemberTypeSeverity(member.memberType)"
                       styleClass="mt-2"
                     />
@@ -403,7 +402,7 @@
           @if (departmentMembers().length > 0) {
           <div class="department-section">
             <h3 class="section-subtitle">
-              <i class="pi pi-sitemap mr-2"></i>
+              <i class="mr-2 pi pi-sitemap"></i>
               Department Members
             </h3>
             <div class="row g-4">
@@ -427,10 +426,19 @@
                   </div>
                   <div class="staff-info">
                     <h5 class="staff-name">{{ member.fullName }}</h5>
-                    <p class="staff-position">{{ member.position }}</p>
-                    <p class="staff-specialization">
-                      {{ member.specialization }}
-                    </p>
+                    <div>
+                      <p-tag
+                        [value]="member.position"
+                        [severity]="getMemberTypeSeverity(member.memberType)"
+                        styleClass="mt-2"
+                      />
+                    </div>
+
+                    <p-tag
+                      [value]="member.specialization"
+                      [severity]="getMemberTypeSeverity(member.memberType)"
+                      styleClass="mt-2"
+                    />
                   </div>
                 </div>
               </div>
@@ -441,8 +449,8 @@
 
           <!-- No Members -->
           @if (!membersLoading() && !hasMembers()) {
-          <div class="no-members text-center py-5">
-            <i class="pi pi-users text-6xl text-gray-400 mb-4"></i>
+          <div class="text-center py-5 no-members">
+            <i class="mb-4 text-6xl text-gray-400 pi pi-users"></i>
             <h4>No Staff Members Found</h4>
             <p class="text-muted">Staff directory will be updated soon.</p>
           </div>

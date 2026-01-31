@@ -1,7 +1,7 @@
 @if (program(); as prog) {
 <div class="program-content">
   <!-- Program Header -->
-  <div class="program-header card-custom mb-4">
+  <div class="mb-4 program-header card-custom">
     <div class="header-content">
       <div class="program-icon-large">
         @if (getProgramImage()) {
@@ -35,7 +35,7 @@
   </div>
 
   <!-- Section Navigation -->
-  <div class="section-nav card-custom mb-4">
+  <div class="mb-4 section-nav card-custom">
     <div class="nav-buttons">
       <button
         class="nav-btn"
@@ -83,33 +83,63 @@
     <div class="content-section">
       <div class="section-header">
         <h3 class="section-title-left">
-          <i class="fas fa-info-circle text-primary-custom me-3"></i>
+          <i class="text-primary-custom fas fa-info-circle me-3"></i>
           Program Overview
         </h3>
       </div>
 
       <div class="content-body">
-        <p class="lead" [innerHTML]="prog.about"></p>
-
-        <div class="row mt-4">
+        <div
+          class="lead"
+          [innerHTML]="
+            prog.about
+              | cleanHtml
+                : {
+                    stripStyles: true,
+                    stripClasses: true,
+                    preserveLineBreaks: true
+                  }
+          "
+        ></div>
+        <div class="mt-4 row">
           @if (prog.mission) {
-          <div class="col-md-6 mb-3">
+          <div class="mb-3 col-md-6">
             <div class="info-card">
               <h5 class="text-primary-custom">
                 <i class="fas fa-bullhorn me-2"></i>
                 Mission
               </h5>
-              <p [innerHTML]="prog.mission"></p>
+              <div
+                [innerHTML]="
+                  prog.mission
+                    | cleanHtml
+                      : {
+                          stripStyles: true,
+                          stripClasses: true,
+                          preserveLineBreaks: true
+                        }
+                "
+              ></div>
             </div>
           </div>
           } @if (prog.vision) {
-          <div class="col-md-6 mb-3">
+          <div class="mb-3 col-md-6">
             <div class="info-card">
               <h5 class="text-primary-custom">
                 <i class="fas fa-eye me-2"></i>
                 Vision
               </h5>
-              <p [innerHTML]="prog.vision"></p>
+              <div
+                [innerHTML]="
+                  prog.vision
+                    | cleanHtml
+                      : {
+                          stripStyles: true,
+                          stripClasses: true,
+                          preserveLineBreaks: true
+                        }
+                "
+              ></div>
             </div>
           </div>
           }
@@ -123,7 +153,7 @@
     <div class="content-section">
       <div class="section-header">
         <h3 class="section-title-left">
-          <i class="fas fa-bullseye text-primary-custom me-3"></i>
+          <i class="text-primary-custom fas fa-bullseye me-3"></i>
           Program Goals
         </h3>
       </div>
@@ -152,7 +182,7 @@
     <div class="content-section">
       <div class="section-header">
         <h3 class="section-title-left">
-          <i class="fas fa-list text-primary-custom me-3"></i>
+          <i class="text-primary-custom fas fa-list me-3"></i>
           Program Details
         </h3>
       </div>
@@ -173,7 +203,18 @@
               <p-tag [value]="detail.programCategory" severity="info" />
               }
             </div>
-            <div class="detail-content" [innerHTML]="detail.content"></div>
+            <div
+              class="detail-content"
+              [innerHTML]="
+                detail.content
+                  | cleanHtml
+                    : {
+                        stripStyles: true,
+                        stripClasses: true,
+                        preserveLineBreaks: true
+                      }
+              "
+            ></div>
           </div>
           }
         </div>
@@ -189,7 +230,7 @@
     <div class="content-section">
       <div class="section-header">
         <h3 class="section-title-left">
-          <i class="fas fa-users text-primary-custom me-3"></i>
+          <i class="text-primary-custom fas fa-users me-3"></i>
           Program Team
         </h3>
       </div>
@@ -225,8 +266,8 @@
 </div>
 } @else {
 <!-- No Program Selected -->
-<div class="no-selection text-center py-5">
-  <i class="fas fa-graduation-cap fa-3x text-muted mb-3"></i>
+<div class="text-center py-5 no-selection">
+  <i class="text-muted mb-3 fas fa-graduation-cap fa-3x"></i>
   <h4>Select a Program</h4>
   <p class="text-muted">
     Choose a program from the sidebar to view detailed information.

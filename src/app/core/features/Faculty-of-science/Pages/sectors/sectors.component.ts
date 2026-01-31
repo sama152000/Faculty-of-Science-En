@@ -28,6 +28,7 @@ import {
   SectorUnit,
   SectorPost,
 } from '../../model/sector.model';
+import { CleanHtmlPipe } from '../../../../pipes/clean-html.pipe';
 
 @Component({
   selector: 'app-sectors',
@@ -38,6 +39,7 @@ import {
     SkeletonModule,
     AvatarModule,
     TagModule,
+    CleanHtmlPipe,
   ],
   templateUrl: './sectors.component.html',
   styleUrls: ['./sectors.component.css'],

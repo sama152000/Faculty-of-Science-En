@@ -4,7 +4,7 @@
  */
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 import { SkeletonModule } from 'primeng/skeleton';
 import {
   DepartmentsService,
@@ -14,7 +14,7 @@ import {
 @Component({
   selector: 'app-our-departments',
   standalone: true,
-  imports: [CommonModule, RouterModule, SkeletonModule],
+  imports: [CommonModule, RouterModule, SkeletonModule, RouterLink],
   templateUrl: './our-departments.component.html',
   styleUrls: ['./our-departments.component.css'],
 })

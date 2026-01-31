@@ -3,7 +3,7 @@
   @if (loading()) {
   <div class="loading-container">
     <div class="row">
-      <div class="col-lg-3 col-md-4 mb-4">
+      <div class="mb-4 col-lg-3 col-md-4">
         <p-card>
           <p-skeleton height="2rem" width="60%" styleClass="mb-3" />
           @for (i of [1, 2, 3, 4]; track i) {
@@ -24,8 +24,8 @@
 
   <!-- Error State -->
   @if (error()) {
-  <div class="error-container text-center py-5">
-    <i class="pi pi-exclamation-triangle text-6xl text-danger mb-4"></i>
+  <div class="text-center py-5 error-container">
+    <i class="text-danger mb-4 text-6xl pi pi-exclamation-triangle"></i>
     <h4 class="mb-3">{{ error() }}</h4>
     <p-button
       label="Try Again"
@@ -40,7 +40,7 @@
   @if (!loading() && !error() && hasData()) {
   <div class="row">
     <!-- Sidebar -->
-    <div class="col-lg-3 col-md-4 mb-4">
+    <div class="mb-4 col-lg-3 col-md-4">
       <div class="items-sidebar card-custom">
         <h4 class="sidebar-title">
           <i class="fas fa-university me-2"></i>
@@ -59,7 +59,7 @@
                 @if (getCenterImage(center)) {
                 <img
                   [src]="getCenterImage(center)"
-                  [alt]="center.centerNameEn || center.centerName"
+                  [alt]="center.centerName || center.centerNameEn"
                   class="center-thumb"
                 />
                 } @else {
@@ -68,7 +68,7 @@
               </div>
               <div class="item-info">
                 <h6 class="item-name">
-                  {{ center.centerNameEn || center.centerName }}
+                  {{ center.centerName || center.centerNameEn }}
                 </h6>
                 <p class="item-desc">{{ center.subTitle }}</p>
               </div>
@@ -84,13 +84,13 @@
       @if (selectedCenter(); as center) {
       <div class="item-content">
         <!-- Center Header -->
-        <div class="item-header card-custom mb-4">
+        <div class="mb-4 item-header card-custom">
           <div class="header-content">
             <div class="item-icon-large">
               @if (getCenterImage(center)) {
               <img
                 [src]="getCenterImage(center)"
-                [alt]="center.centerNameEn || center.centerName"
+                [alt]="center.centerName || center.centerNameEn"
                 class="center-image"
               />
               } @else {
@@ -99,7 +99,7 @@
             </div>
             <div class="header-info">
               <h1 class="item-title">
-                {{ center.centerNameEn || center.centerName }}
+                {{ center.centerName || center.centerNameEn }}
               </h1>
               <p class="item-subtitle">{{ center.subTitle }}</p>
 
@@ -121,7 +121,7 @@
         </div>
 
         <!-- Section Navigation -->
-        <div class="section-nav card-custom mb-4">
+        <div class="mb-4 section-nav card-custom">
           <div class="nav-buttons">
             <button
               class="nav-btn"
@@ -168,33 +168,63 @@
           <div class="content-section">
             <div class="section-header">
               <h3 class="section-title-left">
-                <i class="fas fa-info-circle text-primary-custom me-3"></i>
+                <i class="text-primary-custom fas fa-info-circle me-3"></i>
                 Center Overview
               </h3>
             </div>
 
             <div class="content-body">
-              <p class="lead" [innerHTML]="center.about"></p>
-
-              <div class="row mt-4">
+              <div
+                class="lead"
+                [innerHTML]="
+                  center.about
+                    | cleanHtml
+                      : {
+                          stripStyles: true,
+                          stripClasses: true,
+                          preserveLineBreaks: true
+                        }
+                "
+              ></div>
+              <div class="mt-4 row">
                 @if (center.mission) {
-                <div class="col-md-6 mb-3">
+                <div class="mb-3 col-md-6">
                   <div class="info-card">
                     <h5 class="text-primary-custom">
                       <i class="fas fa-bullhorn me-2"></i>
                       Mission
                     </h5>
-                    <p [innerHTML]="center.mission"></p>
+                    <div
+                      [innerHTML]="
+                        center.mission
+                          | cleanHtml
+                            : {
+                                stripStyles: true,
+                                stripClasses: true,
+                                preserveLineBreaks: true
+                              }
+                      "
+                    ></div>
                   </div>
                 </div>
                 } @if (center.vision) {
-                <div class="col-md-6 mb-3">
+                <div class="mb-3 col-md-6">
                   <div class="info-card">
                     <h5 class="text-primary-custom">
                       <i class="fas fa-eye me-2"></i>
                       Vision
                     </h5>
-                    <p [innerHTML]="center.vision"></p>
+                    <div
+                      [innerHTML]="
+                        center.vision
+                          | cleanHtml
+                            : {
+                                stripStyles: true,
+                                stripClasses: true,
+                                preserveLineBreaks: true
+                              }
+                      "
+                    ></div>
                   </div>
                 </div>
                 }
@@ -208,7 +238,7 @@
           <div class="content-section">
             <div class="section-header">
               <h3 class="section-title-left">
-                <i class="fas fa-bullseye text-primary-custom me-3"></i>
+                <i class="text-primary-custom fas fa-bullseye me-3"></i>
                 Objectives
               </h3>
             </div>
@@ -216,9 +246,9 @@
             <div class="content-body">
               @if (center.goals && center.goals.length > 0) {
               <div class="objectives-grid">
-                @for (goal of center.goals; track goal.id; let i = $index) {
+                @for (goal of center.goals; track goal.id ) {
                 <div class="objective-item">
-                  <div class="objective-number">{{ i + 1 }}</div>
+                  <div class="objective-number">{{ $index + 1 }}</div>
                   <div class="objective-content">
                     <p>{{ goal.goalName }}</p>
                   </div>
@@ -237,7 +267,7 @@
           <div class="content-section">
             <div class="section-header">
               <h3 class="section-title-left">
-                <i class="fas fa-list text-primary-custom me-3"></i>
+                <i class="text-primary-custom fas fa-list me-3"></i>
                 Center Details
               </h3>
             </div>
@@ -256,7 +286,15 @@
                   <p class="detail-desc">{{ detail.description }}</p>
                   <div
                     class="detail-content"
-                    [innerHTML]="detail.content"
+                    [innerHTML]="
+                      detail.content
+                        | cleanHtml
+                          : {
+                              stripStyles: true,
+                              stripClasses: true,
+                              preserveLineBreaks: true
+                            }
+                    "
                   ></div>
                 </div>
                 }
@@ -273,7 +311,7 @@
           <div class="content-section">
             <div class="section-header">
               <h3 class="section-title-left">
-                <i class="fas fa-users text-primary-custom me-3"></i>
+                <i class="text-primary-custom fas fa-users me-3"></i>
                 Center Team
               </h3>
             </div>
@@ -309,8 +347,8 @@
       </div>
       } @else {
       <!-- No Center Selected -->
-      <div class="no-selection text-center py-5">
-        <i class="fas fa-university fa-3x text-muted mb-3"></i>
+      <div class="text-center py-5 no-selection">
+        <i class="text-muted mb-3 fas fa-university fa-3x"></i>
         <h4>Select a Center</h4>
         <p class="text-muted">
           Choose a center from the sidebar to view detailed information.
@@ -323,8 +361,8 @@
 
   <!-- Empty State -->
   @if (!loading() && !error() && !hasData()) {
-  <div class="empty-state text-center py-5">
-    <i class="fas fa-university fa-3x text-muted mb-3"></i>
+  <div class="text-center py-5 empty-state">
+    <i class="text-muted mb-3 fas fa-university fa-3x"></i>
     <h4>No Centers Available</h4>
     <p class="text-muted">Centers will be added soon.</p>
   </div>

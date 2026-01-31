@@ -5,7 +5,7 @@
  */
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { Observable, catchError, retry, timeout } from 'rxjs';
+import { Observable, catchError, map, of, retry, timeout } from 'rxjs';
 import { API_ENDPOINTS } from '../../../../constants/api-endpoints';
 import { ApiResponse, PaginatedResponse } from '../../../../models/api.models';
 import { PageRequest } from '../../model/real model/page-request.model';
@@ -35,6 +35,7 @@ export interface About {
   pageId: string;
   pageName: string;
   pageNameEn: string;
+  pageType: string;
 }
 
 @Injectable({
@@ -108,9 +109,9 @@ export class AboutService {
   }
 
   /**
-   * Get About University page specifically
-   * Filters for page with pageNameEn === "About University" or pageName === "عن الجامعة"
-   * @returns Observable of About University data
+   * الحصول على صفحة "عن الجامعة" بشكل محدد
+   * تصفية الصفحات للحصول على صفحة "عن الجامعة"
+   * @returns Observable يحتوي على بيانات صفحة "عن الجامعة"
    */
   getAboutUniversity(): Observable<About | null> {
     return new Observable((observer) => {
@@ -134,5 +135,29 @@ export class AboutService {
         },
       });
     });
+  }
+
+  /**
+   * الحصول على صفحة "عن الكلية" بشكل محدد
+   * تصفية الصفحات للحصول على صفحة "عن الكلية"
+   * @returns Observable يحتوي على بيانات صفحة "عن الكلية"
+   */
+  getAboutFaculty(): Observable<About | null> {
+    return this.getAllAboutPages().pipe(
+      map((response) => {
+        if (!response?.success || !response?.data?.length) {
+          return null;
+        }
+
+        return (
+          response.data.find((page) => page.pageType === 'AboutUniversity') ||
+          null
+        );
+      }),
+      catchError((error) => {
+        console.error('Failed to load About Faculty:', error);
+        return of(null);
+      })
+    );
   }
 }

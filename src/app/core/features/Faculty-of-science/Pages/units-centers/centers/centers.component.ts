@@ -20,6 +20,7 @@ import {
   CenterMember,
 } from '../../../Services/real-services/centers/centermember.service';
 import { Center } from '../../../model/centers.model';
+import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
 
 @Component({
   selector: 'app-centers',
@@ -32,6 +33,7 @@ import { Center } from '../../../model/centers.model';
     ButtonModule,
     TagModule,
     AvatarModule,
+    CleanHtmlPipe,
   ],
   templateUrl: './centers.component.html',
   styleUrls: ['../units-centers.component.css'],

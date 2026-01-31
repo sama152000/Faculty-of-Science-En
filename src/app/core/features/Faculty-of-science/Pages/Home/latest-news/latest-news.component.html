@@ -1,77 +1,21 @@
 <section
   id="news"
-  class="news-section bg-beige-custom position-relative overflow-hidden"
+  class="bg-beige-custom news-section position-relative overflow-hidden"
 >
   <div class="container-fluid">
-    <h2 class="section-title text-dark-blue mb-5">Latest News</h2>
+    <h2 class="text-dark-blue mb-5 section-title">Latest News</h2>
 
     <!-- Loading State -->
     @if (isLoading()) {
     <div class="news-slider-container position-relative">
-      <div class="news-slider d-flex gap-4">
+      <div class="gap-4 news-slider d-flex">
         @for (i of [1, 2, 3, 4]; track i) {
-        <div class="news-card card-custom flex-shrink-0">
-          <div
-            style="
-              height: 200px;
-              background: linear-gradient(
-                90deg,
-                #f0f0f0 25%,
-                #e0e0e0 50%,
-                #f0f0f0 75%
-              );
-              background-size: 200% 100%;
-              animation: shimmer 1.5s infinite;
-            "
-          ></div>
+        <div class="flex-shrink-0 news-card card-custom">
+          <div class="skeleton-image"></div>
           <div class="card-body">
-            <div
-              style="
-                height: 16px;
-                width: 40%;
-                background: linear-gradient(
-                  90deg,
-                  #f0f0f0 25%,
-                  #e0e0e0 50%,
-                  #f0f0f0 75%
-                );
-                background-size: 200% 100%;
-                animation: shimmer 1.5s infinite;
-                border-radius: 4px;
-                margin-bottom: 0.75rem;
-              "
-            ></div>
-            <div
-              style="
-                height: 20px;
-                width: 80%;
-                background: linear-gradient(
-                  90deg,
-                  #f0f0f0 25%,
-                  #e0e0e0 50%,
-                  #f0f0f0 75%
-                );
-                background-size: 200% 100%;
-                animation: shimmer 1.5s infinite;
-                border-radius: 4px;
-                margin-bottom: 0.5rem;
-              "
-            ></div>
-            <div
-              style="
-                height: 16px;
-                width: 100%;
-                background: linear-gradient(
-                  90deg,
-                  #f0f0f0 25%,
-                  #e0e0e0 50%,
-                  #f0f0f0 75%
-                );
-                background-size: 200% 100%;
-                animation: shimmer 1.5s infinite;
-                border-radius: 4px;
-              "
-            ></div>
+            <div class="skeleton-date"></div>
+            <div class="skeleton-title"></div>
+            <div class="skeleton-text"></div>
           </div>
         </div>
         }
@@ -82,7 +26,7 @@
     <!-- Error State -->
     @if (hasError()) {
     <div class="text-center py-5">
-      <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+      <i class="text-warning mb-3 fas fa-exclamation-triangle fa-3x"></i>
       <h4>Failed to Load News</h4>
       <p class="text-muted">{{ error() }}</p>
       <button class="btn btn-primary" (click)="retry()">
@@ -93,31 +37,43 @@
     }
 
     <!-- Success State -->
-    @if (isSuccess() && news().length > 0) {
+    @if (isSuccess() && newsList().length > 0) {
     <!-- Grid Mode: 5 or fewer news items - fill the width -->
     @if (!isSliderMode()) {
     <div class="news-grid-container">
-      <div class="news-grid" [class]="'news-count-' + news().length">
-        @for (item of news(); track item.id) {
+      <div class="news-grid" [class]="'news-count-' + newsList().length">
+        @for (new of newsList(); track new.id) {
         <div class="news-card card-custom">
           <img
-            [src]="getFeaturedImage(item)"
-            [alt]="item.title"
+            [src]="getFeaturedImage(new)"
+            [alt]="new.title"
             class="card-img-top img-cover"
             style="height: 200px"
           />
           <div class="card-body">
-            <div class="news-date text-muted mb-2">
-              <i class="fa-regular fa-calendar me-2"></i>
-              {{ formatDate(item.createdDate) }}
+            <div class="text-muted mb-2 news-date">
+              @if (new.publishedDate ) {
+              <i class="fa-regular fa-calendar ms-2"></i>
+              {{ formatDate(new.publishedDate) }}
+              }
             </div>
-            <h5 class="card-title text-dark-blue">{{ item.title }}</h5>
-            <p class="card-text text-muted">
-              {{ getExcerpt(item.content, 100) }}
-            </p>
+            <h5 class="text-dark-blue card-title">{{ new.title }}</h5>
+            <div
+              class="text-muted card-text"
+              [innerHTML]="
+                (new.content
+                  | cleanHtml
+                    : {
+                        stripStyles: true,
+                        stripClasses: false,
+                        preserveLineBreaks: true
+                      }
+                  | slice : 0 : 100) + '...'
+              "
+            ></div>
             <a
-              [routerLink]="['/news', item.id]"
-              class="read-more text-primary-custom fw-semibold text-decoration-none"
+              [routerLink]="['/news', new.id]"
+              class="text-primary-custom text-decoration-none read-more fw-semibold"
             >
               Read More →
             </a>
@@ -134,26 +90,38 @@
         [class.gap-4]="!isMobile()"
         [style.transform]="getSlideTransform()"
       >
-        @for (item of news(); track item.id) {
-        <div class="news-card card-custom flex-shrink-0">
+        @for (new of newsList(); track new.id) {
+        <div class="flex-shrink-0 news-card card-custom">
           <img
-            [src]="getFeaturedImage(item)"
-            [alt]="item.title"
+            [src]="getFeaturedImage(new)"
+            [alt]="new.title"
             class="card-img-top img-cover"
             style="height: 200px"
           />
           <div class="card-body">
-            <div class="news-date text-muted mb-2">
-              <i class="fa-regular fa-calendar me-2"></i>
-              {{ formatDate(item.createdDate) }}
+            <div class="text-muted mb-2 news-date">
+              @if (new.publishedDate ) {
+              <i class="fa-regular fa-calendar ms-2"></i>
+              {{ formatDate(new.publishedDate) }}
+              }
             </div>
-            <h5 class="card-title text-dark-blue">{{ item.title }}</h5>
-            <p class="card-text text-muted">
-              {{ getExcerpt(item.content, 100) }}
-            </p>
+            <h5 class="text-dark-blue card-title">{{ new.title }}</h5>
+            <div
+              class="text-muted card-text"
+              [innerHTML]="
+                (new.content
+                  | cleanHtml
+                    : {
+                        stripStyles: true,
+                        stripClasses: false,
+                        preserveLineBreaks: true
+                      }
+                  | slice : 0 : 100) + '...'
+              "
+            ></div>
             <a
-              [routerLink]="['/news', item.id]"
-              class="read-more text-primary-custom fw-semibold text-decoration-none"
+              [routerLink]="['/news', new.id]"
+              class="text-primary-custom text-decoration-none read-more fw-semibold"
             >
               Read More →
             </a>
@@ -165,14 +133,14 @@
       <!-- Navigation Buttons (only in slider mode) -->
       @if (showNavButtons()) {
       <button
-        class="news-nav news-prev btn btn-primary rounded-circle position-absolute"
+        class="rounded-circle news-nav news-prev btn btn-primary position-absolute"
         (click)="prevNews()"
       >
         <i class="fa-solid fa-chevron-left"></i>
       </button>
 
       <button
-        class="news-nav news-next btn btn-primary rounded-circle position-absolute"
+        class="rounded-circle news-nav news-next btn btn-primary position-absolute"
         (click)="nextNews()"
       >
         <i class="fa-solid fa-chevron-right"></i>
@@ -182,17 +150,17 @@
     } }
 
     <!-- Empty State -->
-    @if (isSuccess() && news().length === 0) {
+    @if (isSuccess() && newsList().length === 0) {
     <div class="text-center py-5">
-      <i class="fas fa-newspaper fa-3x text-muted mb-3"></i>
+      <i class="text-muted mb-3 fas fa-newspaper fa-3x"></i>
       <h4>No News Available</h4>
       <p class="text-muted">Check back later for the latest news.</p>
     </div>
     }
 
     <!-- View All Button -->
-    @if (isSuccess() && news().length > 0) {
-    <div class="text-center mt-5">
+    @if (isSuccess() && newsList().length > 0) {
+    <div class="mt-5 text-center">
       <a [routerLink]="['/news']" class="btn-primary-custom">View All News</a>
     </div>
     }

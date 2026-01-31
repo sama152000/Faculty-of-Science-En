@@ -1,12 +1,12 @@
-<section id="dean" class="dean-section bg-beige-custom section-padding">
+<section id="dean" class="bg-beige-custom dean-section section-padding">
   <div class="container-fluid">
     <!-- Loading State -->
     @if (loading) {
     <div class="row align-items-center">
-      <div class="col-lg-5 mb-4 mb-lg-0">
-        <div class="dean-image text-center">
+      <div class="mb-4 mb-lg-0 col-lg-5">
+        <div class="text-center dean-image">
           <div
-            class="skeleton-image rounded shadow-lg"
+            class="rounded shadow-lg skeleton-image"
             style="
               width: 400px;
               height: 400px;
@@ -24,7 +24,7 @@
       <div class="col-lg-7">
         <div class="dean-content">
           <div
-            class="skeleton-title mb-4"
+            class="mb-4 skeleton-title"
             style="
               height: 40px;
               width: 200px;
@@ -39,7 +39,7 @@
             "
           ></div>
           <div
-            class="skeleton-text mb-3"
+            class="mb-3 skeleton-text"
             style="
               height: 100px;
               background: linear-gradient(
@@ -74,36 +74,51 @@
 
     <!-- Content State -->
     @if (!loading) {
-    <div class="row align-items-center">
-      <!-- Dean Image -->
-      <div class="col-lg-5 mb-4 mb-lg-0">
-        <div class="dean-image text-center">
-          <img
-            [src]="deanImage"
-            [alt]="deanName"
-            class="img-fluid rounded shadow-lg hover-scale"
-            style="max-width: 400px"
-            (error)="$event.target.src = './assets/deanp.jpg'"
-          />
+    <a [routerLink]="['/about']">
+      <div class="row align-items-center">
+        <!-- Dean Image -->
+        <div class="mb-4 mb-lg-0 col-lg-5">
+          <div class="text-center dean-image">
+            <img
+              [src]="deanImage"
+              [alt]="deanName"
+              class="rounded shadow-lg img-fluid hover-scale"
+              style="max-width: 400px"
+              (error)="$event.target.src = './assets/deanp.jpg'"
+            />
+          </div>
         </div>
-      </div>
 
-      <!-- Dean Content -->
-      <div class="col-lg-7">
-        <div class="dean-content">
-          <h2 class="section-title section-title-left text-dark-blue mb-4">
-            Dean's Word
-          </h2>
+        <!-- Dean Content -->
+        <div class="col-lg-7">
+          <div class="dean-content">
+            <h2 class="text-dark-blue mb-4 section-title section-title-left">
+              Dean's Word
+            </h2>
 
-          <p class="lead text-primary-custom mb-4">{{ deanMessage }}</p>
-
-          <div class="dean-signature mt-4">
-            <h4 class="text-dark-blue mb-1">{{ deanName }}</h4>
-            <p class="text-muted mb-0">{{ deanTitle }}</p>
+            <div
+              class="text-primary-custom mb-4 lead"
+              [innerHTML]="
+                (deanMessage
+                  | cleanHtml
+                    : {
+                        stripStyles: true,
+                        stripClasses: false,
+                        preserveLineBreaks: true
+                      }
+                  | slice : 0 : 300) +
+                '&nbsp;' +
+                '....'
+              "
+            ></div>
+            <div class="mt-4 dean-signature">
+              <h4 class="text-dark-blue mb-1">{{ deanName }}</h4>
+              <p class="text-muted mb-0">{{ deanTitle }}</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </a>
     }
   </div>
 </section>

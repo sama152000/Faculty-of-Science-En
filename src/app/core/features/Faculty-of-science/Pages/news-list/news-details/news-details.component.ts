@@ -28,6 +28,7 @@ import {
   PostAttachment,
   Tag as NewsTag,
 } from '../../../model/news.model';
+import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
 
 // Types for better type safety
 type SocialPlatform = 'facebook' | 'twitter' | 'linkedin' | 'whatsapp';
@@ -51,6 +52,7 @@ interface GalleriaImage {
     CardModule,
     GalleriaModule,
     TooltipModule,
+    CleanHtmlPipe,
   ],
   templateUrl: './news-details.component.html',
   styleUrls: ['./news-details.component.css'],
@@ -118,24 +120,9 @@ export class NewsDetailsComponent extends BaseComponent implements OnInit {
     return this.tags().length > 0;
   });
 
-  /** Article status color */
-  protected readonly statusSeverity = computed<'success' | 'warn' | 'info'>(
-    () => {
-      const status = this.newsItem()?.status;
-      switch (status) {
-        case 'Published':
-          return 'success';
-        case 'Draft':
-          return 'warn';
-        default:
-          return 'info';
-      }
-    }
-  );
-
   /** Formatted created date */
   protected readonly formattedDate = computed<string>(() => {
-    const date = this.newsItem()?.createdDate;
+    const date = this.newsItem()?.publishedDate;
     if (!date) return '';
     return this.formatDateValue(date);
   });

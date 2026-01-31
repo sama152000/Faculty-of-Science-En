@@ -12,11 +12,18 @@ import {
   ProgramDetail,
   ProgramMember,
 } from '../../../model/program.model';
+import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
 
 @Component({
   selector: 'app-program-detail',
   standalone: true,
-  imports: [CommonModule, SkeletonModule, AvatarModule, TagModule],
+  imports: [
+    CommonModule,
+    SkeletonModule,
+    AvatarModule,
+    TagModule,
+    CleanHtmlPipe,
+  ],
   templateUrl: './program-detail.component.html',
   styleUrls: ['../programs.component.css'],
 })

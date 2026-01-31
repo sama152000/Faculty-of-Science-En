@@ -1,44 +1,52 @@
-<footer id="footer" class="site-footer text-dark">
+<footer id="footer" class="text-dark site-footer">
   <div class="container-fluid">
     <div class="row">
       <!-- Column 1: About -->
-      <div class="col-lg-3 col-md-6 mb-4">
+      <div class="mb-4 col-lg-3 col-md-6">
         <div class="footer-col">
-          <h5 class="footer-title text-dark-blue mb-3">Faculty of Science</h5>
-          <p class="text-muted" [innerHTML]="visionText()"></p>
+          <h5 class="text-dark-blue mb-3 footer-title">Faculty of Science</h5>
+          <p
+            class="text-muted"
+            [innerHTML]="
+              visionText()
+                | cleanHtml
+                  : {
+                      stripStyles: true,
+                      stripClasses: true,
+                      preserveLineBreaks: true
+                    }
+            "
+          ></p>
         </div>
       </div>
 
       <!-- Column 2: Quick Links -->
-      <div class="col-lg-3 col-md-6 mb-4">
+      <div class="mb-4 col-lg-3 col-md-6">
         <div class="footer-col">
-          <h5 class="footer-title text-dark-blue mb-3">Quick Links</h5>
-          <ul class="footer-links list-unstyled">
+          <h5 class="text-dark-blue mb-3 footer-title">Quick Links</h5>
+          <ul class="list-unstyled footer-links">
             <li>
-              <a routerLink="/home" class="text-muted text-decoration-none">
+              <a routerLink="/home" class="text-muted">
                 <i class="pi pi-home me-2"></i>Home
               </a>
             </li>
             <li>
-              <a routerLink="/about" class="text-muted text-decoration-none">
+              <a routerLink="/about" class="text-muted">
                 <i class="pi pi-info-circle me-2"></i>About
               </a>
             </li>
             <li>
-              <a
-                routerLink="/departments"
-                class="text-muted text-decoration-none"
-              >
+              <a routerLink="/departments" class="text-muted">
                 <i class="pi pi-sitemap me-2"></i>Departments
               </a>
             </li>
             <li>
-              <a routerLink="/news" class="text-muted text-decoration-none">
+              <a routerLink="/news" class="text-muted">
                 <i class="pi pi-book me-2"></i>News
               </a>
             </li>
             <li>
-              <a routerLink="/sectors" class="text-muted text-decoration-none">
+              <a routerLink="/sectors" class="text-muted">
                 <i class="pi pi-building me-2"></i>Sectors
               </a>
             </li>
@@ -47,25 +55,19 @@
       </div>
 
       <!-- Column 3: Departments (Dynamic from API) -->
-      <div class="col-lg-3 col-md-6 mb-4">
+      <div class="mb-4 col-lg-3 col-md-6">
         <div class="footer-col">
-          <h5 class="footer-title text-dark-blue mb-3">Departments</h5>
-          <ul class="footer-links list-unstyled">
+          <h5 class="text-dark-blue mb-3 footer-title">Departments</h5>
+          <ul class="list-unstyled footer-links">
             @for (dept of footerDepartments(); track dept.id) {
             <li>
-              <a
-                routerLink="/departments"
-                class="text-muted text-decoration-none"
-              >
+              <a routerLink="/departments" class="text-muted">
                 {{ dept.name }}
               </a>
             </li>
             } @empty {
             <li>
-              <a
-                routerLink="/departments"
-                class="text-muted text-decoration-none"
-              >
+              <a routerLink="/departments" class="text-muted">
                 View All Departments
               </a>
             </li>
@@ -75,24 +77,24 @@
       </div>
 
       <!-- Column 4: Contact (Dynamic from API) -->
-      <div class="col-lg-3 col-md-6 mb-4">
+      <div class="mb-4 col-lg-3 col-md-6">
         <div class="footer-col">
-          <h5 class="footer-title text-dark-blue mb-3">Contact</h5>
+          <h5 class="text-dark-blue mb-3 footer-title">Contact</h5>
 
           @if (hasContactInfo()) {
           <address class="text-muted mb-3">
             <!-- Address -->
             @if (contactInfo()?.address) {
-            <div class="contact-item mb-2">
-              <i class="pi pi-map-marker me-2 text-primary-custom"></i>
+            <div class="mb-2 contact-item">
+              <i class="text-primary-custom pi pi-map-marker me-2"></i>
               {{ contactInfo()?.address }}
             </div>
             }
 
             <!-- Phone -->
             @if (contactInfo()?.phone) {
-            <div class="contact-item mb-2">
-              <i class="pi pi-phone me-2 text-primary-custom"></i>
+            <div class="mb-2 contact-item">
+              <i class="pi pi-phone me-2"></i>
               <a [href]="'tel:' + contactInfo()?.phone" class="text-muted">
                 {{ contactInfo()?.phone }}
               </a>
@@ -101,20 +103,17 @@
 
             <!-- Fax -->
             @if (contactInfo()?.fax) {
-            <div class="contact-item mb-2">
-              <i class="pi pi-print me-2 text-primary-custom"></i>
+            <div class="mb-2 contact-item">
+              <i class="pi pi-print me-2"></i>
               Fax: {{ contactInfo()?.fax }}
             </div>
             }
 
             <!-- Email -->
             @if (contactInfo()?.email) {
-            <div class="contact-item mb-2">
-              <i class="pi pi-envelope me-2 text-primary-custom"></i>
-              <a
-                [href]="'mailto:' + contactInfo()?.email"
-                class="text-primary-custom"
-              >
+            <div class="mb-2 contact-item">
+              <i class="pi pi-envelope me-2"></i>
+              <a [href]="'mailto:' + contactInfo()?.email" class="">
                 {{ contactInfo()?.email }}
               </a>
             </div>
@@ -122,13 +121,9 @@
 
             <!-- Website -->
             @if (contactInfo()?.webSite) {
-            <div class="contact-item mb-2">
-              <i class="pi pi-globe me-2 text-primary-custom"></i>
-              <a
-                [href]="contactInfo()?.webSite"
-                target="_blank"
-                class="text-primary-custom"
-              >
+            <div class="mb-2 contact-item">
+              <i class="pi pi-globe me-2"></i>
+              <a [href]="contactInfo()?.webSite" target="_blank" class="">
                 Visit Website
               </a>
             </div>
@@ -137,12 +132,12 @@
           } @else {
           <!-- Fallback if API fails -->
           <address class="text-muted mb-3">
-            <div class="contact-item mb-2">
-              <i class="pi pi-map-marker me-2 text-primary-custom"></i>
+            <div class="mb-2 contact-item">
+              <i class="pi pi-map-marker me-2"></i>
               Luxor University, Egypt
             </div>
-            <div class="contact-item mb-2">
-              <i class="pi pi-envelope me-2 text-primary-custom"></i>
+            <div class="mb-2 contact-item">
+              <i class="pi pi-envelope me-2"></i>
               <a href="mailto:info@luxorsci.edu.eg" class="text-primary-custom">
                 info&#64;luxorsci.edu.eg
               </a>
@@ -171,22 +166,22 @@
           <div class="social-icons">
             <a
               href="#"
-              class="social-link me-3 text-dark-blue"
+              class="text-dark-blue social-link me-3"
               title="Facebook"
             >
               <i class="pi pi-facebook"></i>
             </a>
-            <a href="#" class="social-link me-3 text-dark-blue" title="Twitter">
+            <a href="#" class="text-dark-blue social-link me-3" title="Twitter">
               <i class="pi pi-twitter"></i>
             </a>
             <a
               href="#"
-              class="social-link me-3 text-dark-blue"
+              class="text-dark-blue social-link me-3"
               title="Instagram"
             >
               <i class="pi pi-instagram"></i>
             </a>
-            <a href="#" class="social-link text-dark-blue" title="LinkedIn">
+            <a href="#" class="text-dark-blue social-link" title="LinkedIn">
               <i class="pi pi-linkedin"></i>
             </a>
           </div>
@@ -197,10 +192,10 @@
   </div>
 
   <!-- Footer Bottom -->
-  <div class="footer-bottom bg-primary-custom text-white py-3">
+  <div class="bg-primary-custom text-white py-3 footer-bottom">
     <div class="container">
       <div class="row align-items-center">
-        <div class="col-md-12 text-center">
+        <div class="text-center col-md-12">
           <p class="mb-0">
             © {{ currentYear }} Luxor University — All Rights Reserved
           </p>
@@ -212,7 +207,7 @@
   <!-- Scroll to Top Button -->
   @if (showScrollTop()) {
   <button
-    class="scroll-to-top btn btn-primary rounded-circle position-fixed"
+    class="rounded-circle scroll-to-top btn btn-primary position-fixed"
     (click)="scrollToTop()"
     title="Go to top"
     type="button"

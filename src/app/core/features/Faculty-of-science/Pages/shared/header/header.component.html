@@ -1,34 +1,42 @@
 <!-- Top Bar -->
 <div class="top-bar">
   <div class="container">
-    <div class="row align-items-center py-2">
+    <div class="row py-2 align-items-center">
       <div class="col-md-8">
-        <div class="contact-info d-flex flex-wrap gap-3">
+        <div class="flex-wrap gap-3 contact-info d-flex">
           @if (contact()?.phone) {
-          <span class="text-primary-custom">
-            <i class="fa fa-phone me-2"></i>{{ contact()?.phone }}
+          <span class="text-primary-custom contact-item">
+            <i class="fa fa-phone me-2"></i>
+            <a [href]="'tel:' + contact()?.phone" class="text-muted">
+              {{ contact()?.phone }}
+            </a>
           </span>
-          } @if (contact()?.email) {
-          <span class="text-primary-custom">
-            <i class="fa fa-envelope me-2"></i>{{ contact()?.email }}
+          }
+          <!--  -->
+          @if (contact()?.email) {
+          <span class="text-primary-custom contact-item">
+            <i class="fa fa-envelope me-2"></i>
+            <a [href]="'mailto:' + contact()?.email" class="text-muted">
+              {{ contact()?.email }}
+            </a>
           </span>
           }
         </div>
       </div>
       <div class="col-md-4">
         <div
-          class="top-links d-flex justify-content-end align-items-center gap-3"
+          class="top-links gap-3 d-flex justify-content-end align-items-center"
         >
-          <a
+          <!-- <a
             href="https://www.luxor.edu.eg"
             target="_blank"
             class="text-primary-custom text-decoration-none fw-semibold"
           >
             <i class="fa fa-university me-1"></i>University
-          </a>
+          </a> -->
           <a
-            class="btn btn-primary btn-sm"
-            href="https://science-faculty-ar.vercel.app/"
+            class="mt-3 mt-md-0 btn btn-primary btn-sm"
+            [href]="contact()?.website"
             target="_blank"
           >
             العربية
@@ -40,14 +48,14 @@
 </div>
 
 <!-- Main Header -->
-<header class="site-header bg-white shadow-sm sticky-top">
+<header class="bg-white shadow-sm site-header sticky-top">
   <div class="container">
-    <div class="row align-items-center py-3">
+    <div class="row py-3 align-items-center">
       <!-- Logo -->
       <div class="col-9 col-lg-3">
         <a
           routerLink="/"
-          class="logo d-flex align-items-center text-decoration-none"
+          class="text-decoration-none logo d-flex align-items-center"
         >
           @if (logo()) {
           <img
@@ -57,7 +65,7 @@
           />
           }
 
-          <span class="site-title text-primary-custom fw-bold"
+          <span class="text-primary-custom site-title fw-bold"
             >Faculty of Science</span
           >
         </a>
