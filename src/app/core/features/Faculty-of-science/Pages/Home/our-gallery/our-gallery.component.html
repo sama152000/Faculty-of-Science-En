@@ -1,18 +1,32 @@
-<section id="gallery" class="gallery-section  text-center"
-         style="background: linear-gradient(135deg, #e0f1ff 0%, #f5f1e6 100%);">
+<section
+  id="gallery"
+  class="gallery-section text-center"
+  style="background: linear-gradient(135deg, #e0f1ff 0%, #f5f1e6 100%)"
+>
   <div class="container-fluid">
-    <h2 class="section-title text-dark-blue mb-5">Our Gallery</h2>
-    
+    <h2 class="section-title text-dark-blue mb-5">معرض الصور</h2>
+
     <div class="row">
-      <div class="col-lg-4 col-md-6 mb-4" *ngFor="let item of galleryItems">
-        <div class="gallery-item position-relative overflow-hidden rounded hover-scale">
-          <img [src]="item.image" 
-               [alt]="item.title"
-               class="img-fluid w-100"
-               style="height: 250px; object-fit: cover;">
-          
+      <div
+        class="col-lg-4 col-md-6 mb-4"
+        *ngFor="let item of galleryItems; let i = index"
+      >
+        <div
+          class="gallery-item position-relative overflow-hidden rounded hover-scale"
+          (click)="openImage(item, i)"
+          style="cursor: pointer"
+        >
+          <img
+            [src]="item.image"
+            [alt]="item.title"
+            class="img-fluid w-100"
+            style="height: 250px; object-fit: cover"
+          />
+
           <!-- Overlay -->
-          <div class="gallery-overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center">
+          <div
+            class="gallery-overlay position-absolute w-100 h-100 d-flex align-items-center justify-content-center"
+          >
             <div class="gallery-content text-white text-center">
               <h5 class="mb-2">{{ item.title }}</h5>
               <p class="small mb-0">{{ item.description }}</p>
@@ -23,3 +37,26 @@
     </div>
   </div>
 </section>
+<!-- End of Gallery Section -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-transparent border-0">
+      <div class="modal-body text-center position-relative">
+        <!-- زر التالي -->
+        <button class="nav-btn next" (click)="nextImage()">❮</button>
+
+        <!-- الصورة -->
+        <img [src]="selectedImage?.image" class="img-fluid rounded" />
+        <!-- زر السابق -->
+        <button class="nav-btn prev" (click)="prevImage()">❯</button>
+
+        <!-- زر الإغلاق -->
+        <button
+          type="button"
+          class="btn-close btn-close-white position-absolute top-0 end-0 m-3"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -68,3 +68,42 @@
     height: 180px !important;
   }
 }
+
+.modal-body {
+  background: rgba(194, 194, 194, 0.85);
+  border-radius: 12px;
+}
+.modal-body img {
+  width: 100%;
+  border-radius: 12px;
+}
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+  border: none;
+  font-size: 32px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.nav-btn.prev {
+  left: 15px;
+}
+
+.nav-btn.next {
+  right: 15px;
+}
+
+.nav-btn:hover {
+  background: rgba(0, 0, 0, 0.85);
+}
+.modal-content {
+  background: transparent;
+  border: none;
+}
