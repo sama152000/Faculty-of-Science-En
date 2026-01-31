@@ -7,7 +7,6 @@ import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-dean-word',
-  standalone: true,
   imports: [CommonModule, CleanHtmlPipe, RouterLink],
   templateUrl: './dean-word.component.html',
   styleUrls: ['./dean-word.component.css'],
@@ -31,7 +30,6 @@ export class DeanWordComponent implements OnInit {
       next: (response) => {
         if (response.success && response.data && response.data.length > 0) {
           this.deanSpeech = response.data[0]; // Get the first dean speech
-          console.log(this.deanSpeech);
         }
         this.loading = false;
       },

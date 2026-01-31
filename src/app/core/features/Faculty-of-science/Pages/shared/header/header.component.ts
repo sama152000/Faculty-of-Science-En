@@ -17,7 +17,6 @@ export interface Contact {
 
 @Component({
   selector: 'app-header',
-  standalone: true,
   imports: [CommonModule, RouterModule, RouterLink],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],

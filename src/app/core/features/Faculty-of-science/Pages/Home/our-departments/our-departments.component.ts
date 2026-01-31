@@ -13,7 +13,6 @@ import {
 
 @Component({
   selector: 'app-our-departments',
-  standalone: true,
   imports: [CommonModule, RouterModule, SkeletonModule, RouterLink],
   templateUrl: './our-departments.component.html',
   styleUrls: ['./our-departments.component.css'],

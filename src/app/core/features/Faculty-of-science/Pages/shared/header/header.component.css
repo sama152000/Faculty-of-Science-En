@@ -1,216 +1,336 @@
+/* =========================================
+   1. GLOBAL HEADER STYLES
+   ========================================= */
+
+/* Top Bar */
 .top-bar {
-  font-size: 0.9rem;
-  background-color: var(--accent-orange);
+  background-color: var(--accent-orange, #f0bc7d); /* Fallback color */
+  font-size: 0.85rem;
+  padding: 0.5rem 0;
+  color: #fff;
 }
 
-.btn-primary {
-  background-color: var(--primary-blue);
-  border-color: var(--primary-blue);
-  border-radius: var(--border-radius);
-  padding: 0.25rem 2rem;
-  font-size: 0.8rem;
+.top-bar a {
+  text-decoration: none;
+  transition: opacity 0.3s;
+}
+
+.top-bar a:hover {
+  opacity: 0.8;
+}
+
+.contact-info {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #333;
   font-weight: 500;
-  transition: var(--transition);
+}
+
+.contact-item i {
+  color: var(--primary-blue, #0d4f8b);
+}
+
+/* English Button */
+.btn-primary {
+  background-color: var(--primary-blue, #0d4f8b);
+  border: none;
+  border-radius: 20px;
+  padding: 0.4rem 1.5rem;
+  font-size: 0.85rem;
+  transition: transform 0.2s, background-color 0.2s;
 }
 
 .btn-primary:hover {
-  background-color: var(--primary-blue-dark);
-  border-color: var(--primary-blue-dark);
-  color: var(--primary-blue-dark);
+  background-color: var(--dark-blue, #002244);
+  transform: translateY(-2px);
 }
 
-.contact-info span {
-  font-weight: 500;
+/* Main Header Container */
+.site-header {
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+}
+
+/* Logo */
+.logo {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
 }
 
 .logo-img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  /* border-radius: 50%; */
-  /* border: 3px solid var(--primary-blue); */
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
 }
 
 .site-title {
   font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--primary-blue, #0d4f8b);
   line-height: 1.2;
 }
 
-.navbar-nav .nav-link {
-  color: var(--text-dark);
-  font-weight: 500;
-  padding: 0.75rem 1rem;
-  transition: var(--transition);
-  position: relative;
-}
-
-.navbar-nav .nav-link:hover,
-.navbar-nav .nav-link.active {
-  color: var(--primary-blue);
-}
-
-.navbar-nav .nav-link::after {
-  content: "";
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background: var(--primary-blue);
-  transition: var(--transition);
-  transform: translateX(-50%);
-}
-
-.navbar-nav .nav-link:hover::after,
-.navbar-nav .nav-link.active::after {
-  width: 80%;
-}
-
-.dropdown-menu {
-  border: none;
-  box-shadow: var(--shadow-medium);
-  border-radius: var(--border-radius);
-  padding: 0.5rem 0;
-}
-
-.dropdown-item {
-  padding: 0.5rem 1.5rem;
-  transition: var(--transition);
-}
-
-.dropdown-item:hover {
-  background: var(--light-beige);
-  color: var(--primary-blue);
-}
-
-.navbar-toggler {
-  border: none;
-  padding: 0.25rem 0.5rem;
-}
-
-.navbar-toggler:focus {
-  box-shadow: none;
-}
-
-/* Mobile Styles */
-@media (max-width: 991px) {
-  .navbar {
-    justify-content: center;
+/* =========================================
+   2. DESKTOP NAVIGATION (Medium Screens & Up)
+   ========================================= */
+@media (min-width: 992px) {
+  .navbar-expand-lg .navbar-nav {
+    flex-direction: row;
+    gap: 0.2rem; /* Tight gap for Laptop */
   }
 
-  .navbar-toggler {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    text-align: center;
+  .nav-item {
+    display: flex;
+    align-items: center;
+    white-space: nowrap; /* Prevent text wrapping */
   }
 
-  .navbar-collapse {
-    background: var(--white);
-    border-radius: var(--border-radius);
-    box-shadow: var(--shadow-medium);
-    margin-top: 1rem;
-    padding: 1rem;
+  /* Base Link Style */
+  .navbar-nav .nav-link {
+    color: var(--text-dark, #333) !important;
+    font-weight: 600;
+    font-size: 0.85rem; /* Smaller font for Laptop */
+    padding: 0.5rem 0.8rem !important;
+    border-radius: 50px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    border: 1px solid transparent;
   }
 
-  .navbar-nav {
-    text-align: center;
+  /* Kill unwanted pseudo-elements */
+  .navbar-nav .nav-link::after,
+  .navbar-nav .nav-link::before {
+    display: none !important;
+    content: none !important;
   }
 
-  .navbar-nav .nav-link::after {
-    display: none;
+  /* HOVER State */
+  .navbar-nav .nav-link:hover {
+    background-color: #f3f4f6;
+    color: var(--primary-blue, #0d4f8b) !important;
+    transform: translateY(-1px);
   }
 
+  /* ACTIVE State */
+  .navbar-nav .nav-link.active {
+    background-color: var(--primary-blue, #0d4f8b) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 6px rgba(13, 79, 139, 0.2);
+  }
+
+  .navbar-nav .nav-link.active:hover {
+    background-color: var(--primary-blue, #0d4f8b);
+    color: #ffffff;
+    opacity: 0.95;
+  }
+
+  /* Dropdown Menus */
   .dropdown-menu {
-    box-shadow: none;
-    background: var(--light-beige);
-    margin-top: 0.5rem;
+    border: none;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    padding: 0.8rem;
+    min-width: 220px;
+    margin-top: 1rem;
+    animation: fadeInDropdown 0.3s ease;
+  }
+
+  .dropdown-item {
+    border-radius: 8px;
+    padding: 0.7rem 1rem;
+    font-weight: 500;
+    color: #444;
+    transition: all 0.2s;
+  }
+
+  .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: var(--primary-blue, #0d4f8b);
+    transform: translateX(-4px);
+  }
+
+  .dropdown-item.active {
+    background-color: var(--primary-blue, #0d4f8b);
+    color: white !important;
   }
 }
 
-@media (max-width: 768px) {
-  .top-bar {
-    font-size: 0.8rem;
+/* Big Screens (Desktop) */
+@media (min-width: 1200px) {
+  .navbar-expand-lg .navbar-nav {
+    gap: 0.5rem; /* Standard gap */
   }
 
-  .contact-info {
-    justify-content: center;
+  .navbar-nav .nav-link {
+    font-size: 0.95rem;
+    padding: 0.6rem 1.2rem !important;
+  }
+}
+
+@keyframes fadeInDropdown {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* =========================================
+   3. MOBILE NAVIGATION (Off-Canvas Style)
+   ========================================= */
+@media (max-width: 991.98px) {
+  /* Toggle Button */
+  .navbar-toggler {
+    border: none;
+    padding: 0.5rem;
+    background: transparent;
   }
 
-  .top-links {
-    justify-content: center !important;
-    margin-top: 0.5rem;
+  .navbar-toggler:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  /* The Mobile Menu Container - Fixed Side Drawer */
+  .navbar-collapse {
+    position: fixed;
+    top: 0;
+    left: -100%; /* Hidden by default (RTL: right side usually) */
+    width: 280px;
+    height: 100vh;
+    background-color: #ffffff;
+    z-index: 9999;
+    padding: 2rem 1.5rem;
+    box-shadow: -5px 0 20px rgba(0, 0, 0, 0.1);
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow-y: auto;
+    display: block !important; /* Override standard collapse styling */
+    visibility: hidden; /* Hide when closed to prevent focusing */
+  }
+
+  /* Open State */
+  .navbar-collapse.show {
+    left: 0;
+    visibility: visible;
+  }
+
+  /* Backdrop Overlay logic */
+  .mobile-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9998; /* Below sidebar (9999) */
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .mobile-backdrop.show {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Close Button */
+  .btn-close-menu {
+    position: absolute;
+    top: 1rem;
+    right: 1rem; /* RTL Layout: Left side */
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #333;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+
+  .btn-close-menu:hover {
+    transform: rotate(90deg);
+    color: var(--primary-blue, #0d4f8b);
+  }
+
+  /* Mobile Links */
+  .navbar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 2rem;
+  }
+
+  .nav-item {
+    width: 100%;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .navbar-nav .nav-link {
+    display: block;
+    padding: 1rem 0.5rem !important;
+    font-size: 1.05rem;
+    color: #333;
+    font-weight: 600;
+  }
+
+  /* Kill Desktop pseudos */
+  .navbar-nav .nav-link::after {
+    display: none !important;
+  }
+
+  /* Active State Mobile */
+  .navbar-nav .nav-link.active {
+    color: var(--primary-blue, #0d4f8b) !important;
+    background: #f0f8ff; /* Light blue background */
+    border-right: 4px solid var(--primary-blue, #0d4f8b); /* Indicator bar */
+    padding-right: 1rem !important; /* Compensate for border */
+  }
+
+  /* Dropdowns in Mobile */
+  .dropdown-menu {
+    border: none;
+    box-shadow: none;
+    background: #f9f9f9;
+    padding: 0.5rem 1rem;
+    margin: 0;
+  }
+
+  .dropdown-item {
+    padding: 0.8rem;
+    font-size: 0.95rem;
+  }
+}
+
+/* =========================================
+   4. RESPONSIVE BREAKPOINTS (Tiny screens)
+   ========================================= */
+@media (max-width: 576px) {
+  .logo-img {
+    width: 50px;
+    height: 50px;
   }
 
   .site-title {
     font-size: 1rem;
   }
 
-  .logo-img {
-    width: 50px;
-    height: 50px;
-  }
-}
-
-/* Extra Small Screens (Mobile) */
-@media (max-width: 576px) {
-  .top-bar {
-    font-size: 0.75rem;
-  }
-
   .contact-info {
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .top-links {
-    margin-top: 0.25rem;
-  }
-
-  .site-title {
-    font-size: 0.9rem;
-  }
-
-  .logo-img {
-    width: 45px;
-    height: 45px;
-  }
-
-  .logo {
     justify-content: center;
-  }
-
-  .navbar-collapse {
-    padding: 0.5rem;
-    margin-top: 0.5rem;
-  }
-
-  .navbar-nav .nav-link {
-    padding: 0.5rem 0.75rem;
-  }
-
-  .dropdown-menu {
-    width: 100%;
-    left: 0;
-    right: 0;
-    margin: 0;
-  }
-
-  .dropdown-item {
-    padding: 0.75rem 1rem;
-    font-size: 0.9rem;
-  }
-}
-
-.contact-item {
-  color: black !important;
-}
-.contact-item:hover {
-  transform: translateY(-1px) scale(1.02);
-  transition: all ease-in-out 0.3s;
-
-  a,
-  i {
-    color: var(--primary-blue) !important;
+    font-size: 0.8rem;
   }
 }

@@ -24,7 +24,6 @@ import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
 
 @Component({
   selector: 'app-centers',
-  standalone: true,
   imports: [
     CommonModule,
     RouterModule,

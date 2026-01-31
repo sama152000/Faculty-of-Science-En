@@ -52,7 +52,7 @@
   <div class="container">
     <div class="row py-3 align-items-center">
       <!-- Logo -->
-      <div class="col-9 col-lg-3">
+      <div class="col-auto col-lg-3 d-flex align-items-center">
         <a
           routerLink="/"
           class="text-decoration-none logo d-flex align-items-center"
@@ -65,18 +65,20 @@
           />
           }
 
-          <span class="text-primary-custom site-title fw-bold"
-            >Faculty of Science</span
-          >
+          <div class="flex-column d-flex">
+            <span class="text-primary-custom site-title fw-bold"
+              >Faculty of Science</span
+            >
+          </div>
         </a>
       </div>
 
       <!-- Navigation -->
-      <div class="col-3 col-lg-9">
-        <nav class="navbar navbar-expand-lg">
+      <div class="col col-lg-9">
+        <nav class="navbar navbar-expand-lg justify-content-end">
           <!-- Mobile Toggle -->
           <button
-            class="navbar-toggler d-lg-none ms-auto"
+            class="navbar-toggler d-lg-none"
             type="button"
             (click)="toggleMobileMenu()"
             [class.active]="isMobileMenuOpen"
@@ -84,50 +86,84 @@
             <span class="navbar-toggler-icon"></span>
           </button>
 
+          <!-- Mobile Backdrop -->
+          <div
+            class="mobile-backdrop d-lg-none"
+            [class.show]="isMobileMenuOpen"
+            (click)="closeMobileMenu()"
+          ></div>
+
           <!-- Navigation Links -->
           <div
             class="navbar-collapse"
             [class.show]="isMobileMenuOpen"
             [ngClass]="{ collapse: !isMobileMenuOpen }"
           >
-            <ul class="navbar-nav ms-auto">
+            <!-- Mobile Close Button -->
+            <button
+              class="btn-close-menu d-lg-none"
+              (click)="closeMobileMenu()"
+            >
+              <i class="fas fa-times"></i>
+            </button>
+
+            <ul class="navbar-nav">
               <li class="nav-item">
                 <a
-                  class="nav-link active"
-                  routerLink="/"
+                  class="nav-link"
+                  routerLink="/home"
+                  routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: true }"
                   (click)="closeMobileMenu()"
-                  >Home</a
-                >
+                  >Home
+                </a>
               </li>
               <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
                   routerLink="/about"
+                  routerLinkActive="active"
                   role="button"
                   data-bs-toggle="dropdown"
+                  (click)="closeMobileMenu()"
                 >
                   About
                 </a>
-                <ul class="dropdown-menu">
+                <!-- <ul class="dropdown-menu">
                   <li>
-                    <a class="dropdown-item" routerLink="/about/dean"
-                      >Dean's Word</a
-                    >
+                    <a
+                      class="dropdown-item"
+                      routerLink="/about/dean"
+                      routerLinkActive="active"
+                      (click)="closeMobileMenu()"
+                      >Dean's Word
+                    </a>
                   </li>
                   <li>
-                    <a class="dropdown-item" routerLink="#">Vision & Mission</a>
+                    <a
+                      class="dropdown-item"
+                      routerLink="/about/vision-mission"
+                      routerLinkActive="active"
+                      (click)="closeMobileMenu()"
+                      >Vision & Mission
+                    </a>
                   </li>
                   <li>
-                    <a class="dropdown-item" routerLink="#"
-                      >Organizational Structure</a
-                    >
+                    <a
+                      class="dropdown-item"
+                      routerLink="#"
+                      routerLinkActive="active"
+                      (click)="closeMobileMenu()"
+                      >Organizational Structure
+                    </a>
                   </li>
-                </ul>
+                </ul> -->
               </li>
               <li class="nav-item">
                 <a
                   class="nav-link"
                   routerLink="programs"
+                  routerLinkActive="active"
                   (click)="closeMobileMenu()"
                   >Programs</a
                 >
@@ -135,36 +171,55 @@
               <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
-                  routerLink="sectors"
+                  routerLink="/sectors"
+                  routerLinkActive="active"
+                  (click)="closeMobileMenu()"
                   role="button"
                   data-bs-toggle="dropdown"
                 >
                   sectors
                 </a>
-                <ul class="dropdown-menu">
+                <!-- <ul class="dropdown-menu">
                   <li>
-                    <a class="dropdown-item" routerLink="#">Education Sector</a>
+                    <a
+                      class="dropdown-item"
+                      routerLink="#"
+                      routerLinkActive="active"
+                      (click)="closeMobileMenu()"
+                      >Education Sector
+                    </a>
                   </li>
                   <li>
-                    <a class="dropdown-item" routerLink="#">Research Sector</a>
+                    <a
+                      class="dropdown-item"
+                      routerLink="#"
+                      routerLinkActive="active"
+                      (click)="closeMobileMenu()"
+                      >Research Sector
+                    </a>
                   </li>
                   <li>
-                    <a class="dropdown-item" routerLink="#"
-                      >Community Service</a
-                    >
+                    <a
+                      class="dropdown-item"
+                      routerLink="#"
+                      routerLinkActive="active"
+                      (click)="closeMobileMenu()"
+                      >Community Service
+                    </a>
                   </li>
-                </ul>
+                </ul> -->
               </li>
               <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
                   routerLink="/units"
+                  routerLinkActive="active"
                   role="button"
                   data-bs-toggle="dropdown"
                 >
                   Units & Centers
                 </a>
-                <ul class="dropdown-menu">
+                <!-- <ul class="dropdown-menu">
                   <li><a class="dropdown-item" routerLink="#">IT Unit</a></li>
                   <li>
                     <a class="dropdown-item" routerLink="#"
@@ -176,18 +231,19 @@
                       >Scientific Research Center</a
                     >
                   </li>
-                </ul>
+                </ul> -->
               </li>
               <li class="nav-item dropdown">
                 <a
                   class="nav-link dropdown-toggle"
                   routerLink="/services"
+                  routerLinkActive="active"
                   role="button"
                   data-bs-toggle="dropdown"
                 >
                   Services
                 </a>
-                <ul class="dropdown-menu">
+                <!-- <ul class="dropdown-menu">
                   <li>
                     <a class="dropdown-item" routerLink="#">Student Portal</a>
                   </li>
@@ -195,12 +251,13 @@
                     <a class="dropdown-item" routerLink="#">Staff Portal</a>
                   </li>
                   <li><a class="dropdown-item" routerLink="#">Library</a></li>
-                </ul>
+                </ul> -->
               </li>
               <li class="nav-item">
                 <a
                   class="nav-link"
                   routerLink="/news"
+                  routerLinkActive="active"
                   (click)="closeMobileMenu()"
                   >News</a
                 >
@@ -209,6 +266,7 @@
                 <a
                   class="nav-link"
                   routerLink="/departments"
+                  routerLinkActive="active"
                   (click)="closeMobileMenu()"
                   >Departments</a
                 >
@@ -217,6 +275,7 @@
                 <a
                   class="nav-link"
                   routerLink="/contact"
+                  routerLinkActive="active"
                   (click)="closeMobileMenu()"
                   >Contact Us</a
                 >

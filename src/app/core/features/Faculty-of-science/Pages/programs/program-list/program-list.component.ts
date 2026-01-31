@@ -6,7 +6,6 @@ import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
 
 @Component({
   selector: 'app-program-list',
-  standalone: true,
   imports: [CommonModule, SkeletonModule, CleanHtmlPipe],
   templateUrl: './program-list.component.html',
   styleUrls: ['../programs.component.css'],

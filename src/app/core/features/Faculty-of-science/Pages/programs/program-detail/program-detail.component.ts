@@ -16,7 +16,6 @@ import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
 
 @Component({
   selector: 'app-program-detail',
-  standalone: true,
   imports: [
     CommonModule,
     SkeletonModule,

@@ -26,7 +26,6 @@ import {
 
 @Component({
   selector: 'app-programs',
-  standalone: true,
   imports: [
     CommonModule,
     RouterModule,

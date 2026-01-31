@@ -21,7 +21,6 @@ import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
 
 @Component({
   selector: 'app-upcoming-events',
-  standalone: true,
   imports: [CommonModule, RouterModule, CleanHtmlPipe],
   templateUrl: './upcoming-events.component.html',
   styleUrls: ['./upcoming-events.component.css'],

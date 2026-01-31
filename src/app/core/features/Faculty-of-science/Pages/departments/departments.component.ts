@@ -31,7 +31,6 @@ import { CleanHtmlPipe } from '../../../../pipes/clean-html.pipe';
 
 @Component({
   selector: 'app-departments',
-  standalone: true,
   imports: [CommonModule, RouterModule, CleanHtmlPipe],
   templateUrl: './departments.component.html',
   styleUrls: ['./departments.component.css'],

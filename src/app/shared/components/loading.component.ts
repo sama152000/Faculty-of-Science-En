@@ -8,7 +8,6 @@ import { LoadingService } from '../../core/services/loading.service';
 
 @Component({
   selector: 'app-loading',
-  standalone: true,
   imports: [CommonModule],
   template: `
     @if (loadingService.isLoading()) {

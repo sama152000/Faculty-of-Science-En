@@ -22,7 +22,6 @@ import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
 
 @Component({
   selector: 'app-latest-news',
-  standalone: true,
   imports: [CommonModule, RouterModule, CleanHtmlPipe, SlicePipe],
   templateUrl: './latest-news.component.html',
   styleUrls: ['./latest-news.component.css'],

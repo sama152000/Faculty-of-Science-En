@@ -19,7 +19,6 @@ import {
 
 @Component({
   selector: 'app-hero',
-  standalone: true,
   imports: [CommonModule, SkeletonModule],
   templateUrl: './hero.component.html',
   styleUrls: ['./hero.component.css'],

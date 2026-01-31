@@ -15,7 +15,6 @@ import {
 
 @Component({
   selector: 'app-services',
-  standalone: true,
   imports: [CommonModule, RouterModule, SkeletonModule, TagModule],
   templateUrl: './services.component.html',
   styleUrls: ['./services.component.css'],

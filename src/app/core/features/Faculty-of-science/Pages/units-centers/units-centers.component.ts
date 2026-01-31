@@ -10,7 +10,6 @@ import { UnitsComponent } from './units/units.component';
 
 @Component({
   selector: 'app-units-centers',
-  standalone: true,
   imports: [CommonModule, RouterModule, CentersComponent, UnitsComponent],
   templateUrl: './units-centers.component.html',
   styleUrls: ['./units-centers.component.css'],

@@ -79,17 +79,17 @@
     right: 10px;
     padding: 8px;
   }
-  
+
   .nav-item {
     width: 45px;
     height: 45px;
   }
-  
+
   .nav-item:hover {
     width: 120px;
     padding-left: 12px;
   }
-  
+
   .nav-label {
     left: 40px;
     font-size: 0.8rem;
@@ -97,33 +97,29 @@
 }
 
 @media (max-width: 576px) {
-  .quick-nav-sidebar {
-    right: 5px;
-    bottom: 20px;
-    top: auto;
-    transform: none;
-    flex-direction: row;
-    padding: 5px;
-    display: none;
-  }
-  
   .nav-items {
     flex-direction: row;
     gap: 5px;
   }
-  
+
   .nav-item {
     width: 40px;
     height: 40px;
   }
-  
+
   .nav-item:hover {
     width: 40px;
     padding-left: 0;
     justify-content: center;
   }
-  
+
   .nav-label {
+    display: none;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .quick-nav-sidebar {
     display: none;
   }
 }

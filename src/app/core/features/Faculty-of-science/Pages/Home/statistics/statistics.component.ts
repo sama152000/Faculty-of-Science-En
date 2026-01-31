@@ -13,7 +13,6 @@ interface Statistic {
 
 @Component({
   selector: 'app-statistics',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.css'],
@@ -47,18 +46,13 @@ export class StatisticsComponent implements OnInit, OnDestroy {
     this.loading = true;
     this.error = null;
 
-    console.log('🔄 Loading statistics...');
-
     this.statisticsService.getAllStatistics().subscribe({
       next: (response: any) => {
-        console.log('✅ Statistics response:', response);
-
         if (response && response.data) {
           // Filter only active statistics
           this.stats = response.data.filter((stat: any) => stat.isActive);
           // Initialize display values to 0
           this.displayValues = new Array(this.stats.length).fill(0);
-          console.log('📊 Active statistics:', this.stats);
 
           // Start animation if already visible
           if (this.isVisible && !this.animationStarted) {

@@ -55,7 +55,6 @@ interface Goal {
 
 @Component({
   selector: 'app-about-us',
-  standalone: true,
   imports: [CommonModule, CleanHtmlPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 
@@ -95,6 +94,8 @@ export class AboutUsComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     this.loadPresidentData();
     this.loadAboutData();
+    this.buildTabs();
+
     setTimeout(() => this.isVisible.set(true), 200);
   }
 
@@ -109,11 +110,6 @@ export class AboutUsComponent extends BaseComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (data) => {
-          if (!data) {
-            this.setError('Faculty data was not found');
-            return;
-          }
-
           this.aboutData.set(data);
           this.buildTabs();
           this.setSuccess();
@@ -136,7 +132,6 @@ export class AboutUsComponent extends BaseComponent implements OnInit {
           const data = response?.data?.[0];
           if (data) {
             this.presidentData.set(data);
-            this.buildTabs();
           }
         },
         error: (error) => {
