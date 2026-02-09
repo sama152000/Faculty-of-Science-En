@@ -59,7 +59,7 @@ export class AboutService {
         catchError((error) => {
           this.errorHandler.handleError(error);
           throw error;
-        })
+        }),
       );
   }
 
@@ -76,7 +76,7 @@ export class AboutService {
         catchError((error) => {
           this.errorHandler.handleError(error);
           throw error;
-        })
+        }),
       );
   }
 
@@ -93,7 +93,7 @@ export class AboutService {
         catchError((error) => {
           this.errorHandler.handleError(error);
           throw error;
-        })
+        }),
       );
   }
 
@@ -121,7 +121,7 @@ export class AboutService {
             const aboutUniversity = response.data.find(
               (page) =>
                 page.pageNameEn?.toLowerCase() === 'about university' ||
-                page.pageName === 'عن الجامعة'
+                page.pageName === 'عن الجامعة',
             );
             observer.next(aboutUniversity || null);
             observer.complete();
@@ -142,6 +142,26 @@ export class AboutService {
    * تصفية الصفحات للحصول على صفحة "عن الكلية"
    * @returns Observable يحتوي على بيانات صفحة "عن الكلية"
    */
+
+  // getAboutFaculty(): Observable<About | null> {
+  //   return this.getAllAboutPages().pipe(
+  //     map((response) => {
+  //       if (!response?.success || !response?.data?.length) {
+  //         return null;
+  //       }
+
+  //       return (
+  //         response.data.find((page) => page.pageType === 'AboutUniversity') ||
+  //         null
+  //       );
+  //     }),
+  //     catchError((error) => {
+  //       console.error('Failed to load About Faculty:', error);
+  //       return of(null);
+  //     })
+  //   );
+  // }
+
   getAboutFaculty(): Observable<About | null> {
     return this.getAllAboutPages().pipe(
       map((response) => {
@@ -150,14 +170,23 @@ export class AboutService {
         }
 
         return (
-          response.data.find((page) => page.pageType === 'AboutUniversity') ||
-          null
+          response.data.find((page) => {
+            const type = page.pageType?.trim()?.toLowerCase();
+            const nameEn = page.pageNameEn?.trim()?.toLowerCase();
+            const nameAr = page.pageName?.trim();
+
+            return (
+              type === 'aboutuniversity' ||
+              nameEn === 'about faculty' ||
+              nameAr === 'عن الكلية'
+            );
+          }) || null
         );
       }),
       catchError((error) => {
         console.error('Failed to load About Faculty:', error);
         return of(null);
-      })
+      }),
     );
   }
 }
