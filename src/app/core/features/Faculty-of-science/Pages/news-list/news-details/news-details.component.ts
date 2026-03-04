@@ -344,7 +344,7 @@ export class NewsDetailsComponent extends BaseComponent implements OnInit {
     try {
       await navigator.clipboard.writeText(window.location.href);
       // TODO: Replace with PrimeNG Toast notification
-      console.log('Link copied to clipboard');
+      // console.log('Link copied to clipboard');
     } catch (error) {
       console.error('Failed to copy link:', error);
     }

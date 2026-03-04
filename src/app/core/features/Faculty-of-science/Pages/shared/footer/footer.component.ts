@@ -14,15 +14,16 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 // Services
 import { ContactsService } from '../../../Services/real-services/contacts.service';
-import { PagesService } from '../../../Services/real-services/pages.service';
 import {
   DepartmentsService,
   Department,
 } from '../../../Services/real-services/departments';
+import { MenusService, MenuItem } from '../../../Services/real-services/menus.service';
 
 // Models
 import { ContactInfo, SocialLink } from '../../../model/contact.model';
 import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
+import { AboutService } from '../../../Services/real-services/about.service';
 
 // About Page Interface
 interface AboutPage {
@@ -46,8 +47,9 @@ export class FooterComponent implements OnInit, OnDestroy {
   // DEPENDENCY INJECTION
   // ============================================
   private readonly contactsService = inject(ContactsService);
-  private readonly pagesService = inject(PagesService);
+  private readonly aboutService = inject(AboutService);
   private readonly departmentsService = inject(DepartmentsService);
+  private readonly menusService = inject(MenusService);
   private readonly destroyRef = inject(DestroyRef);
 
   // ============================================
@@ -56,6 +58,7 @@ export class FooterComponent implements OnInit, OnDestroy {
   protected readonly contactInfo = signal<ContactInfo | null>(null);
   protected readonly aboutData = signal<AboutPage | null>(null);
   protected readonly departments = signal<Department[]>([]);
+  protected readonly menuItems = signal<MenuItem[]>([]);
   protected readonly showScrollTop = signal<boolean>(false);
   protected readonly currentYear = new Date().getFullYear();
 
@@ -155,6 +158,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     this.loadContactInfo();
     this.loadAboutData();
     this.loadDepartments();
+    this.loadMenus();
     this.setupScrollListener();
   }
 
@@ -191,21 +195,16 @@ export class FooterComponent implements OnInit, OnDestroy {
   /**
    * Load about data (vision) from API
    */
+
   private loadAboutData(): void {
-    this.pagesService
-      .getAllPages()
+    this.aboutService
+      .getAboutFaculty()
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (response) => {
-          const data = response.data?.find(
-            (item: any) =>
-              item.pageName === 'عن الكلية' || item.pageName === 'About Faculty'
-          );
-          if (data) {
-            this.aboutData.set(data);
-          }
+        next: (data) => {
+          this.aboutData.set(data);
         },
-        error: (error: Error) => {
+        error: (error) => {
           console.error('Failed to load about data for footer:', error.message);
         },
       });
@@ -229,6 +228,33 @@ export class FooterComponent implements OnInit, OnDestroy {
             'Failed to load departments for footer:',
             error.message
           );
+        },
+      });
+  }
+
+  /**
+   * Load menu items from API
+   */
+  private loadMenus(): void {
+    this.menusService
+      .getAll()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response) => {
+          if (response.success && response.data) {
+            const mainMenus = response.data
+              .filter(
+                (item) =>
+                  (item.menuType?.toLowerCase() === 'main' ||
+                    item.menuType === 'رئيسية') &&
+                  item.parentId === null
+              )
+              .sort((a, b) => a.order - b.order);
+            this.menuItems.set(mainMenus);
+          }
+        },
+        error: (error: Error) => {
+          console.error('Failed to load menus for footer:', error.message);
         },
       });
   }

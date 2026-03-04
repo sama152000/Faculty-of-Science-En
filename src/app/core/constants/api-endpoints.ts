@@ -300,4 +300,12 @@ export const API_ENDPOINTS = {
     GET_PAGED: '/unitmember/getpaged',
     GET_BY_ID: (id: string) => `/unitmember/get/${id}`,
   },
+
+  // Menus
+  MENUS: {
+    BASE: '/menus',
+    GET_ALL: '/menus/getall',
+    GET_PAGED: '/menus/getpaged',
+    GET_BY_ID: (id: string) => `/menus/get/${id}`,
+  },
 } as const;

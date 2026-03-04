@@ -5,45 +5,30 @@
       <div class="col-md-8">
         <div class="flex-wrap gap-3 contact-info d-flex">
           @if (contact()?.phone) {
-            <span class="text-primary-custom contact-item">
-              <i class="fa fa-phone me-2"></i>
-              <a [href]="'tel:' + contact()?.phone" class="text-muted">
-                {{ contact()?.phone }}
-              </a>
-            </span>
+          <span class="text-primary-custom contact-item">
+            <i class="fa fa-phone me-2"></i>
+            <a [href]="'tel:' + contact()?.phone" class="text-muted">
+              {{ contact()?.phone }}
+            </a>
+          </span>
           }
           <!--  -->
           @if (contact()?.email) {
-            <span class="text-primary-custom contact-item">
-              <i class="fa fa-envelope me-2"></i>
-              <a [href]="'mailto:' + contact()?.email" class="text-muted">
-                {{ contact()?.email }}
-              </a>
-            </span>
+          <span class="text-primary-custom contact-item">
+            <i class="fa fa-envelope me-2"></i>
+            <a [href]="'mailto:' + contact()?.email" class="text-muted">
+              {{ contact()?.email }}
+            </a>
+          </span>
           }
         </div>
       </div>
       <div class="col-md-4">
-        @if (contact()?.website) {
-          <div
-            class="top-links gap-3 d-flex justify-content-end align-items-center"
-          >
-            <!-- <a
-            href="https://www.luxor.edu.eg"
-            target="_blank"
-            class="text-primary-custom text-decoration-none fw-semibold"
-          >
-            <i class="fa fa-university me-1"></i>University
-          </a> -->
-            <a
-              class="mt-3 mt-md-0 btn btn-primary btn-sm"
-              [href]="contact()?.website"
-              target="_blank"
-            >
-              العربية
-            </a>
-          </div>
-        }
+        <div class="top-links gap-3 d-flex justify-content-end align-items-center">
+          <a class="mt-3 mt-md-0 btn btn-primary btn-sm" [href]="contact()?.webSite || '#'" target="_blank">
+            العربية
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -54,230 +39,47 @@
   <div class="container">
     <div class="row py-3 align-items-center">
       <!-- Logo -->
-      <div class="col-auto col-lg-3 d-flex align-items-center">
-        <a
-          routerLink="/"
-          class="text-decoration-none logo d-flex align-items-center"
-        >
+      <div class="col-auto col-lg-2 d-flex align-items-center">
+        <a routerLink="/" class="flex-column d-flex text-decoration-none logo d-flex align-items-center">
           @if (logo()) {
-            <img
-              [src]="logo()"
-              alt="Faculty of Science Logo"
-              class="logo-img me-3"
-            />
+          <img [src]="logo()" alt="شعار كلية العلوم" class="logo-img me-3" />
           }
 
-          <div class="flex-column d-flex">
-            <span class="text-primary-custom site-title fw-bold"
-              >Faculty of Science</span
-            >
+          <div class="">
+            <span class="text-primary-custom site-title fw-bold">Faculty of Science</span>
           </div>
         </a>
       </div>
 
       <!-- Navigation -->
-      <div class="col col-lg-9">
+      <div class="col col-lg-10">
         <nav class="navbar navbar-expand-lg justify-content-end">
           <!-- Mobile Toggle -->
-          <button
-            class="navbar-toggler d-lg-none"
-            type="button"
-            (click)="toggleMobileMenu()"
-            [class.active]="isMobileMenuOpen"
-          >
+
+          <button class="navbar-toggler d-lg-none" type="button" (click)="toggleMobileMenu()"
+            [class.active]="isMobileMenuOpen">
             <span class="navbar-toggler-icon"></span>
           </button>
 
           <!-- Mobile Backdrop -->
-          <div
-            class="mobile-backdrop d-lg-none"
-            [class.show]="isMobileMenuOpen"
-            (click)="closeMobileMenu()"
-          ></div>
+          <div class="mobile-backdrop d-lg-none" [class.show]="isMobileMenuOpen" (click)="closeMobileMenu()"></div>
 
           <!-- Navigation Links -->
-          <div
-            class="navbar-collapse"
-            [class.show]="isMobileMenuOpen"
-            [ngClass]="{ collapse: !isMobileMenuOpen }"
-          >
+          <div class="navbar-collapse" [class.show]="isMobileMenuOpen" [ngClass]="{ collapse: !isMobileMenuOpen }">
             <!-- Mobile Close Button -->
-            <button
-              class="btn-close-menu d-lg-none"
-              (click)="closeMobileMenu()"
-            >
+            <button class="btn-close-menu d-lg-none" (click)="closeMobileMenu()">
               <i class="fas fa-times"></i>
             </button>
 
             <ul class="navbar-nav">
+              @for (item of menuItems(); track item.id) {
               <li class="nav-item">
-                <a
-                  class="nav-link"
-                  routerLink="/home"
-                  routerLinkActive="active"
-                  [routerLinkActiveOptions]="{ exact: true }"
-                  (click)="closeMobileMenu()"
-                  >Home
+                <a class="nav-link" [routerLink]="'/' + item.slug.toLowerCase()" routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: item.slug.toLowerCase() === 'home' }" (click)="closeMobileMenu()">
+                  {{ item.title }}
                 </a>
               </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  routerLink="/about"
-                  routerLinkActive="active"
-                  role="button"
-                  (click)="closeMobileMenu()"
-                >
-                  About
-                </a>
-                <!-- <ul class="dropdown-menu">
-                  <li>
-                    <a
-                      class="dropdown-item"
-                      routerLink="/about/dean"
-                      routerLinkActive="active"
-                      (click)="closeMobileMenu()"
-                      >Dean's Word
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      class="dropdown-item"
-                      routerLink="/about/vision-mission"
-                      routerLinkActive="active"
-                      (click)="closeMobileMenu()"
-                      >Vision & Mission
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      class="dropdown-item"
-                      routerLink="#"
-                      routerLinkActive="active"
-                      (click)="closeMobileMenu()"
-                      >Organizational Structure
-                    </a>
-                  </li>
-                </ul> -->
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  routerLink="programs"
-                  routerLinkActive="active"
-                  (click)="closeMobileMenu()"
-                  >Programs</a
-                >
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  routerLink="/sectors"
-                  routerLinkActive="active"
-                  (click)="closeMobileMenu()"
-                  role="button"
-                >
-                  sectors
-                </a>
-                <!-- <ul class="dropdown-menu">
-                  <li>
-                    <a
-                      class="dropdown-item"
-                      routerLink="#"
-                      routerLinkActive="active"
-                      (click)="closeMobileMenu()"
-                      >Education Sector
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      class="dropdown-item"
-                      routerLink="#"
-                      routerLinkActive="active"
-                      (click)="closeMobileMenu()"
-                      >Research Sector
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      class="dropdown-item"
-                      routerLink="#"
-                      routerLinkActive="active"
-                      (click)="closeMobileMenu()"
-                      >Community Service
-                    </a>
-                  </li>
-                </ul> -->
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  routerLink="/units"
-                  routerLinkActive="active"
-                  role="button"
-                >
-                  Units & Centers
-                </a>
-                <!-- <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" routerLink="#">IT Unit</a></li>
-                  <li>
-                    <a class="dropdown-item" routerLink="#"
-                      >Quality Assurance Unit</a
-                    >
-                  </li>
-                  <li>
-                    <a class="dropdown-item" routerLink="#"
-                      >Scientific Research Center</a
-                    >
-                  </li>
-                </ul> -->
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  routerLink="/services"
-                  routerLinkActive="active"
-                  role="button"
-                >
-                  Services
-                </a>
-                <!-- <ul class="dropdown-menu">
-                  <li>
-                    <a class="dropdown-item" routerLink="#">Student Portal</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" routerLink="#">Staff Portal</a>
-                  </li>
-                  <li><a class="dropdown-item" routerLink="#">Library</a></li>
-                </ul> -->
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  routerLink="/news"
-                  routerLinkActive="active"
-                  (click)="closeMobileMenu()"
-                  >News</a
-                >
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  routerLink="/departments"
-                  routerLinkActive="active"
-                  (click)="closeMobileMenu()"
-                  >Departments</a
-                >
-              </li>
-              <li class="nav-item">
-                <a
-                  class="nav-link"
-                  routerLink="/contact"
-                  routerLinkActive="active"
-                  (click)="closeMobileMenu()"
-                  >Contact Us</a
-                >
-              </li>
+              }
             </ul>
           </div>
         </nav>

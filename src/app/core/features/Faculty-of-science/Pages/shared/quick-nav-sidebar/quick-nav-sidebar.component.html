@@ -1,15 +1,10 @@
 <div class="quick-nav-sidebar">
   <div class="nav-items">
-    @for (item of quickNavItems; track item.id) {
-      <div
-        class="nav-item"
-        [routerLink]="item.route"
-        [title]="item.label"
-        [style.--item-color]="item.color"
-      >
-        <i [class]="item.icon"></i>
-        <span class="nav-label">{{ item.label }}</span>
-      </div>
+    @for (item of menuItems().slice(0, 7); track item.id) {
+    <div class="nav-item" [routerLink]="'/' + item.titleEn.toLowerCase()" [title]="item.title">
+      <i [class]="item.icon || defaultIcon"></i>
+      <span class="nav-label">{{ item.title }}</span>
+    </div>
     }
   </div>
 </div>

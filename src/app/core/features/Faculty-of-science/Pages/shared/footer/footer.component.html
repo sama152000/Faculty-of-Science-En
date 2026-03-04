@@ -5,9 +5,7 @@
       <div class="mb-4 col-lg-3 col-md-6">
         <div class="footer-col">
           <h5 class="text-dark-blue mb-3 footer-title">Faculty of Science</h5>
-          <p
-            class="text-muted"
-            [innerHTML]="
+          <p class="text-muted" [innerHTML]="
               visionText()
                 | cleanHtml
                   : {
@@ -15,8 +13,7 @@
                       stripClasses: true,
                       preserveLineBreaks: true
                     }
-            "
-          ></p>
+            "></p>
         </div>
       </div>
 
@@ -24,32 +21,14 @@
       <div class="mb-4 col-lg-3 col-md-6">
         <div class="footer-col">
           <h5 class="text-dark-blue mb-3 footer-title">Quick Links</h5>
-          <ul class="list-unstyled footer-links">
+          <ul class="list-unstyled footer-links footer-menu-links">
+            @for (item of menuItems(); track item.id) {
             <li>
-              <a routerLink="/home" class="text-muted">
-                <i class="pi pi-home me-2"></i>Home
+              <a [routerLink]="'/' + item.titleEn.toLowerCase()" class="text-muted">
+                {{ item.title }}
               </a>
             </li>
-            <li>
-              <a routerLink="/about" class="text-muted">
-                <i class="pi pi-info-circle me-2"></i>About
-              </a>
-            </li>
-            <li>
-              <a routerLink="/departments" class="text-muted">
-                <i class="pi pi-sitemap me-2"></i>Departments
-              </a>
-            </li>
-            <li>
-              <a routerLink="/news" class="text-muted">
-                <i class="pi pi-book me-2"></i>News
-              </a>
-            </li>
-            <li>
-              <a routerLink="/sectors" class="text-muted">
-                <i class="pi pi-building me-2"></i>Sectors
-              </a>
-            </li>
+            }
           </ul>
         </div>
       </div>
@@ -149,14 +128,8 @@
           @if (hasSocialLinks()) {
           <div class="social-icons">
             @for (link of socialLinks(); track link.platform) {
-            <a
-              [href]="link.url"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="social-link me-2"
-              [title]="link.platform"
-              [style.color]="link.color"
-            >
+            <a [href]="link.url" target="_blank" rel="noopener noreferrer" class="social-link me-2"
+              [title]="link.platform" [style.color]="link.color">
               <i [class]="link.icon"></i>
             </a>
             }
@@ -164,21 +137,13 @@
           } @else {
           <!-- Fallback social icons -->
           <div class="social-icons">
-            <a
-              href="#"
-              class="text-dark-blue social-link me-3"
-              title="Facebook"
-            >
+            <a href="#" class="text-dark-blue social-link me-3" title="Facebook">
               <i class="pi pi-facebook"></i>
             </a>
             <a href="#" class="text-dark-blue social-link me-3" title="Twitter">
               <i class="pi pi-twitter"></i>
             </a>
-            <a
-              href="#"
-              class="text-dark-blue social-link me-3"
-              title="Instagram"
-            >
+            <a href="#" class="text-dark-blue social-link me-3" title="Instagram">
               <i class="pi pi-instagram"></i>
             </a>
             <a href="#" class="text-dark-blue social-link" title="LinkedIn">
@@ -206,12 +171,8 @@
 
   <!-- Scroll to Top Button -->
   @if (showScrollTop()) {
-  <button
-    class="rounded-circle scroll-to-top btn btn-primary position-fixed"
-    (click)="scrollToTop()"
-    title="Go to top"
-    type="button"
-  >
+  <button class="rounded-circle scroll-to-top btn btn-primary position-fixed" (click)="scrollToTop()" title="Go to top"
+    type="button">
     <i class="pi pi-chevron-up"></i>
   </button>
   }

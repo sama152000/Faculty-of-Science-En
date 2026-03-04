@@ -59,14 +59,14 @@ export const routes: Routes = [
       ).then((m) => m.SectorsComponent),
   },
   {
-    path: 'units',
+    path: 'units-centers',
     loadComponent: () =>
       import(
         './core/features/Faculty-of-science/Pages/units-centers/units-centers.component'
       ).then((m) => m.UnitsCentersComponent),
   },
   {
-    path: 'units/:id',
+    path: 'units-centers/:id',
     loadComponent: () =>
       import(
         './core/features/Faculty-of-science/Pages/units-centers/units-centers.component'
