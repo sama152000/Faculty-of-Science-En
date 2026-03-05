@@ -54,6 +54,7 @@ export interface Department {
   vision: string;
   goals: Goal[];
   departmentAttachments: DepartmentAttachment[];
+  slug: string;
 }
 
 @Injectable({

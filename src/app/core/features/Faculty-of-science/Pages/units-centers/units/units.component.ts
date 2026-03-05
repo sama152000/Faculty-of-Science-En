@@ -1,64 +1,36 @@
 /**
  * Units Component
- * Displays units data from the API
+ * Displays units as a grid of cards.
+ * Clicking a card navigates to units-centers/units/:slug for detailed view.
  */
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { SkeletonModule } from 'primeng/skeleton';
-import { CardModule } from 'primeng/card';
-import { ButtonModule } from 'primeng/button';
-import { TagModule } from 'primeng/tag';
-import { AvatarModule } from 'primeng/avatar';
-import {
-  UnitService,
-  Unit,
-} from '../../../Services/real-services/units/unit.service';
-import {
-  UnitDetailService,
-  UnitDetail,
-} from '../../../Services/real-services/units/unitdetail.service';
-import {
-  UnitMemberService,
-  UnitMember,
-} from '../../../Services/real-services/units/unitmember.service';
-import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
+import { UnitService, Unit } from '../../../Services/real-services/units/unit.service';
 
 @Component({
   selector: 'app-units',
-  imports: [
-    CommonModule,
-    RouterModule,
-    SkeletonModule,
-    CardModule,
-    ButtonModule,
-    TagModule,
-    AvatarModule,
-    CleanHtmlPipe,
-  ],
+  standalone: true,
+  imports: [CommonModule, RouterModule, SkeletonModule],
   templateUrl: './units.component.html',
-  styleUrls: ['../units-centers.component.css'],
+  styleUrls: ['./units.component.css'],
 })
 export class UnitsComponent implements OnInit {
   private readonly unitService = inject(UnitService);
-  private readonly unitDetailService = inject(UnitDetailService);
-  private readonly unitMemberService = inject(UnitMemberService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+
+  // Input from parent
+  categorySlug = input<string>('units');
 
   // State signals
   units = signal<Unit[]>([]);
-  selectedUnit = signal<Unit | null>(null);
-  unitDetails = signal<UnitDetail[]>([]);
-  unitMembers = signal<UnitMember[]>([]);
   loading = signal(true);
-  detailsLoading = signal(false);
   error = signal<string | null>(null);
-  activeSection = signal('overview');
 
-  // Computed signals
+  // Computed
   hasData = computed(() => this.units().length > 0);
-  hasDetails = computed(() => this.unitDetails().length > 0);
-  hasMembers = computed(() => this.unitMembers().length > 0);
-  leader = computed(() => this.unitMembers().find((m) => m.isLeader));
 
   ngOnInit(): void {
     this.loadUnits();
@@ -76,65 +48,20 @@ export class UnitsComponent implements OnInit {
         this.loading.set(false);
       },
       error: (err) => {
-        this.error.set('Failed to load units');
+        this.error.set('فشل في تحميل الوحدات');
         this.loading.set(false);
         console.error('Error loading units:', err);
       },
     });
   }
 
-  selectUnit(unit: Unit): void {
-    this.selectedUnit.set(unit);
-    this.activeSection.set('overview');
-    this.loadUnitDetails(unit.id);
-    this.loadUnitMembers(unit.id);
+  navigateToUnit(unit: Unit): void {
+    const slug = this.sanitizeSlug(unit.slug || unit.unitTitle);
+    this.router.navigate([this.categorySlug(), slug], { relativeTo: this.route });
   }
 
-  loadUnitDetails(unitId: string): void {
-    this.detailsLoading.set(true);
-    this.unitDetailService.getByUnitId(unitId).subscribe({
-      next: (details) => {
-        this.unitDetails.set(details);
-        this.detailsLoading.set(false);
-      },
-      error: (err) => {
-        console.error('Error loading unit details:', err);
-        this.detailsLoading.set(false);
-      },
-    });
-  }
-
-  loadUnitMembers(unitId: string): void {
-    this.unitMemberService.getByUnitId(unitId).subscribe({
-      next: (members) => {
-        this.unitMembers.set(members);
-      },
-      error: (err) => {
-        console.error('Error loading unit members:', err);
-      },
-    });
-  }
-
-  closeDetails(): void {
-    this.selectedUnit.set(null);
-    this.unitDetails.set([]);
-    this.unitMembers.set([]);
-  }
-
-  isUnitSelected(unitId: string): boolean {
-    return this.selectedUnit()?.id === unitId;
-  }
-
-  setActiveSection(section: string): void {
-    this.activeSection.set(section);
-  }
-
-  isActiveSection(section: string): boolean {
-    return this.activeSection() === section;
-  }
-
-  retry(): void {
-    this.loadUnits();
+  sanitizeSlug(text: string): string {
+    return (text || '').trim().replace(/\s+/g, '-').toLowerCase();
   }
 
   getUnitImage(unit: Unit): string | null {
@@ -142,5 +69,9 @@ export class UnitsComponent implements OnInit {
       return unit.unitAttachments[0].url;
     }
     return null;
+  }
+
+  retry(): void {
+    this.loadUnits();
   }
 }

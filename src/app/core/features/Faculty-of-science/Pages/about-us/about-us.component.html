@@ -1,32 +1,24 @@
 <section class="about-section">
   <div class="container-fluid">
-    <!-- Page Header -->
     <div class="mb-5 row">
       <div class="text-center col-12">
         <h1 class="section-title">About Faculty of Science</h1>
       </div>
     </div>
 
-    <!-- About Content Container -->
     <div class="about-container">
-      <!-- Vertical Tabs Navigation -->
       <div class="about-tabs">
         @for (tab of tabs(); track tab.id) {
-        <button
-          class="tab-link"
-          [class.active]="activeTab() === tab.id"
-          (click)="setActiveTab(tab.id)"
-        >
+        <button class="tab-link" [class.active]="activeTab() === tab.id" (click)="setActiveTab(tab.id)">
           <i [class]="tab.icon + ' me-2'"></i>
           {{ tab.title }}
         </button>
         }
       </div>
 
-      <!-- Tab Content Area -->
       <div class="tab-content">
-        <!-- Dean's Message Tab -->
-        @if (activeTab() === 'Dean' && presidentData()) {
+        <!-- Dean -->
+        @if (activeTab() === "Dean" && presidentData()) {
         <div class="tab-panel active">
           <div class="content-header">
             <h2 class="content-title">
@@ -40,14 +32,14 @@
               <div class="row align-items-center">
                 <div class="text-center mb-4 mb-md-0 col-12">
                   <div class="dean-image-wrapper">
-                    <img
-                      [src]="presidentData()?.deanSpeechAttachments?.[0]?.url"
-                      [alt]="presidentData()?.memberName"
-                      class="dean-image"
-                    />
+                    <img [src]="presidentData()?.deanSpeechAttachments?.[0]?.url" [alt]="presidentData()?.memberName"
+                      class="dean-image" />
                   </div>
+
                   <div class="mt-3 dean-info">
-                    <h4 class="dean-name">{{ presidentData()?.memberName }}</h4>
+                    <h4 class="dean-name">
+                      {{ presidentData()?.memberName }}
+                    </h4>
                     <p class="text-muted dean-title">
                       {{ presidentData()?.memberPosition }}
                     </p>
@@ -59,9 +51,11 @@
                     <div class="quote-icon">
                       <i class="fas fa-quote-left"></i>
                     </div>
-                    <div
-                      [innerHTML]="presidentData()?.speech| cleanHtml: {stripClasses: false,}"
-                    ></div>
+
+                    <div [innerHTML]="
+                        presidentData()?.speech
+                          | cleanHtml: { stripClasses: false }
+                      "></div>
                   </div>
                 </div>
               </div>
@@ -70,8 +64,8 @@
         </div>
         }
 
-        <!-- Introduction Tab -->
-        @if (activeTab() === 'introduction' && aboutData()) {
+        <!-- Introduction -->
+        @if (activeTab() === "introduction" && aboutData()) {
         <div class="tab-panel active">
           <div class="content-header">
             <h2 class="content-title">
@@ -81,24 +75,20 @@
           </div>
 
           <div class="content-body">
-            <div
-              class="mb-4 lead"
-              [innerHTML]="
+            <div class="mb-4 lead" [innerHTML]="
                 aboutData()?.content
-                  | cleanHtml
-                    : {
-                        stripStyles: true,
-                        stripClasses: false,
-                        preserveLineBreaks: true
-                      }
-              "
-            ></div>
+                  | cleanHtml: {
+                      stripStyles: true,
+                      stripClasses: false,
+                      preserveLineBreaks: true
+                    }
+              "></div>
           </div>
         </div>
         }
 
-        <!-- Vision Tab -->
-        @if (activeTab() === 'vision' && aboutData()) {
+        <!-- Vision -->
+        @if (activeTab() === "vision" && aboutData()) {
         <div class="tab-panel active">
           <div class="content-header">
             <h2 class="content-title">
@@ -112,25 +102,22 @@
               <div class="vision-icon">
                 <i class="fas fa-lightbulb"></i>
               </div>
-              <div
-                class="vision-text"
-                [innerHTML]="
+
+              <div class="vision-text" [innerHTML]="
                   aboutData()?.vision
-                    | cleanHtml
-                      : {
-                          stripStyles: true,
-                          stripClasses: false,
-                          preserveLineBreaks: true
-                        }
-                "
-              ></div>
+                    | cleanHtml: {
+                        stripStyles: true,
+                        stripClasses: false,
+                        preserveLineBreaks: true
+                      }
+                "></div>
             </div>
           </div>
         </div>
         }
 
-        <!-- Mission Tab -->
-        @if (activeTab() === 'mission' && aboutData()) {
+        <!-- Mission -->
+        @if (activeTab() === "mission" && aboutData()) {
         <div class="tab-panel active">
           <div class="content-header">
             <h2 class="content-title">
@@ -144,25 +131,22 @@
               <div class="mission-icon">
                 <i class="fas fa-rocket"></i>
               </div>
-              <div
-                class="mission-text"
-                [innerHTML]="
+
+              <div class="mission-text" [innerHTML]="
                   aboutData()?.mission
-                    | cleanHtml
-                      : {
-                          stripStyles: true,
-                          stripClasses: false,
-                          preserveLineBreaks: true
-                        }
-                "
-              ></div>
+                    | cleanHtml: {
+                        stripStyles: true,
+                        stripClasses: false,
+                        preserveLineBreaks: true
+                      }
+                "></div>
             </div>
           </div>
         </div>
         }
 
-        <!-- History Tab -->
-        @if (activeTab() === 'history' && aboutData()) {
+        <!-- History -->
+        @if (activeTab() === "history" && aboutData()) {
         <div class="tab-panel active">
           <div class="content-header">
             <h2 class="content-title">
@@ -176,19 +160,16 @@
               <div class="history-timeline">
                 <div class="timeline-item">
                   <div class="timeline-marker"></div>
+
                   <div class="timeline-content">
-                    <div
-                      class="history-text"
-                      [innerHTML]="
+                    <div class="history-text" [innerHTML]="
                         aboutData()?.history
-                          | cleanHtml
-                            : {
-                                stripStyles: true,
-                                stripClasses: false,
-                                preserveLineBreaks: true
-                              }
-                      "
-                    ></div>
+                          | cleanHtml: {
+                              stripStyles: true,
+                              stripClasses: false,
+                              preserveLineBreaks: true
+                            }
+                      "></div>
                   </div>
                 </div>
               </div>
@@ -197,8 +178,8 @@
         </div>
         }
 
-        <!-- Objectives Tab -->
-        @if (activeTab() === 'goals' && aboutData()?.goals) {
+        <!-- Goals -->
+        @if (activeTab() === "goals" && aboutData()?.goals) {
         <div class="tab-panel active">
           <div class="content-header">
             <h2 class="content-title">
@@ -209,7 +190,7 @@
 
           <div class="content-body">
             <div class="objectives-grid">
-              @for (goal of aboutData()?.goals; track goal.id; ) {
+              @for (goal of aboutData()?.goals; track goal.id) {
               <div class="objective-item">
                 <div class="objective-number">{{ $index + 1 }}</div>
                 <div class="objective-content">
@@ -218,6 +199,102 @@
               </div>
               }
             </div>
+          </div>
+        </div>
+        }
+
+        <!-- Members -->
+        @if (activeTab() === "members") {
+        <div class="tab-panel active">
+          <div class="content-header">
+            <h2 class="content-title">
+              <i class="text-primary-custom fas fa-users me-3"></i>
+              Faculty Members & Leadership
+            </h2>
+          </div>
+
+          <div class="content-body">
+            <div class="members-filters mb-4">
+              <button class="filter-btn" [class.active]="activeMemberFilter() === 'all'"
+                (click)="setMemberFilter('all')">
+                <i class="fas fa-th-large me-1"></i> All
+                <span class="badge">{{ allMembers().length }}</span>
+              </button>
+
+              <button class="filter-btn" [class.active]="activeMemberFilter() === 'leaders'"
+                (click)="setMemberFilter('leaders')">
+                <i class="fas fa-crown me-1"></i> Leadership
+                <span class="badge">{{ leaders().length }}</span>
+              </button>
+
+              <button class="filter-btn" [class.active]="activeMemberFilter() === 'faculty'"
+                (click)="setMemberFilter('faculty')">
+                <i class="fas fa-chalkboard-teacher me-1"></i> Faculty Members
+                <span class="badge">{{ facultyMembers().length }}</span>
+              </button>
+            </div>
+
+            @if (membersLoading()) {
+            <div class="members-grid">
+              @for (i of [1,2,3,4,5,6]; track i) {
+              <div class="member-card-skeleton">
+                <div class="skeleton-avatar"></div>
+                <div class="skeleton-line w-75"></div>
+                <div class="skeleton-line w-50"></div>
+              </div>
+              }
+            </div>
+            }
+
+            @if (!membersLoading() && filteredMembers().length > 0) {
+            <div class="members-grid">
+              @for (member of filteredMembers(); track member.id) {
+              <div class="member-card" [class.leader-card]="member.isPresident">
+                <div class="member-avatar-wrapper">
+                  @if (getMemberImage(member)) {
+                  <img [src]="getMemberImage(member)" [alt]="member.fullName" class="member-avatar" />
+                  } @else {
+                  <div class="member-avatar-placeholder">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  }
+
+                  @if (member.isPresident) {
+                  <span class="leader-badge" title="Leadership">
+                    <i class="fas fa-crown"></i>
+                  </span>
+                  }
+                </div>
+
+                <div class="member-info">
+                  <h4 class="member-name">{{ member.fullName }}</h4>
+
+                  @if (member.position) {
+                  <p class="member-position">{{ member.position }}</p>
+                  }
+
+                  @if (member.specialization) {
+                  <p class="member-specialization">
+                    <i class="fas fa-graduation-cap me-1"></i>
+                    {{ member.specialization }}
+                  </p>
+                  }
+
+                  <span class="member-type-badge">
+                    {{ member.memberType }}
+                  </span>
+                </div>
+              </div>
+              }
+            </div>
+            }
+
+            @if (!membersLoading() && filteredMembers().length === 0) {
+            <div class="text-center py-5">
+              <i class="fas fa-users fa-3x text-muted mb-3"></i>
+              <p class="text-muted">No members available</p>
+            </div>
+            }
           </div>
         </div>
         }

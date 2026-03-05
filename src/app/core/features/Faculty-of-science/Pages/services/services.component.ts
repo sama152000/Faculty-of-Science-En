@@ -1,12 +1,12 @@
 /**
  * Services Component
- * Displays faculty services using real API data
+ * Displays faculty services as a grid of cards.
+ * Clicking a card navigates to services/:slug for detailed view.
  */
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { SkeletonModule } from 'primeng/skeleton';
-import { TagModule } from 'primeng/tag';
 
 import {
   FacultyServicesService,
@@ -15,22 +15,23 @@ import {
 
 @Component({
   selector: 'app-services',
-  imports: [CommonModule, RouterModule, SkeletonModule, TagModule],
+  standalone: true,
+  imports: [CommonModule, RouterModule, SkeletonModule],
   templateUrl: './services.component.html',
   styleUrls: ['./services.component.css'],
 })
 export class ServicesComponent implements OnInit {
   private readonly servicesService = inject(FacultyServicesService);
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
   // State signals
   services = signal<FacultyService[]>([]);
-  selectedService = signal<FacultyService | null>(null);
   loading = signal(true);
   error = signal<string | null>(null);
 
   // Computed
   hasData = computed(() => this.services().length > 0);
-  selectedServiceId = computed(() => this.selectedService()?.id || null);
 
   ngOnInit(): void {
     this.loadServices();
@@ -48,28 +49,24 @@ export class ServicesComponent implements OnInit {
         this.loading.set(false);
       },
       error: (err) => {
-        this.error.set('Failed to load services');
+        this.error.set('فشل في تحميل الخدمات');
         this.loading.set(false);
         console.error('Error loading services:', err);
       },
     });
   }
 
-  selectService(service: FacultyService): void {
-    this.selectedService.set(service);
+  navigateToService(service: FacultyService): void {
+    const slug = this.sanitizeSlug(service.slug || service.title);
+    console.log('Navigating to service:', slug, 'from slug:', service.slug, 'title:', service.title);
+    this.router.navigate([slug], { relativeTo: this.route });
   }
 
-  closeDetails(): void {
-    this.selectedService.set(null);
-  }
-
-  isServiceSelected(serviceId: string): boolean {
-    return this.selectedServiceId() === serviceId;
+  sanitizeSlug(text: string): string {
+    return (text || '').trim().replace(/\s+/g, '-').toLowerCase();
   }
 
   getServiceIcon(service: FacultyService): string {
-    // If iconPath is a full URL or path, return it
-    // Otherwise, use a default icon class
     if (service.iconPath && service.iconPath.startsWith('http')) {
       return service.iconPath;
     }

@@ -19,7 +19,6 @@
   align-items: flex-start;
   justify-content: center;
   min-width: 100%;
-  margin: 0 auto;
 }
 
 /* Vertical Tabs Navigation */
@@ -498,5 +497,227 @@
   .dean-image {
     width: 120px;
     height: 150px;
+  }
+}
+
+/* =========================================
+   Members Tab
+   ========================================= */
+
+/* Filter Buttons */
+.members-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1.2rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 50px;
+  background: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+  border-color: var(--primary-blue, #0d4f8b);
+  color: var(--primary-blue, #0d4f8b);
+  background: #f0f5ff;
+}
+
+.filter-btn.active {
+  background: var(--primary-blue, #0d4f8b);
+  border-color: var(--primary-blue, #0d4f8b);
+  color: #fff;
+}
+
+.filter-btn .badge {
+  background: rgba(0, 0, 0, 0.1);
+  color: inherit;
+  padding: 0.15rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.filter-btn.active .badge {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Members Grid */
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.2rem;
+}
+
+/* Member Card */
+.member-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  transition: all 0.3s ease;
+}
+
+.member-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  border-color: transparent;
+}
+
+.member-card.leader-card {
+  border-color: var(--accent-orange, #f0bc7d);
+  background: linear-gradient(135deg, #fffaf3, #fff);
+}
+
+.member-card.leader-card:hover {
+  box-shadow: 0 8px 24px rgba(240, 188, 125, 0.2);
+}
+
+/* Avatar */
+.member-avatar-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.member-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #f0f0f0;
+}
+
+.leader-card .member-avatar {
+  border-color: var(--accent-orange, #f0bc7d);
+}
+
+.member-avatar-placeholder {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e0e8f0, #c8d6e5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  color: #fff;
+}
+
+.leader-badge {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent-orange, #f0bc7d);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  border: 2px solid #fff;
+}
+
+/* Member Info */
+.member-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.member-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--dark-blue, #002244);
+  margin: 0 0 0.3rem 0;
+  line-height: 1.3;
+}
+
+.member-position {
+  font-size: 0.82rem;
+  color: var(--primary-blue, #0d4f8b);
+  font-weight: 600;
+  margin: 0 0 0.2rem 0;
+}
+
+.member-specialization {
+  font-size: 0.78rem;
+  color: #777;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.4;
+}
+
+.member-type-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  background: #f0f5ff;
+  color: var(--primary-blue, #0d4f8b);
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.leader-card .member-type-badge {
+  background: #fff5e6;
+  color: #d48806;
+}
+
+/* Skeleton Loading */
+.member-card-skeleton {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.skeleton-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeleton-line {
+  height: 14px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Responsive Members */
+@media (max-width: 768px) {
+  .members-grid {
+    grid-template-columns: 1fr;
+  }
+  .members-filters {
+    justify-content: center;
   }
 }

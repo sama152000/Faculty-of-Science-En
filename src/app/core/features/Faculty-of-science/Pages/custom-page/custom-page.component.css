@@ -1,0 +1,228 @@
+.custom-page-section {
+  padding: 2rem 1rem;
+  background-color: #f8f5f0;
+  min-height: 60vh;
+}
+
+/* Header */
+.page-header {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #eee;
+}
+.featured-image {
+  width: 100%;
+  max-height: 400px;
+  overflow: hidden;
+}
+.featured-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.header-info {
+  padding: 1.5rem 2rem;
+}
+.page-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--primary-blue, #0d4f8b);
+  margin-bottom: 0.5rem;
+}
+.publish-date {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+/* Content */
+.content-section {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid #eee;
+}
+.content-body {
+  font-size: 0.95rem;
+  line-height: 2;
+  color: #333;
+}
+.content-body img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+.content-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+.content-body td,
+.content-body th {
+  border: 1px solid #ddd;
+  padding: 0.6rem;
+}
+
+/* Attachments Section */
+.attachments-section {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid #eee;
+}
+.section-heading {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary-blue, #0d4f8b);
+  margin-bottom: 1.2rem;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+}
+
+/* Images Grid */
+.images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+.image-card {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #eee;
+  transition: all 0.3s ease;
+}
+.image-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+.image-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.image-card:hover img {
+  transform: scale(1.05);
+}
+.image-caption {
+  display: block;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.8rem;
+  color: #555;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Files List */
+.files-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+.file-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.2rem;
+  background: #fafafa;
+  border-radius: 12px;
+  border: 1px solid #eee;
+  transition: all 0.2s ease;
+}
+.file-item:hover {
+  background: #f0f5ff;
+  border-color: var(--primary-blue, #0d4f8b);
+}
+.file-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: #fff;
+  background: var(--primary-blue, #0d4f8b);
+  flex-shrink: 0;
+}
+.file-icon.pdf-icon {
+  background: #dc3545;
+}
+.file-info {
+  flex: 1;
+  min-width: 0;
+}
+.file-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #333;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.file-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+.btn-view,
+.btn-download {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.btn-view {
+  background: var(--primary-blue, #0d4f8b);
+  color: #fff;
+}
+.btn-view:hover {
+  background: var(--dark-blue, #002244);
+  color: #fff;
+}
+.btn-download {
+  background: #f0f0f0;
+  color: #333;
+}
+.btn-download:hover {
+  background: #e0e0e0;
+}
+
+/* Error */
+.error-state {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #eee;
+}
+
+@media (max-width: 768px) {
+  .images-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .file-item {
+    flex-wrap: wrap;
+  }
+  .file-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .header-info {
+    padding: 1rem;
+  }
+  .page-title {
+    font-size: 1.2rem;
+  }
+}

@@ -53,6 +53,7 @@ export interface Unit {
   history: string;
   goals: UnitGoal[];
   unitAttachments: UnitAttachment[];
+  slug: string
 }
 
 @Injectable({

@@ -2,39 +2,83 @@
   <div class="container-fluid">
     <h2 class="section-title">Academic Programs</h2>
 
+    <!-- Loading State -->
+    @if (loading()) {
+    <div class="programs-grid">
+      @for (i of [1, 2, 3, 4]; track i) {
+      <div class="program-card card-custom">
+        <div class="card-image-placeholder">
+          <p-skeleton height="180px" width="100%" />
+        </div>
+
+        <div class="card-body-content">
+          <p-skeleton height="1.5rem" width="70%" styleClass="mb-3" />
+          <p-skeleton height="1rem" width="90%" styleClass="mb-2" />
+          <p-skeleton height="1rem" width="60%" />
+        </div>
+      </div>
+      }
+    </div>
+    }
+
     <!-- Error State -->
     @if (error()) {
     <div class="text-center py-5">
-      <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+      <i class="text-danger mb-3 fas fa-exclamation-triangle fa-3x"></i>
       <h4 class="mb-3">{{ error() }}</h4>
+
       <button class="btn btn-primary" (click)="retry()">
-        <i class="fas fa-refresh me-2"></i>Try Again
+        <i class="fas fa-refresh me-2"></i>
+        Try Again
       </button>
     </div>
     }
 
-    <!-- Main Content -->
-    @if (!error()) {
-    <div class="row">
-      <!-- Programs Sidebar -->
-      <div class="col-lg-3 col-md-4 mb-4">
-        <app-program-list
-          [programs]="programs()"
-          [loading]="loading()"
-          [selectedProgramId]="selectedProgramId()"
-          (programSelected)="onProgramSelected($event)"
-        />
+    <!-- Success State -->
+    @if (!loading() && !error() && hasData()) {
+    <div class="programs-grid">
+      @for (prog of programs(); track prog.id) {
+
+      <div class="program-card card-custom" (click)="navigateToProgram(prog)">
+        <div class="card-image-wrapper">
+          @if (getProgramImage(prog)) {
+          <img [src]="getProgramImage(prog)" [alt]="prog.pageTitle" class="card-image" />
+          } @else {
+          <div class="card-image-placeholder">
+            <i class="fas fa-graduation-cap"></i>
+          </div>
+          }
+        </div>
+
+        <div class="card-body-content">
+          <h3 class="card-title">{{ prog.pageTitle }}</h3>
+
+          <div class="card-footer-info">
+            @if (prog.goals && prog.goals.length > 0) {
+            <span class="info-badge">
+              <i class="fas fa-bullseye"></i>
+              {{ prog.goals.length }} Objectives
+            </span>
+            }
+
+            <span class="view-more">
+              View Details
+              <i class="fas fa-arrow-right me-1"></i>
+            </span>
+          </div>
+        </div>
       </div>
 
-      <!-- Program Content -->
-      <div class="col-lg-9 col-md-8">
-        <app-program-detail
-          [program]="selectedProgram()"
-          [programDetails]="programDetails()"
-          [programMembers]="programMembers()"
-          [detailsLoading]="detailsLoading()"
-        />
-      </div>
+      }
+    </div>
+    }
+
+    <!-- Empty State -->
+    @if (!loading() && !error() && !hasData()) {
+    <div class="text-center py-5">
+      <i class="text-muted mb-3 fas fa-graduation-cap fa-3x"></i>
+      <h4>No Programs Available</h4>
+      <p class="text-muted">Programs will be added soon.</p>
     </div>
     }
   </div>

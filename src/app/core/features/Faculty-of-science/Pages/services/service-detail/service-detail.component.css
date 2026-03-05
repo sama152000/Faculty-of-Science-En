@@ -1,0 +1,143 @@
+.service-detail-section {
+  padding: 2rem 1rem;
+  background-color: #f8f5f0;
+  min-height: 60vh;
+}
+
+/* Back Button */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--primary-blue, #0d4f8b);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 1.5rem;
+}
+
+.back-btn:hover {
+  background: var(--dark-blue, #002244);
+  transform: translateX(4px);
+}
+
+/* Service Header */
+.service-header {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid #eee;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.service-icon-large {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary-blue, #0d4f8b), #1a6fc4);
+  color: #fff;
+  font-size: 2.5rem;
+  flex-shrink: 0;
+}
+
+.service-img-large {
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  border-radius: 50%;
+}
+
+.header-info {
+  flex: 1;
+}
+
+.service-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--primary-blue, #0d4f8b);
+  margin-bottom: 0.5rem;
+}
+
+/* Content Sections */
+.content-section {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid #eee;
+}
+
+.section-header h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--primary-blue, #0d4f8b);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.content-body {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #444;
+}
+
+.content-body p {
+  margin-bottom: 1rem;
+}
+
+/* Error State */
+.error-state {
+  background: #fff;
+  border-radius: 16px;
+  padding: 3rem;
+  border: 1px solid #eee;
+}
+
+/* Skeleton */
+.detail-skeleton .card-custom {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #eee;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .service-title {
+    font-size: 1.3rem;
+  }
+
+  .service-icon-large {
+    width: 80px;
+    height: 80px;
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .service-detail-section {
+    padding: 1rem 0.5rem;
+  }
+
+  .content-section,
+  .service-header {
+    padding: 1.2rem;
+  }
+}

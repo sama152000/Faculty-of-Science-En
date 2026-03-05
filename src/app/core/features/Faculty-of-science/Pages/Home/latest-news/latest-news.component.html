@@ -1,7 +1,4 @@
-<section
-  id="news"
-  class="bg-beige-custom news-section position-relative overflow-hidden"
->
+<section id="news" class="bg-beige-custom news-section position-relative overflow-hidden">
   <div class="container-fluid">
     <h2 class="text-dark-blue mb-5 section-title">Latest News</h2>
 
@@ -44,23 +41,16 @@
       <div class="news-grid" [class]="'news-count-' + newsList().length">
         @for (new of newsList(); track new.id) {
         <div class="news-card card-custom">
-          <img
-            [src]="getFeaturedImage(new)"
-            [alt]="new.title"
-            class="card-img-top img-cover"
-            style="height: 200px"
-          />
+          <img [src]="getFeaturedImage(new)" [alt]="new.title" class="card-img-top img-cover" style="height: 200px" />
           <div class="card-body">
             <div class="text-muted mb-2 news-date">
               @if (new.publishedDate ) {
-              <i class="fa-regular fa-calendar ms-2"></i>
+              <i class="fa-regular fa-calendar me-2"></i>
               {{ formatDate(new.publishedDate) }}
               }
             </div>
             <h5 class="text-dark-blue card-title">{{ new.title }}</h5>
-            <div
-              class="text-muted card-text"
-              [innerHTML]="
+            <div class="text-muted card-text" [innerHTML]="
                 (new.content
                   | cleanHtml
                     : {
@@ -69,12 +59,8 @@
                         preserveLineBreaks: true
                       }
                   | slice : 0 : 100) + '...'
-              "
-            ></div>
-            <a
-              [routerLink]="['/news', new.id]"
-              class="text-primary-custom text-decoration-none read-more fw-semibold"
-            >
+              "></div>
+            <a [routerLink]="['/news', new.id]" class="text-primary-custom text-decoration-none read-more fw-semibold">
               Read More →
             </a>
           </div>
@@ -85,30 +71,19 @@
     } @else {
     <!-- Slider Mode: More than 5 news items OR mobile -->
     <div class="news-slider-container position-relative">
-      <div
-        class="news-slider d-flex"
-        [class.gap-4]="!isMobile()"
-        [style.transform]="getSlideTransform()"
-      >
+      <div class="news-slider d-flex" [class.gap-4]="!isMobile()" [style.transform]="getSlideTransform()">
         @for (new of newsList(); track new.id) {
         <div class="flex-shrink-0 news-card card-custom">
-          <img
-            [src]="getFeaturedImage(new)"
-            [alt]="new.title"
-            class="card-img-top img-cover"
-            style="height: 200px"
-          />
+          <img [src]="getFeaturedImage(new)" [alt]="new.title" class="card-img-top img-cover" style="height: 200px" />
           <div class="card-body">
             <div class="text-muted mb-2 news-date">
               @if (new.publishedDate ) {
-              <i class="fa-regular fa-calendar ms-2"></i>
+              <i class="fa-regular fa-calendar me-2"></i>
               {{ formatDate(new.publishedDate) }}
               }
             </div>
             <h5 class="text-dark-blue card-title">{{ new.title }}</h5>
-            <div
-              class="text-muted card-text"
-              [innerHTML]="
+            <div class="text-muted card-text" [innerHTML]="
                 (new.content
                   | cleanHtml
                     : {
@@ -117,12 +92,8 @@
                         preserveLineBreaks: true
                       }
                   | slice : 0 : 100) + '...'
-              "
-            ></div>
-            <a
-              [routerLink]="['/news', new.id]"
-              class="text-primary-custom text-decoration-none read-more fw-semibold"
-            >
+              "></div>
+            <a [routerLink]="['/news', new.id]" class="text-primary-custom text-decoration-none read-more fw-semibold">
               Read More →
             </a>
           </div>
@@ -132,17 +103,11 @@
 
       <!-- Navigation Buttons (only in slider mode) -->
       @if (showNavButtons()) {
-      <button
-        class="rounded-circle news-nav news-prev btn btn-primary position-absolute"
-        (click)="prevNews()"
-      >
+      <button class="rounded-circle news-nav news-prev btn btn-primary position-absolute" (click)="prevNews()">
         <i class="fa-solid fa-chevron-left"></i>
       </button>
 
-      <button
-        class="rounded-circle news-nav news-next btn btn-primary position-absolute"
-        (click)="nextNews()"
-      >
+      <button class="rounded-circle news-nav news-next btn btn-primary position-absolute" (click)="nextNews()">
         <i class="fa-solid fa-chevron-right"></i>
       </button>
       }

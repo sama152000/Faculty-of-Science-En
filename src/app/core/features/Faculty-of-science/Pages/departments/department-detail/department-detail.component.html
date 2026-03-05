@@ -1,0 +1,345 @@
+<section class="department-detail-section">
+  <div class="container-fluid">
+
+    <!-- Back Button -->
+    <div class="back-nav mb-4">
+      <button class="back-btn" (click)="goBack()">
+        <i class="fas fa-arrow-left me-2"></i>
+        Back to Departments
+      </button>
+    </div>
+
+    <!-- Loading State -->
+    @if (loading()) {
+    <div class="p-4 card-custom">
+      <p-skeleton height="6rem" styleClass="mb-4" />
+      <p-skeleton height="3rem" styleClass="mb-2" />
+      <p-skeleton height="15rem" />
+    </div>
+    }
+
+    <!-- Error State -->
+    @if (error()) {
+    <div class="text-center py-5">
+      <i class="text-warning mb-3 fas fa-exclamation-triangle fa-3x"></i>
+      <h4 class="mb-3">{{ error() }}</h4>
+      <button class="btn btn-primary" (click)="retry()">
+        <i class="fas fa-refresh me-2"></i>
+        Try Again
+      </button>
+    </div>
+    }
+
+    <!-- Department Content -->
+    @if (!loading() && !error() && department(); as dept) {
+    <div class="department-content">
+
+      <!-- Department Header -->
+      <div class="mb-4 department-header card-custom">
+        <div class="header-content">
+
+          <div class="department-icon-large">
+            @if (getDepartmentImage(dept)) {
+            <img [src]="getDepartmentImage(dept)" [alt]="dept.name" class="department-image" />
+            } @else {
+            <i class="fas fa-flask"></i>
+            }
+          </div>
+
+          <div class="header-info">
+            <h1 class="department-title">{{ dept.name }}</h1>
+            <p class="department-subtitle">{{ dept.subTitle }}</p>
+
+            <div class="department-stats">
+
+              @if (leader()) {
+              <div class="stat-item">
+                <i class="fas fa-user-tie"></i>
+                <span>Head of Department: {{ leader()?.memberName }}</span>
+              </div>
+              }
+
+              @if (departmentMembers().length > 0) {
+              <div class="stat-item">
+                <i class="fas fa-users"></i>
+                <span>{{ departmentMembers().length }} Members</span>
+              </div>
+              }
+
+              @if (departmentPrograms().length > 0) {
+              <div class="stat-item">
+                <i class="fas fa-graduation-cap"></i>
+                <span>{{ departmentPrograms().length }} Programs</span>
+              </div>
+              }
+
+              @if (departmentServices().length > 0) {
+              <div class="stat-item">
+                <i class="fas fa-cogs"></i>
+                <span>{{ departmentServices().length }} Services</span>
+              </div>
+              }
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="mb-4 section-nav card-custom">
+        <div class="nav-buttons">
+
+          <button class="nav-btn" [class.active]="isActiveSection('overview')" (click)="setActiveSection('overview')">
+            <i class="fas fa-info-circle me-2"></i>
+            Overview
+          </button>
+
+          @if (dept.vision || dept.mission) {
+          <button class="nav-btn" [class.active]="isActiveSection('vision')" (click)="setActiveSection('vision')">
+            <i class="fas fa-eye me-2"></i>
+            Vision & Mission
+          </button>
+          }
+
+          @if (dept.goals && dept.goals.length > 0) {
+          <button class="nav-btn" [class.active]="isActiveSection('goals')" (click)="setActiveSection('goals')">
+            <i class="fas fa-bullseye me-2"></i>
+            Goals
+          </button>
+          }
+
+          @if (hasDetails()) {
+          <button class="nav-btn" [class.active]="isActiveSection('details')" (click)="setActiveSection('details')">
+            <i class="fas fa-list me-2"></i>
+            Details
+          </button>
+          }
+
+          @if (hasPrograms()) {
+          <button class="nav-btn" [class.active]="isActiveSection('programs')" (click)="setActiveSection('programs')">
+            <i class="fas fa-graduation-cap me-2"></i>
+            Programs
+          </button>
+          }
+
+          @if (hasMembers()) {
+          <button class="nav-btn" [class.active]="isActiveSection('members')" (click)="setActiveSection('members')">
+            <i class="fas fa-users me-2"></i>
+            Members
+          </button>
+          }
+
+          @if (hasServices()) {
+          <button class="nav-btn" [class.active]="isActiveSection('services')" (click)="setActiveSection('services')">
+            <i class="fas fa-cogs me-2"></i>
+            Services
+          </button>
+          }
+
+        </div>
+      </div>
+
+      <!-- Section Content -->
+      <div class="section-content card-custom">
+
+        <!-- Overview -->
+        @if (isActiveSection('overview')) {
+        <div class="content-section">
+
+          <div class="section-header">
+            <h3 class="section-title-right">
+              <i class="text-primary-custom fas fa-info-circle me-3"></i>
+              Department Overview
+            </h3>
+          </div>
+
+          <div class="content-body">
+
+            <div class="lead"
+              [innerHTML]="dept.about | cleanHtml:{stripStyles:true,stripClasses:true,preserveLineBreaks:true}">
+            </div>
+
+            @if (leader()) {
+            <div class="mt-4 row">
+              <div class="col-md-6">
+                <div class="info-card">
+                  <h5 class="text-primary-custom">
+                    <i class="fas fa-user-tie me-2"></i>
+                    Head of Department
+                  </h5>
+                  <p class="h6">{{ leader()?.memberName }}</p>
+                </div>
+              </div>
+            </div>
+            }
+
+          </div>
+        </div>
+        }
+
+        <!-- Goals -->
+        @if (isActiveSection('goals')) {
+        <div class="content-section">
+          <div class="section-header">
+            <h3 class="section-title-right">
+              <i class="text-primary-custom fas fa-bullseye me-3"></i>
+              Department Goals
+            </h3>
+          </div>
+
+          <div class="content-body">
+            @if (dept.goals && dept.goals.length > 0) {
+            <div class="responsibilities-grid">
+              @for (goal of dept.goals; track goal.id;) {
+              <div class="responsibility-item">
+                <div class="responsibility-number">
+                  {{ goal.index || $index + 1 }}
+                </div>
+                <div class="responsibility-content">
+                  <p>{{ goal.goalName }}</p>
+                </div>
+              </div>
+              }
+            </div>
+            } @else {
+            <p class="text-muted">No goals available.</p>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Programs -->
+        @if (isActiveSection('programs')) {
+        <div class="content-section">
+          <div class="section-header">
+            <h3 class="section-title-right">
+              <i class="text-primary-custom fas fa-graduation-cap me-3"></i>
+              Academic Programs
+            </h3>
+          </div>
+
+          <div class="content-body">
+            @if (hasPrograms()) {
+            <div class="programs-grid">
+              @for (program of departmentPrograms(); track program.id) {
+              <div class="program-card">
+                <div class="program-icon">
+                  <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h6 class="program-name">{{ program.programName }}</h6>
+              </div>
+              }
+            </div>
+            } @else {
+            <p class="text-muted">No programs available.</p>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Members -->
+        @if (isActiveSection('members')) {
+        <div class="content-section">
+          <div class="section-header">
+            <h3 class="section-title-right">
+              <i class="text-primary-custom fas fa-users me-3"></i>
+              Department Members
+            </h3>
+          </div>
+
+          <div class="content-body">
+            @if (hasMembers()) {
+            <div class="team-grid">
+              @for (member of departmentMembers(); track member.id) {
+              <div class="team-card" [class.leader]="member.isLeader">
+                <div class="team-avatar">
+                  <p-avatar [label]="member.memberName.charAt(0)" size="large" shape="circle" />
+                </div>
+                <div class="team-info">
+                  <h6 class="team-name">{{ member.memberName }}</h6>
+                  @if (member.isLeader) {
+                  <p-tag value="Head of Department" severity="success" />
+                  }
+                </div>
+              </div>
+              }
+            </div>
+            } @else {
+            <p class="text-muted">No members available.</p>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Services -->
+        @if (isActiveSection('services')) {
+        <div class="content-section">
+          <div class="section-header">
+            <h3 class="section-title-right">
+              <i class="text-primary-custom fas fa-cogs me-3"></i>
+              Department Services
+            </h3>
+          </div>
+
+          <div class="content-body">
+            @if (hasServices()) {
+            <div class="services-list">
+              @for (service of departmentServices(); track service.id) {
+              <div class="service-item">
+                <div class="service-icon">
+                  <i class="fas fa-check-circle"></i>
+                </div>
+
+                <div class="service-content">
+                  <h6 class="service-title">{{ service.name }}</h6>
+                  <p class="service-desc">{{ service.details }}</p>
+
+                  <div class="service-meta">
+
+                    @if (service.category) {
+                    <p-tag [value]="service.category" severity="info" />
+                    }
+
+                    @if (service.duration) {
+                    <span class="meta-item">
+                      <i class="fas fa-clock me-1"></i>
+                      {{ service.duration }}
+                    </span>
+                    }
+
+                    @if (service.fees) {
+                    <span class="meta-item">
+                      <i class="fas fa-money-bill me-1"></i>
+                      {{ service.fees }} EGP
+                    </span>
+                    }
+
+                    @if (service.isOnline) {
+                    <p-tag value="Available Online" severity="success" />
+                    }
+
+                    @if (service.contactPerson) {
+                    <span class="meta-item">
+                      <i class="fas fa-user me-1"></i>
+                      {{ service.contactPerson }}
+                    </span>
+                    }
+
+                  </div>
+                </div>
+              </div>
+              }
+            </div>
+            } @else {
+            <p class="text-muted">No services available.</p>
+            }
+          </div>
+        </div>
+        }
+
+      </div>
+    </div>
+    }
+
+  </div>
+</section>

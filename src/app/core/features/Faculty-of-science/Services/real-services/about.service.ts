@@ -124,7 +124,7 @@ export class AboutService {
         }
 
         return (
-          response.data.find((page) => page.pageType === 'AboutUniversity') ||
+          response.data.find((page) => page.pageType === 'AboutUniversity' || page.pageNameEn === 'about') ||
           null
         );
       }),

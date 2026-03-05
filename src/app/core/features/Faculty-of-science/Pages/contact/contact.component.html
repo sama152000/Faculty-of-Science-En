@@ -41,12 +41,7 @@
         <i class="mb-4 text-6xl text-red-500 pi pi-exclamation-triangle"></i>
         <h4 class="mb-3">Failed to Load Contact Information</h4>
         <p class="text-muted mb-4">{{ error() }}</p>
-        <p-button
-          label="Try Again"
-          icon="pi pi-refresh"
-          (onClick)="retry()"
-          severity="danger"
-        />
+        <p-button label="Try Again" icon="pi pi-refresh" (onClick)="retry()" severity="danger" />
       </div>
     </div>
     }
@@ -61,41 +56,25 @@
         <div class="contact-sidebar card-custom">
           <h4 class="sidebar-title">
             <i class="mr-2 pi pi-phone inline-block"></i>
-            <span class="inline-block ms-3"> Quick Navigation </span>
+            <span class="inline-block me-3"> Quick Navigation </span>
           </h4>
 
           <!-- Section Buttons -->
           <div class="section-buttons">
-            <button
-              type="button"
-              class="section-btn"
-              [class.active]="isActiveSection('general')"
-              (click)="setActiveSection('general')"
-            >
+            <button type="button" class="section-btn" [class.active]="isActiveSection('general')"
+              (click)="setActiveSection('general')">
               <i class="mr-2 pi pi-info-circle"></i>
               General Info
             </button>
-            <button
-              type="button"
-              class="section-btn"
-              [class.active]="isActiveSection('staff')"
-              (click)="setActiveSection('staff')"
-            >
+            <button type="button" class="section-btn" [class.active]="isActiveSection('staff')"
+              (click)="setActiveSection('staff')">
               <i class="mr-2 pi pi-users"></i>
               Staff Directory @if (hasMembers()) {
-              <p-tag
-                [value]="totalMembersCount().toString()"
-                [rounded]="true"
-                styleClass="ml-auto"
-              />
+              <p-tag [value]="totalMembersCount().toString()" [rounded]="true" styleClass="ml-auto" />
               }
             </button>
-            <button
-              type="button"
-              class="section-btn"
-              [class.active]="isActiveSection('location')"
-              (click)="setActiveSection('location')"
-            >
+            <button type="button" class="section-btn" [class.active]="isActiveSection('location')"
+              (click)="setActiveSection('location')">
               <i class="mr-2 pi pi-map-marker"></i>
               Location & Map
             </button>
@@ -106,29 +85,14 @@
           <h5 class="quick-title">Quick Contact</h5>
           <div class="quick-actions">
             @if (contactInfo()?.phone) {
-            <p-button
-              icon="pi pi-phone"
-              label="Call Us"
-              [outlined]="true"
-              styleClass="w-full mb-2"
-              (onClick)="callPhone()"
-            />
+            <p-button icon="pi pi-phone" label="Call Us" [outlined]="true" styleClass="w-full mb-2"
+              (onClick)="callPhone()" />
             } @if (contactInfo()?.email) {
-            <p-button
-              icon="pi pi-envelope"
-              label="Email Us"
-              [outlined]="true"
-              styleClass="w-full mb-2"
-              (onClick)="sendEmail()"
-            />
+            <p-button icon="pi pi-envelope" label="Email Us" [outlined]="true" styleClass="w-full mb-2"
+              (onClick)="sendEmail()" />
             } @if (contactInfo()?.webSite) {
-            <p-button
-              icon="pi pi-globe"
-              label="Website"
-              [outlined]="true"
-              styleClass="w-full"
-              (onClick)="openWebsite()"
-            />
+            <p-button icon="pi pi-globe" label="Website" [outlined]="true" styleClass="w-full"
+              (onClick)="openWebsite()" />
             }
           </div>
         </div>
@@ -168,10 +132,7 @@
                   </div>
                   <div class="detail-content">
                     <h5>Phone</h5>
-                    <a
-                      [href]="'tel:' + contactInfo()?.phone"
-                      class="detail-link"
-                    >
+                    <a [href]="'tel:' + contactInfo()?.phone" class="detail-link">
                       {{ contactInfo()?.phone }}
                     </a>
                   </div>
@@ -188,10 +149,7 @@
                   </div>
                   <div class="detail-content">
                     <h5>Email</h5>
-                    <a
-                      [href]="'mailto:' + contactInfo()?.email"
-                      class="detail-link"
-                    >
+                    <a [href]="'mailto:' + contactInfo()?.email" class="detail-link">
                       {{ contactInfo()?.email }}
                     </a>
                   </div>
@@ -238,11 +196,7 @@
                   </div>
                   <div class="detail-content">
                     <h5>Website</h5>
-                    <a
-                      [href]="contactInfo()?.webSite"
-                      target="_blank"
-                      class="detail-link"
-                    >
+                    <a [href]="contactInfo()?.webSite" target="_blank" class="detail-link">
                       {{ contactInfo()?.webSite }}
                     </a>
                   </div>
@@ -257,18 +211,11 @@
           <p-card header="Follow Us" styleClass="mt-4">
             <div class="social-links">
               @for (link of socialLinks(); track link.platform) {
-              <p-button
-                [icon]="link.icon"
-                [rounded]="true"
-                [pTooltip]="link.platform"
-                tooltipPosition="top"
-                styleClass="mr-2"
-                [style]="{
+              <p-button [icon]="link.icon" [rounded]="true" [pTooltip]="link.platform" tooltipPosition="top"
+                styleClass="mr-2" [style]="{
                   'background-color': link.color,
                   'border-color': link.color
-                }"
-                (onClick)="openSocialLink(link.url)"
-              />
+                }" (onClick)="openSocialLink(link.url)" />
               }
             </div>
           </p-card>
@@ -304,11 +251,7 @@
               <p-card>
                 <div class="text-center">
                   <p-skeleton shape="circle" size="6rem" styleClass="mb-3" />
-                  <p-skeleton
-                    height="1.5rem"
-                    width="80%"
-                    styleClass="mb-2 mx-auto"
-                  />
+                  <p-skeleton height="1.5rem" width="80%" styleClass="mb-2 mx-auto" />
                   <p-skeleton height="1rem" width="60%" styleClass="mx-auto" />
                 </div>
               </p-card>
@@ -327,27 +270,15 @@
             <div class="flex flex-column flex-sm-row president-card">
               <div class="president-image">
                 @if (hasAvatar(dean)) {
-                <img
-                  [src]="getMemberAvatar(dean)"
-                  [alt]="dean.fullName"
-                  class="president-avatar"
-                />
+                <img [src]="getMemberAvatar(dean)" [alt]="dean.fullName" class="president-avatar" />
                 } @else {
-                <p-avatar
-                  [label]="dean.fullName.charAt(0)"
-                  size="xlarge"
-                  shape="circle"
-                  styleClass="president-avatar-fallback"
-                />
+                <p-avatar [label]="dean.fullName.charAt(0)" size="xlarge" shape="circle"
+                  styleClass="president-avatar-fallback" />
                 }
               </div>
               <div class="president-info">
                 <h2 class="president-name">{{ dean.fullName }}</h2>
-                <p-tag
-                  [value]="dean.position"
-                  severity="success"
-                  styleClass="mb-2"
-                />
+                <p-tag [value]="dean.position" severity="success" styleClass="mb-2" />
                 <p class="president-specialization">
                   <i class="mr-1 pi pi-book"></i>
                   {{ dean.specialization }}
@@ -370,26 +301,15 @@
                 <div class="staff-card">
                   <div class="staff-image">
                     @if (hasAvatar(member)) {
-                    <img
-                      [src]="getMemberAvatar(member)"
-                      [alt]="member.fullName"
-                      class="staff-style"
-                    />
+                    <img [src]="getMemberAvatar(member)" [alt]="member.fullName" class="staff-style" />
                     } @else {
-                    <p-avatar
-                      [label]="member.fullName.charAt(0)"
-                      size="large"
-                      shape="circle"
-                    />
+                    <p-avatar [label]="member.fullName.charAt(0)" size="large" shape="circle" />
                     }
                   </div>
                   <div class="staff-info">
                     <h5 class="staff-name">{{ member.fullName }}</h5>
-                    <p-tag
-                      [value]="member.position"
-                      [severity]="getMemberTypeSeverity(member.memberType)"
-                      styleClass="mt-2"
-                    />
+                    <p-tag [value]="member.position" [severity]="getMemberTypeSeverity(member.memberType)"
+                      styleClass="mt-2" />
                   </div>
                 </div>
               </div>
@@ -411,34 +331,20 @@
                 <div class="staff-card">
                   <div class="staff-image">
                     @if (hasAvatar(member)) {
-                    <img
-                      [src]="getMemberAvatar(member)"
-                      [alt]="member.fullName"
-                      class="staff-avatar"
-                    />
+                    <img [src]="getMemberAvatar(member)" [alt]="member.fullName" class="staff-avatar" />
                     } @else {
-                    <p-avatar
-                      [label]="member.fullName.charAt(0)"
-                      size="large"
-                      shape="circle"
-                    />
+                    <p-avatar [label]="member.fullName.charAt(0)" size="large" shape="circle" />
                     }
                   </div>
                   <div class="staff-info">
                     <h5 class="staff-name">{{ member.fullName }}</h5>
                     <div>
-                      <p-tag
-                        [value]="member.position"
-                        [severity]="getMemberTypeSeverity(member.memberType)"
-                        styleClass="mt-2"
-                      />
+                      <p-tag [value]="member.position" [severity]="getMemberTypeSeverity(member.memberType)"
+                        styleClass="mt-2" />
                     </div>
 
-                    <p-tag
-                      [value]="member.specialization"
-                      [severity]="getMemberTypeSeverity(member.memberType)"
-                      styleClass="mt-2"
-                    />
+                    <p-tag [value]="member.specialization" [severity]="getMemberTypeSeverity(member.memberType)"
+                      styleClass="mt-2" />
                   </div>
                 </div>
               </div>
@@ -483,13 +389,8 @@
             <div class="map-container">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3593.0258622713013!2d32.8040167!3d25.769709300000002!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14491592597f70b1%3A0xccac387a294f12e5!2z2KzYp9mF2LnYqSDYp9mE2KPZgti12LE!5e0!3m2!1sar!2seg!4v1764261012461!5m2!1sar!2seg"
-                width="100%"
-                height="400"
-                style="border: 0; border-radius: 12px"
-                allowfullscreen=""
-                loading="lazy"
-                referrerpolicy="no-referrer-when-downgrade"
-              ></iframe>
+                width="100%" height="400" style="border: 0; border-radius: 12px" allowfullscreen="" loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
           </p-card>
 

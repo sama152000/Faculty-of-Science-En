@@ -1,216 +1,84 @@
-import {
-  Component,
-  OnInit,
-  inject,
-  signal,
-  computed,
-  ChangeDetectionStrategy,
-} from '@angular/core';
+/**
+ * Departments Component
+ * Displays faculty departments as a grid of cards.
+ * Clicking a card navigates to departments/:slug for detailed view.
+ */
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { forkJoin } from 'rxjs';
-
-// Base Component
-import { BaseComponent } from '../../../../../shared/components/base.component';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { SkeletonModule } from 'primeng/skeleton';
 
 // Services
 import {
   DepartmentsService,
   Department,
-  DepartmentDetailsService,
-  DepartmentDetail,
-  DepartmentMembersService,
-  DepartmentMember,
-  DepartmentProgramsService,
-  DepartmentProgram,
-  DepartmentServicesService,
-  DepartmentService as DeptService,
 } from '../../Services/real-services/departments';
-import { CleanHtmlPipe } from '../../../../pipes/clean-html.pipe';
 
 @Component({
   selector: 'app-departments',
-  imports: [CommonModule, RouterModule, CleanHtmlPipe],
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    SkeletonModule,
+  ],
   templateUrl: './departments.component.html',
   styleUrls: ['./departments.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DepartmentsComponent extends BaseComponent implements OnInit {
+export class DepartmentsComponent implements OnInit {
   // Services
   private readonly departmentsService = inject(DepartmentsService);
-  private readonly departmentDetailsService = inject(DepartmentDetailsService);
-  private readonly departmentMembersService = inject(DepartmentMembersService);
-  private readonly departmentProgramsService = inject(
-    DepartmentProgramsService
-  );
-  private readonly departmentServicesService = inject(
-    DepartmentServicesService
-  );
+  private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
 
-  // State Signals
-  protected departments = signal<Department[]>([]);
-  protected selectedDepartment = signal<Department | null>(null);
-  protected departmentDetails = signal<DepartmentDetail[]>([]);
-  protected departmentMembers = signal<DepartmentMember[]>([]);
-  protected departmentPrograms = signal<DepartmentProgram[]>([]);
-  protected departmentServices = signal<DeptService[]>([]);
-  protected activeSection = signal<string>('overview');
-  protected searchQuery = signal<string>('');
+  // State signals
+  departments = signal<Department[]>([]);
+  loading = signal(true);
+  error = signal<string | null>(null);
 
-  // Computed: Get leader/head of department
-  protected departmentHead = computed(() => {
-    const members = this.departmentMembers();
-    return members.find((m) => m.isLeader) || null;
-  });
-
-  // Computed: Get featured image from attachments
-  protected featuredImage = computed(() => {
-    const dept = this.selectedDepartment();
-    if (!dept?.departmentAttachments?.length) return null;
-    const featured = dept.departmentAttachments.find((a) => a.isFeatured);
-    return featured?.url || dept.departmentAttachments[0]?.url || null;
-  });
-
-  // Computed: Filtered departments by search
-  protected filteredDepartments = computed(() => {
-    const query = this.searchQuery().toLowerCase().trim();
-    const depts = this.departments();
-    if (!query) return depts;
-    return depts.filter(
-      (d) =>
-        d.name?.toLowerCase().includes(query) ||
-        d.subTitle?.toLowerCase().includes(query)
-    );
-  });
+  // Computed signals
+  hasData = computed(() => this.departments().length > 0);
 
   ngOnInit(): void {
     this.loadDepartments();
   }
 
-  /**
-   * Load all departments
-   */
-  private loadDepartments(): void {
-    this.setLoading();
+  loadDepartments(): void {
+    this.loading.set(true);
+    this.error.set(null);
 
-    this.departmentsService
-      .getAll()
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (response) => {
-          if (response.success && response.data) {
-            this.departments.set(response.data);
-            // Select first department by default if available
-            if (response.data.length > 0) {
-              this.selectDepartment(response.data[0]);
-            }
-            this.setSuccess();
-          } else {
-            this.setError('No departments found');
-          }
-        },
-        error: (error) => {
-          this.handleError(error, 'Failed to load departments');
-        },
-      });
+    this.departmentsService.getAll().subscribe({
+      next: (response) => {
+        if (response.success && response.data) {
+          this.departments.set(response.data);
+        }
+        this.loading.set(false);
+      },
+      error: (err) => {
+        this.error.set('فشل في تحميل الأقسام');
+        this.loading.set(false);
+        console.error('Error loading departments:', err);
+      },
+    });
   }
 
-  /**
-   * Select a department and load its related data
-   */
-  selectDepartment(department: Department): void {
-    this.selectedDepartment.set(department);
-    this.activeSection.set('overview');
-    this.loadDepartmentRelatedData(department.id);
+  navigateToDepartment(department: Department): void {
+    this.router.navigate([this.sanitizeSlug(department.slug)], { relativeTo: this.route });
   }
 
-  /**
-   * Load all related data for selected department
-   */
-  private loadDepartmentRelatedData(departmentId: string): void {
-    forkJoin({
-      details: this.departmentDetailsService.getAll(),
-      members: this.departmentMembersService.getAll(),
-      programs: this.departmentProgramsService.getAll(),
-      services: this.departmentServicesService.getAll(),
-    })
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe({
-        next: (response) => {
-          // Filter data by departmentId
-          this.departmentDetails.set(
-            response.details.data.filter((d) => d.departmentId === departmentId)
-          );
-
-          this.departmentMembers.set(
-            response.members.data.filter((m) => m.departmentId === departmentId)
-          );
-
-          this.departmentPrograms.set(
-            response.programs.data.filter(
-              (p) => p.departmentId === departmentId
-            )
-          );
-
-          this.departmentServices.set(
-            response.services.data.filter(
-              (s) => s.departmentId === departmentId
-            )
-          );
-        },
-        error: (error) => {
-          console.error('Failed to load department related data:', error);
-        },
-      });
+  private sanitizeSlug(slug: string): string {
+    return (slug || '').trim().replace(/\s+/g, '-').toLowerCase();
   }
 
-  /**
-   * Close department details
-   */
-  closeDetails(): void {
-    this.selectedDepartment.set(null);
+  getDepartmentImage(department: Department): string | null {
+    if (department.departmentAttachments && department.departmentAttachments.length > 0) {
+      const featured = department.departmentAttachments.find((a) => a.isFeatured);
+      return featured ? featured.url : department.departmentAttachments[0].url;
+    }
+    return null;
   }
 
-  /**
-   * Check if department is selected
-   */
-  isDepartmentSelected(deptId: string): boolean {
-    return this.selectedDepartment()?.id === deptId;
-  }
-
-  /**
-   * Set active section
-   */
-  setActiveSection(section: string): void {
-    this.activeSection.set(section);
-  }
-
-  /**
-   * Check if section is active
-   */
-  isActiveSection(section: string): boolean {
-    return this.activeSection() === section;
-  }
-
-  /**
-   * Handle search input change
-   */
-  onSearchChange(query: string): void {
-    this.searchQuery.set(query);
-  }
-
-  /**
-   * Clear search
-   */
-  clearSearch(): void {
-    this.searchQuery.set('');
-  }
-
-  /**
-   * Retry loading
-   */
-  protected override retry(): void {
+  retry(): void {
     this.loadDepartments();
   }
 }

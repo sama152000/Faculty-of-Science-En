@@ -47,6 +47,7 @@ export interface Program {
   vision: string;
   goals: ProgramGoal[];
   programAttachments: ProgramAttachment[];
+  slug: string;
 }
 
 // ==================== PROGRAM DETAIL ====================

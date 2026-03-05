@@ -4,6 +4,7 @@ export interface Center {
   pageId?: string;
   centerName: string;
   centerNameEn?: string;
+  slug?: string;
   subTitle?: string;
   place?: string;
   about?: string;

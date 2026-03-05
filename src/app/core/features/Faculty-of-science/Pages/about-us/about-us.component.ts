@@ -18,6 +18,8 @@ import { ButtonModule } from 'primeng/button';
 import { BaseComponent } from '../../../../../shared/components/base.component';
 import { AboutService } from '../../Services/real-services/about.service';
 import { DeanSpeechsService } from '../../Services/real-services/dean-speechs.service';
+import { MemberService } from '../../Services/real-services/member.service';
+import { Member } from '../../model/member.model';
 import { CleanHtmlPipe } from '../../../../pipes/clean-html.pipe';
 
 // الخدمات والنماذج
@@ -27,7 +29,7 @@ interface Tab {
   title: string;
   icon: string;
   content: string | any[];
-  type?: 'text' | 'array' | 'Dean';
+  type?: 'text' | 'array' | 'Dean' | 'members';
 }
 
 interface AboutPage {
@@ -65,13 +67,31 @@ export class AboutUsComponent extends BaseComponent implements OnInit {
   // الخدمات
   private readonly aboutService = inject(AboutService);
   private readonly deanSpeechsService = inject(DeanSpeechsService);
+  private readonly memberService = inject(MemberService);
 
   // حالة الكومبوننت
   protected aboutData = signal<AboutPage | null>(null);
   protected presidentData = signal<DeanSpeech | null>(null);
+  protected allMembers = signal<Member[]>([]);
+  protected membersLoading = signal(false);
+  protected activeMemberFilter = signal<string>('all');
   protected tabs = signal<Tab[]>([]);
   protected activeTab = signal<string>('Dean');
   protected isVisible = signal<boolean>(false);
+
+  // Filtered members
+  protected leaders = computed(() =>
+    this.allMembers().filter((m) => m.isPresident)
+  );
+  protected facultyMembers = computed(() =>
+    this.allMembers().filter((m) => !m.isPresident)
+  );
+  protected filteredMembers = computed(() => {
+    const filter = this.activeMemberFilter();
+    if (filter === 'leaders') return this.leaders();
+    if (filter === 'faculty') return this.facultyMembers();
+    return this.allMembers();
+  });
 
   // القيم المحسوبة
   protected activeTabData = computed(() => {
@@ -95,8 +115,28 @@ export class AboutUsComponent extends BaseComponent implements OnInit {
     this.loadPresidentData();
     this.loadAboutData();
     this.buildTabs();
-
+    this.loadMembers();
     setTimeout(() => this.isVisible.set(true), 200);
+  }
+
+  /**
+   * تحميل بيانات الأعضاء
+   */
+  private loadMembers(): void {
+    this.membersLoading.set(true);
+    this.memberService.getAllMembers()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response) => {
+          if (response.success && response.data) {
+            this.allMembers.set(response.data);
+          }
+          this.membersLoading.set(false);
+        },
+        error: () => {
+          this.membersLoading.set(false);
+        },
+      });
   }
 
   /**
@@ -198,7 +238,14 @@ export class AboutUsComponent extends BaseComponent implements OnInit {
         icon: 'pi pi-bullseye', // هدف = أهداف
         content: data.goals ?? [],
         type: 'array',
-      }
+      },
+      {
+        id: 'members',
+        title: 'Faculty Members',
+        icon: 'pi pi-users',
+        content: [],
+        type: 'members',
+      },
     );
 
     this.tabs.set(newTabs);
@@ -223,5 +270,16 @@ export class AboutUsComponent extends BaseComponent implements OnInit {
    */
   protected isArray(content: any): boolean {
     return Array.isArray(content);
+  }
+
+  protected setMemberFilter(filter: string): void {
+    this.activeMemberFilter.set(filter);
+  }
+
+  protected getMemberImage(member: Member): string | null {
+    if (member.memberAttachments && member.memberAttachments.length > 0) {
+      return member.memberAttachments[0].url;
+    }
+    return null;
   }
 }

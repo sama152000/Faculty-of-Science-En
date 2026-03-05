@@ -36,8 +36,8 @@
 
 <!-- Main Header -->
 <header class="bg-white shadow-sm site-header sticky-top">
-  <div class="container">
-    <div class="row py-3 align-items-center">
+  <div class="container-fluid px-4">
+    <div class="row py-2 align-items-center">
       <!-- Logo -->
       <div class="col-auto col-lg-2 d-flex align-items-center">
         <a routerLink="/" class="flex-column d-flex text-decoration-none logo d-flex align-items-center">
@@ -73,12 +73,63 @@
 
             <ul class="navbar-nav">
               @for (item of menuItems(); track item.id) {
+              <!-- عنصر بدون أطفال -->
+              @if (!item.childs || item.childs.length === 0) {
               <li class="nav-item">
-                <a class="nav-link" [routerLink]="'/' + item.slug.toLowerCase()" routerLinkActive="active"
-                  [routerLinkActiveOptions]="{ exact: item.slug.toLowerCase() === 'home' }" (click)="closeMobileMenu()">
+                <a class="nav-link" [routerLink]="'/' + sanitizeSlug(item.slug)" routerLinkActive="active"
+                  [routerLinkActiveOptions]="{ exact: sanitizeSlug(item.slug) === 'home' }" (click)="closeMobileMenu()">
                   {{ item.title }}
                 </a>
               </li>
+              } @else {
+              <!-- عنصر مع أطفال - المستوى الأول -->
+              <li class="nav-item has-dropdown" (mouseenter)="openDropdown(item.id)"
+                (mouseleave)="closeDropdown(item.id)">
+                <a class="nav-link dropdown-toggle-link" href="javascript:void(0)"
+                  [class.active]="isRouteActive(item.slug)" (click)="toggleDropdown(item.id, $event)">
+                  {{ item.title }}
+                  <i class="fas fa-chevron-down dropdown-arrow"></i>
+                </a>
+                <!-- القائمة المنسدلة - المستوى الأول -->
+                <ul class="dropdown-menu" [class.show]="isDropdownOpen(item.id)">
+                  @for (child of item.childs; track child.id) {
+                  @if (!child.childs || child.childs.length === 0) {
+                  <li>
+                    <a class="dropdown-item"
+                      [class.active]="isRouteActive(sanitizeSlug(item.slug) + '/' + sanitizeSlug(child.slug))"
+                      [routerLink]="'/' + sanitizeSlug(item.slug) + '/' + sanitizeSlug(child.slug)"
+                      (click)="closeMobileMenu(); closeAllDropdowns()">
+                      {{ child.title }}
+                    </a>
+                  </li>
+                  } @else {
+                  <!-- عنصر مع أطفال - المستوى الثاني -->
+                  <li class="has-submenu" (mouseenter)="openDropdown(child.id)" (mouseleave)="closeDropdown(child.id)">
+                    <a class="dropdown-item submenu-toggle" href="javascript:void(0)"
+                      [class.active]="isRouteActive(sanitizeSlug(item.slug) + '/' + sanitizeSlug(child.slug))"
+                      (click)="toggleDropdown(child.id, $event)">
+                      {{ child.title }}
+                      <i class="fas fa-chevron-left submenu-arrow"></i>
+                    </a>
+                    <!-- القائمة المنسدلة - المستوى الثاني -->
+                    <ul class="dropdown-menu submenu" [class.show]="isDropdownOpen(child.id)">
+                      @for (grandchild of child.childs; track grandchild.id) {
+                      <li>
+                        <a class="dropdown-item"
+                          [class.active]="isRouteActive(sanitizeSlug(item.slug) + '/' + sanitizeSlug(child.slug) + '/' + sanitizeSlug(grandchild.slug))"
+                          [routerLink]="'/' + sanitizeSlug(item.slug) + '/' + sanitizeSlug(child.slug) + '/' + sanitizeSlug(grandchild.slug)"
+                          (click)="closeMobileMenu(); closeAllDropdowns()">
+                          {{ grandchild.title }}
+                        </a>
+                      </li>
+                      }
+                    </ul>
+                  </li>
+                  }
+                  }
+                </ul>
+              </li>
+              }
               }
             </ul>
           </div>

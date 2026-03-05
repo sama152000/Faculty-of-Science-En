@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterModule } from '@angular/router';
+import { RouterLink, RouterModule, Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs';
 import { LogosService } from '../../../Services/real-services/logos.service';
 import { ContactsService } from '../../../Services/real-services/contacts.service';
 import { MenusService, MenuItem } from '../../../Services/real-services/menus.service';
@@ -27,15 +28,82 @@ export class HeaderComponent implements OnInit {
   private readonly contactsService = inject(ContactsService);
   private readonly menusService = inject(MenusService);
 
+  private readonly router = inject(Router);
+
   logo = signal<string | null>(null);
   contact = signal<Contact | null>(null);
   menuItems = signal<MenuItem[]>([]);
+  currentUrl = signal<string>('');
   isMobileMenuOpen = false;
+  openDropdowns = signal<Set<string>>(new Set());
+
+  openDropdown(id: string): void {
+    if (this.isMobileMenuOpen) return; // Only hover on desktop
+    const current = new Set(this.openDropdowns());
+    current.add(id);
+    this.openDropdowns.set(current);
+  }
+
+  closeDropdown(id: string): void {
+    if (this.isMobileMenuOpen) return; // Only hover on desktop
+    const current = new Set(this.openDropdowns());
+    current.delete(id);
+    this.openDropdowns.set(current);
+  }
+
+  toggleDropdown(id: string, event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    const current = new Set(this.openDropdowns());
+    if (current.has(id)) {
+      current.delete(id);
+    } else {
+      current.add(id);
+    }
+    this.openDropdowns.set(current);
+  }
+
+  isDropdownOpen(id: string): boolean {
+    return this.openDropdowns().has(id);
+  }
+
+  closeAllDropdowns(): void {
+    this.openDropdowns.set(new Set());
+  }
+
+  sanitizeSlug(slug: string): string {
+    return slug.trim().replace(/\s+/g, '-').toLowerCase();
+  }
+
+  private sanitizeMenuItemSlugs(item: MenuItem): MenuItem {
+    return {
+      ...item,
+      slug: this.sanitizeSlug(item.slug || item.titleEn || ''),
+      titleEn: this.sanitizeSlug(item.titleEn || ''),
+      childs: item.childs ? item.childs.map((child) => this.sanitizeMenuItemSlugs(child)) : [],
+    };
+  }
 
   ngOnInit(): void {
     this.loadLogo();
     this.loadContactInfo();
     this.loadMenus();
+
+    // Track current URL for active state
+    this.currentUrl.set(this.router.url);
+    this.router.events
+      .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
+      .subscribe((e) => this.currentUrl.set(e.urlAfterRedirects || e.url));
+  }
+
+  /**
+   * Check if a menu item's route is active (matches current URL prefix).
+   * Works for parent items with children.
+   */
+  isRouteActive(slug: string): boolean {
+    const sanitized = this.sanitizeSlug(slug);
+    const url = this.currentUrl();
+    return url === '/' + sanitized || url.startsWith('/' + sanitized + '/');
   }
 
   loadLogo(): void {
@@ -68,10 +136,9 @@ export class HeaderComponent implements OnInit {
         if (res.success && res.data) {
           const mainMenus = res.data
             .filter((item) => (item.menuType?.toLowerCase() === 'main' || item.menuType === 'رئيسية') && item.parentId === null)
-            .sort((a, b) => a.order - b.order);
+            .sort((a, b) => a.order - b.order)
+            .map((item) => this.sanitizeMenuItemSlugs(item));
           this.menuItems.set(mainMenus);
-          // console.log(this.menuItems(), 'this.menuItems this.menuItems');
-
         }
       },
       error: (err) => console.error('Error loading menus:', err),

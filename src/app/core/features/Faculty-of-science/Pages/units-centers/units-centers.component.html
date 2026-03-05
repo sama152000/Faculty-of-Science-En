@@ -5,30 +5,30 @@
     <!-- Tab Navigation -->
     <div class="tab-navigation card-custom mb-4">
       <div class="tab-buttons">
-        <button
-          class="tab-btn"
-          [class.active]="isActiveTab('units')"
-          (click)="setActiveTab('units')"
-        >
+
+        <button class="tab-btn" [class.active]="isActiveTab(unitsCategorySlug())"
+          (click)="setActiveTab(unitsCategorySlug())">
           <i class="fas fa-building me-2"></i>
           Units
         </button>
-        <button
-          class="tab-btn"
-          [class.active]="isActiveTab('centers')"
-          (click)="setActiveTab('centers')"
-        >
+
+        <button class="tab-btn" [class.active]="isActiveTab(centersCategorySlug())"
+          (click)="setActiveTab(centersCategorySlug())">
           <i class="fas fa-university me-2"></i>
-          Centers
+          Research Centers
         </button>
+
       </div>
     </div>
 
     <!-- Tab Content -->
-    @if (isActiveTab('units')) {
-    <app-units />
-    } @if (isActiveTab('centers')) {
-    <app-centers />
+    @if (isActiveTab(unitsCategorySlug())) {
+    <app-units [categorySlug]="unitsCategorySlug()" />
     }
+
+    @if (isActiveTab(centersCategorySlug())) {
+    <app-centers [categorySlug]="centersCategorySlug()" />
+    }
+
   </div>
 </section>

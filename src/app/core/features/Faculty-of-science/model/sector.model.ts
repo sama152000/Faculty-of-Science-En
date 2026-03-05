@@ -47,6 +47,7 @@ export interface Sector {
   vision: string;
   goals: Goal[];
   sectorAttachments: SectorAttachment[];
+  slug: string;
 }
 
 // ==================== SECTOR DETAILS ====================

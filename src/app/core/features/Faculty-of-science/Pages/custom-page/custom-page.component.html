@@ -1,0 +1,188 @@
+<section class="custom-page-section">
+  <div class="container-fluid">
+
+    <!-- Loading State -->
+    @if (loading()) {
+    <div class="page-header-skeleton card-custom mb-4 p-4">
+      <p-skeleton height="2rem" width="50%" styleClass="mb-3" />
+      <p-skeleton height="1rem" width="70%" />
+    </div>
+
+    <div class="card-custom p-4">
+      <p-skeleton height="1rem" width="100%" styleClass="mb-3" />
+      <p-skeleton height="1rem" width="90%" styleClass="mb-3" />
+      <p-skeleton height="1rem" width="80%" styleClass="mb-3" />
+      <p-skeleton height="200px" width="100%" styleClass="mb-3" />
+      <p-skeleton height="1rem" width="85%" />
+    </div>
+    }
+
+    <!-- Error State -->
+    @if (error()) {
+    <div class="error-state card-custom text-center py-5">
+      <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+      <h4 class="mb-3">{{ error() }}</h4>
+
+      <button class="btn btn-primary" (click)="retry()">
+        <i class="fas fa-refresh me-2"></i>
+        Try Again
+      </button>
+    </div>
+    }
+
+    <!-- Page Content -->
+    @if (!loading() && !error() && page(); as p) {
+    <div class="page-content">
+
+      <!-- Page Header -->
+      <div class="page-header card-custom mb-4">
+
+        @if (p.featuredImagePath) {
+        <div class="featured-image">
+          <img [src]="p.featuredImagePath" alt="Page Image" />
+        </div>
+        }
+
+        <div class="header-info">
+
+          @if (p.subTitle) {
+          <h1 class="page-title">{{ p.subTitle }}</h1>
+          }
+
+          @if (p.publishedDate) {
+          <span class="publish-date">
+            <i class="fas fa-calendar-alt me-1"></i>
+            {{ p.publishedDate | date: 'fullDate' }}
+          </span>
+          }
+
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      @if (p.content) {
+      <div class="content-section card-custom mb-4">
+        <div class="content-body" [innerHTML]="p.content | cleanHtml"></div>
+      </div>
+      }
+
+      <!-- Images -->
+      @if (imageAttachments().length > 0) {
+      <div class="attachments-section card-custom mb-4">
+
+        <h3 class="section-heading">
+          <i class="fas fa-images me-2"></i>
+          Images
+        </h3>
+
+        <div class="images-grid">
+          @for (img of imageAttachments(); track img.id) {
+          <div class="image-card">
+
+            <a [href]="img.url" target="_blank" rel="noopener">
+              <img [src]="img.url" [alt]="img.fileName" loading="lazy" />
+            </a>
+
+            @if (img.fileName) {
+            <span class="image-caption">
+              {{ img.fileName }}
+            </span>
+            }
+
+          </div>
+          }
+        </div>
+
+      </div>
+      }
+
+      <!-- PDF Files -->
+      @if (pdfAttachments().length > 0) {
+      <div class="attachments-section card-custom mb-4">
+
+        <h3 class="section-heading">
+          <i class="fas fa-file-pdf me-2"></i>
+          PDF Files
+        </h3>
+
+        <div class="files-list">
+
+          @for (pdf of pdfAttachments(); track pdf.id) {
+          <div class="file-item">
+
+            <div class="file-icon pdf-icon">
+              <i class="fas fa-file-pdf"></i>
+            </div>
+
+            <div class="file-info">
+              <span class="file-name">
+                {{ getFileName(pdf) }}
+              </span>
+            </div>
+
+            <div class="file-actions">
+
+              <a [href]="pdf.url" target="_blank" rel="noopener" class="btn-view" title="View">
+                <i class="fas fa-eye"></i>
+                View
+              </a>
+
+              <a [href]="pdf.url" download class="btn-download" title="Download">
+                <i class="fas fa-download"></i>
+                Download
+              </a>
+
+            </div>
+
+          </div>
+          }
+
+        </div>
+
+      </div>
+      }
+
+      <!-- Other Attachments -->
+      @if (otherAttachments().length > 0) {
+      <div class="attachments-section card-custom mb-4">
+
+        <h3 class="section-heading">
+          <i class="fas fa-paperclip me-2"></i>
+          Other Attachments
+        </h3>
+
+        <div class="files-list">
+
+          @for (file of otherAttachments(); track file.id) {
+          <div class="file-item">
+
+            <div class="file-icon">
+              <i [class]="getFileIcon(file)"></i>
+            </div>
+
+            <div class="file-info">
+              <span class="file-name">
+                {{ getFileName(file) }}
+              </span>
+            </div>
+
+            <div class="file-actions">
+              <a [href]="file.url" target="_blank" rel="noopener" class="btn-download" title="Download">
+                <i class="fas fa-download"></i>
+                Download
+              </a>
+            </div>
+
+          </div>
+          }
+
+        </div>
+
+      </div>
+      }
+
+    </div>
+    }
+
+  </div>
+</section>

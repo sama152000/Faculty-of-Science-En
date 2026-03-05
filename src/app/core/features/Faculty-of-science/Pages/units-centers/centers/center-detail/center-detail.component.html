@@ -1,0 +1,121 @@
+<section class="detail-section">
+  <div class="container-fluid">
+    <button class="back-btn" (click)="goBack()">
+      <i class="fas fa-arrow-right me-2"></i> العودة للوحدات والمراكز
+    </button>
+
+    @if (loading()) {
+    <div class="card-custom p-4 mb-4">
+      <div class="d-flex align-items-center gap-3">
+        <p-skeleton shape="circle" height="100px" width="100px" />
+        <div class="flex-grow-1">
+          <p-skeleton height="2rem" width="60%" styleClass="mb-3" />
+          <p-skeleton height="1rem" width="80%" />
+        </div>
+      </div>
+    </div>
+    <div class="card-custom p-4">
+      <p-skeleton height="1.5rem" width="30%" styleClass="mb-4" />
+      <p-skeleton height="1rem" width="100%" styleClass="mb-2" />
+      <p-skeleton height="1rem" width="90%" />
+    </div>
+    }
+
+    @if (error()) {
+    <div class="error-state text-center py-5">
+      <i class="fas fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+      <h4 class="mb-3">{{ error() }}</h4>
+      <button class="btn btn-primary" (click)="retry()">
+        <i class="fas fa-refresh me-2"></i> حاول مرة أخرى
+      </button>
+    </div>
+    }
+
+    @if (!loading() && !error() && center(); as c) {
+    <div class="detail-content">
+      <!-- Header -->
+      <div class="detail-header card-custom mb-4">
+        <div class="header-content">
+          <div class="detail-image">
+            @if (getCenterImage(c)) {
+            <img [src]="getCenterImage(c)" [alt]="c.centerName" />
+            } @else {
+            <i class="fas fa-university"></i>
+            }
+          </div>
+          <div class="header-info">
+            <h1>{{ c.centerName }}</h1>
+            @if (c.subTitle) { <p class="subtitle">{{ c.subTitle }}</p> }
+            @if (c.place) { <p class="place"><i class="fas fa-map-marker-alt me-1"></i> {{ c.place }}</p> }
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="section-tabs card-custom mb-4">
+        <button class="tab-btn" [class.active]="isActiveSection('overview')" (click)="setActiveSection('overview')">نظرة
+          عامة</button>
+        @if (hasDetails()) {
+        <button class="tab-btn" [class.active]="isActiveSection('details')"
+          (click)="setActiveSection('details')">التفاصيل</button>
+        }
+        @if (hasMembers()) {
+        <button class="tab-btn" [class.active]="isActiveSection('members')"
+          (click)="setActiveSection('members')">الأعضاء</button>
+        }
+      </div>
+
+      <!-- Overview -->
+      @if (isActiveSection('overview')) {
+      <div class="content-section card-custom mb-4">
+        @if (c.about) {
+        <h3><i class="fas fa-info-circle me-2"></i> نبذة عن المركز</h3>
+        <div class="content-body" [innerHTML]="c.about | cleanHtml"></div>
+        }
+        @if (c.vision) {
+        <h3><i class="fas fa-eye me-2"></i> الرؤية</h3>
+        <div class="content-body" [innerHTML]="c.vision | cleanHtml"></div>
+        }
+        @if (c.mission) {
+        <h3><i class="fas fa-bullseye me-2"></i> الرسالة</h3>
+        <div class="content-body" [innerHTML]="c.mission | cleanHtml"></div>
+        }
+        @if (c.goals && c.goals.length > 0) {
+        <h3><i class="fas fa-target me-2"></i> الأهداف</h3>
+        <ul class="goals-list">
+          @for (goal of c.goals; track goal.id) {
+          <li>{{ goal.goalName }}</li>
+          }
+        </ul>
+        }
+      </div>
+      }
+
+      <!-- Details -->
+      @if (isActiveSection('details') && hasDetails()) {
+      <div class="content-section card-custom mb-4">
+        @for (detail of centerDetails(); track detail.id) {
+        <div class="detail-item">
+          <h4>{{ detail.title }}</h4>
+          <div class="content-body" [innerHTML]="detail.description | cleanHtml"></div>
+        </div>
+        }
+      </div>
+      }
+
+      <!-- Members -->
+      @if (isActiveSection('members') && hasMembers()) {
+      <div class="members-grid">
+        @for (member of centerMembers(); track member.id) {
+        <div class="member-card card-custom">
+          <p-avatar [label]="member.memberName?.charAt(0)" size="large" shape="circle" />
+          <h4>{{ member.memberName }}</h4>
+          @if (member.isLeader) { <span class="leader-badge">رئيس</span> }
+        </div>
+        }
+      </div>
+      }
+    </div>
+    }
+  </div>
+</section>

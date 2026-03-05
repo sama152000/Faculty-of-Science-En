@@ -32,31 +32,33 @@ export const routes: Routes = [
   },
   {
     path: 'departments',
+    pathMatch: 'full',
     loadComponent: () =>
       import(
         './core/features/Faculty-of-science/Pages/departments/departments.component'
       ).then((m) => m.DepartmentsComponent),
   },
   {
-    path: 'departments/:id',
+    path: 'departments/:slug',
     loadComponent: () =>
       import(
-        './core/features/Faculty-of-science/Pages/departments/departments.component'
-      ).then((m) => m.DepartmentsComponent),
+        './core/features/Faculty-of-science/Pages/departments/department-detail/department-detail.component'
+      ).then((m) => m.DepartmentDetailComponent),
   },
   {
     path: 'sectors',
+    pathMatch: 'full',
     loadComponent: () =>
       import(
         './core/features/Faculty-of-science/Pages/sectors/sectors.component'
       ).then((m) => m.SectorsComponent),
   },
   {
-    path: 'sectors/:id',
+    path: 'sectors/:slug',
     loadComponent: () =>
       import(
-        './core/features/Faculty-of-science/Pages/sectors/sectors.component'
-      ).then((m) => m.SectorsComponent),
+        './core/features/Faculty-of-science/Pages/sectors/sector-detail/sector-detail.component'
+      ).then((m) => m.SectorDetailComponent),
   },
   {
     path: 'units-centers',
@@ -74,31 +76,33 @@ export const routes: Routes = [
   },
   {
     path: 'programs',
+    pathMatch: 'full',
     loadComponent: () =>
       import(
         './core/features/Faculty-of-science/Pages/programs/programs.component'
       ).then((m) => m.ProgramsComponent),
   },
   {
-    path: 'programs/:id',
+    path: 'programs/:slug',
     loadComponent: () =>
       import(
-        './core/features/Faculty-of-science/Pages/programs/programs.component'
-      ).then((m) => m.ProgramsComponent),
+        './core/features/Faculty-of-science/Pages/programs/program-detail/program-detail.component'
+      ).then((m) => m.ProgramDetailComponent),
   },
   {
     path: 'services',
+    pathMatch: 'full',
     loadComponent: () =>
       import(
         './core/features/Faculty-of-science/Pages/services/services.component'
       ).then((m) => m.ServicesComponent),
   },
   {
-    path: 'services/:id',
+    path: 'services/:slug',
     loadComponent: () =>
       import(
-        './core/features/Faculty-of-science/Pages/services/services.component'
-      ).then((m) => m.ServicesComponent),
+        './core/features/Faculty-of-science/Pages/services/service-detail/service-detail.component'
+      ).then((m) => m.ServiceDetailComponent),
   },
   {
     path: 'contact',
@@ -106,6 +110,35 @@ export const routes: Routes = [
       import(
         './core/features/Faculty-of-science/Pages/contact/contact.component'
       ).then((m) => m.ContactComponent),
+  },
+  {
+    path: 'units-centers',
+    pathMatch: 'full',
+    loadComponent: () =>
+      import(
+        './core/features/Faculty-of-science/Pages/units-centers/units-centers.component'
+      ).then((m) => m.UnitsCentersComponent),
+  },
+  {
+    path: 'units-centers/units/:slug',
+    loadComponent: () =>
+      import(
+        './core/features/Faculty-of-science/Pages/units-centers/units/unit-detail/unit-detail.component'
+      ).then((m) => m.UnitDetailComponent),
+  },
+  {
+    path: 'units-centers/centers/:slug',
+    loadComponent: () =>
+      import(
+        './core/features/Faculty-of-science/Pages/units-centers/centers/center-detail/center-detail.component'
+      ).then((m) => m.CenterDetailComponent),
+  },
+  {
+    path: 'custom-page/:slug',
+    loadComponent: () =>
+      import(
+        './core/features/Faculty-of-science/Pages/custom-page/custom-page.component'
+      ).then((m) => m.CustomPageComponent),
   },
   { path: '**', redirectTo: '/home' },
 ];

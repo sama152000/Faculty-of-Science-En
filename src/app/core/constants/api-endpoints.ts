@@ -308,4 +308,12 @@ export const API_ENDPOINTS = {
     GET_PAGED: '/menus/getpaged',
     GET_BY_ID: (id: string) => `/menus/get/${id}`,
   },
+
+  // Custom Pages
+  CUSTOMEPAGES: {
+    BASE: '/customepages',
+    GET_ALL: '/customepages/getall',
+    GET_PAGED: '/customepages/getpaged',
+    GET_BY_ID: (id: string) => `/customepages/get/${id}`,
+  },
 } as const;

@@ -1,14 +1,8 @@
-<section
-  id="departments"
-  class="departments-section section-padding position-relative overflow-hidden"
->
+<section id="departments" class="departments-section section-padding position-relative overflow-hidden">
   <!-- Split Background -->
   <div class="h-100 w-100 departments-bg position-absolute d-flex">
     <div class="bg-left bg-primary-custom flex-fill"></div>
-    <div
-      class="bg-right flex-fill"
-      style="background-color: var(--secondary-beige)"
-    ></div>
+    <div class="bg-right flex-fill" style="background-color: var(--secondary-beige)"></div>
   </div>
 
   <div class="container-fluid position-relative">
@@ -58,19 +52,11 @@
       <div class="mb-4 col-lg-6">
         <div class="flex-wrap gap-4 dept-column d-flex justify-content-center">
           @for (dept of leftColumnDepts(); track dept.id) {
-          <a
-            class="text-center text-decoration-none dept-card hover-lift"
-            [routerLink]="['/departments']"
-          >
+          <a class="text-center text-decoration-none dept-card hover-lift" [routerLink]="['/departments']">
             <div
-              class="bg-white rounded-circle mx-auto mb-3 dept-icon d-flex align-items-center justify-content-center"
-            >
+              class="bg-white rounded-circle mx-auto mb-3 dept-icon d-flex align-items-center justify-content-center">
               @if (getDepartmentImage(dept)) {
-              <img
-                [src]="getDepartmentImage(dept)"
-                [alt]="dept.name"
-                class="dept-img"
-              />
+              <img [src]="getDepartmentImage(dept)" [alt]="dept.name" class="dept-img" />
               } @else {
               <i class="text-primary-custom fas fa-flask"></i>
               }
@@ -90,19 +76,11 @@
       <div class="mb-4 col-lg-6">
         <div class="flex-wrap gap-4 dept-column d-flex justify-content-center">
           @for (dept of rightColumnDepts(); track dept.id) {
-          <a
-            class="text-center text-decoration-none dept-card hover-lift"
-            [routerLink]="['/departments']"
-          >
+          <a class="text-center text-decoration-none dept-card hover-lift" [routerLink]="['/departments']">
             <div
-              class="bg-white rounded-circle mx-auto mb-3 dept-icon d-flex align-items-center justify-content-center"
-            >
+              class="bg-white rounded-circle mx-auto mb-3 dept-icon d-flex align-items-center justify-content-center">
               @if (getDepartmentImage(dept)) {
-              <img
-                [src]="getDepartmentImage(dept)"
-                [alt]="dept.name"
-                class="dept-img"
-              />
+              <img [src]="getDepartmentImage(dept)" [alt]="dept.name" class="dept-img" />
               } @else {
               <i class="text-primary-custom fas fa-flask"></i>
               }
