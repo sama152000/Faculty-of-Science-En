@@ -6,229 +6,229 @@
     <!-- LOADING STATE - Using PrimeNG Skeleton -->
     <!-- ============================================ -->
     @if (isLoading()) {
-    <div class="row">
-      <!-- Sidebar Skeleton -->
-      <div class="mb-4 col-lg-3 col-md-4">
-        <p-card header="Categories">
-          @for (i of [1, 2, 3, 4]; track i) {
-          <p-skeleton height="3rem" styleClass="mb-2" />
-          }
-        </p-card>
-      </div>
-      <!-- Content Skeleton -->
-      <div class="col-lg-9 col-md-8">
-        <div class="blog-grid">
-          @for (i of [1, 2, 3, 4, 5, 6]; track i) {
-          <div class="blog-card-skeleton">
-            <p-skeleton height="200px" styleClass="mb-3" />
-            <p-skeleton height="1.5rem" width="40%" styleClass="mb-2" />
-            <p-skeleton height="1.2rem" styleClass="mb-2" />
-            <p-skeleton height="1rem" width="80%" />
+      <div class="row">
+        <!-- Sidebar Skeleton -->
+        <div class="mb-4 col-lg-3 col-md-4">
+          <p-card header="Categories">
+            @for (i of [1, 2, 3, 4]; track i) {
+              <p-skeleton height="3rem" styleClass="mb-2" />
+            }
+          </p-card>
+        </div>
+        <!-- Content Skeleton -->
+        <div class="col-lg-9 col-md-8">
+          <div class="blog-grid">
+            @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+              <div class="blog-card-skeleton">
+                <p-skeleton height="200px" styleClass="mb-3" />
+                <p-skeleton height="1.5rem" width="40%" styleClass="mb-2" />
+                <p-skeleton height="1.2rem" styleClass="mb-2" />
+                <p-skeleton height="1rem" width="80%" />
+              </div>
+            }
           </div>
-          }
         </div>
       </div>
-    </div>
     }
 
     <!-- ============================================ -->
     <!-- ERROR STATE -->
     <!-- ============================================ -->
     @if (hasError()) {
-    <div class="row justify-content-center">
-      <div class="text-center py-5 col-md-6">
-        <i class="mb-4 text-6xl text-red-500 pi pi-exclamation-triangle"></i>
-        <h4 class="mb-3">Failed to Load News</h4>
-        <p class="text-muted mb-4">{{ error() }}</p>
-        <p-button
-          label="Try Again"
-          icon="pi pi-refresh"
-          (onClick)="retry()"
-          severity="danger"
-        />
+      <div class="row justify-content-center">
+        <div class="text-center py-5 col-md-6">
+          <i class="mb-4 text-6xl text-red-500 pi pi-exclamation-triangle"></i>
+          <h4 class="mb-3">Failed to Load News</h4>
+          <p class="text-muted mb-4">{{ error() }}</p>
+          <p-button
+            label="Try Again"
+            icon="pi pi-refresh"
+            (onClick)="retry()"
+            severity="danger"
+          />
+        </div>
       </div>
-    </div>
     }
 
     <!-- ============================================ -->
     <!-- SUCCESS STATE -->
     <!-- ============================================ -->
     @if (isSuccess()) {
-    <div class="row">
-      <!-- Sidebar - Categories -->
-      <div class="mb-4 col-lg-3 col-md-4">
-        <div class="category-sidebar card-custom">
-          <h4 class="sidebar-title">
-            <i class="mr-2 pi pi-folder"></i>
-            Categories
-          </h4>
-          <ul class="category-list">
-            <!-- All newss -->
-            <li>
-              <button
-                type="button"
-                class="category-btn"
-                [class.active]="isCategorySelected('all')"
-                (click)="onCategoryChange('all')"
-              >
-                <i class="mr-2 pi pi-list"></i>
-                All News
-                <p-tag
-                  [value]="totalNewsCount().toString()"
-                  [rounded]="true"
-                  styleClass="ml-auto"
-                />
-              </button>
-            </li>
-            <!-- Category newss -->
-            @for (category of categories(); track category.id) {
-            <li>
-              <button
-                type="button"
-                class="category-btn"
-                [class.active]="isCategorySelected(category.id)"
-                (click)="onCategoryChange(category.id)"
-              >
-                <i class="mr-2 pi pi-folder"></i>
-                {{ category.name }}
-                <p-tag
-                  [value]="getCategoryCount(category.id).toString()"
-                  [rounded]="true"
-                  styleClass="ml-auto"
-                />
-              </button>
-            </li>
-            }
-          </ul>
+      <div class="row">
+        <!-- Sidebar - Categories -->
+        <div class="mb-4 col-lg-3 col-md-3">
+          <div class="category-sidebar card-custom">
+            <h4 class="sidebar-title">
+              <i class="mr-2 pi pi-folder"></i>
+              Categories
+            </h4>
+            <ul class="category-list">
+              <!-- All newss -->
+              <li>
+                <button
+                  type="button"
+                  class="category-btn"
+                  [class.active]="isCategorySelected('all')"
+                  (click)="onCategoryChange('all')"
+                >
+                  <i class="mr-2 pi pi-list"></i>
+                  All News
+                </button>
+              </li>
+              <!-- Category newss -->
+              @for (category of categories(); track category.id) {
+                <li>
+                  <button
+                    type="button"
+                    class="category-btn"
+                    [class.active]="isCategorySelected(category.id)"
+                    (click)="onCategoryChange(category.id)"
+                  >
+                    <i class="mr-2 pi pi-folder"></i>
+                    {{ category.name }}
+                  </button>
+                </li>
+              }
+            </ul>
+          </div>
         </div>
-      </div>
 
-      <!-- Main Content -->
-      <div class="col-lg-9 col-md-8">
-        <!-- Results Header -->
-        <header class="mb-4 results-header">
-          <h3 class="results-title">{{ selectedCategoryName() }}</h3>
-          <p class="results-count">
-            Showing {{ paginatedNews().length }} of {{ totalRecords() }} News
-          </p>
-        </header>
+        <!-- Main Content -->
+        <div class="col-lg-9 col-md-9">
+          <!-- Results Header -->
+          <header class="mb-4 results-header">
+            <h3 class="results-title">{{ selectedCategoryName() }}</h3>
+            <p class="results-count">{{ resultsText() }}</p>
+          </header>
 
-        <!-- News Grid -->
-        @if (hasNews()) {
-        <div class="blog-grid">
-          @for (news of paginatedNews(); track news.id) {
-          <article class="blog-card hover-lift">
-            <!-- Image Container -->
-            <div class="blog-image-container">
-              <img
-                [src]="getFeaturedImage(news)"
-                [alt]="news.title"
-                class="blog-img"
-                loading="lazy"
+          <!-- News Grid -->
+          @if (hasNews()) {
+            <div class="blog-grid">
+              @for (news of newsItems(); track news.id) {
+                <article class="blog-card hover-lift">
+                  <!-- Image Container -->
+                  <div class="blog-image-container">
+                    <img
+                      [src]="getFeaturedImage(news)"
+                      [alt]="news.title"
+                      class="blog-img"
+                      loading="lazy"
+                    />
+                    <!-- Categories Badges -->
+                    @if (hasCategories(news)) {
+                      <div class="blog-categories-badges">
+                        @for (cat of getItemCategories(news); track cat.id) {
+                          <p-tag
+                            [value]="cat.name"
+                            severity="info"
+                            icon="pi pi-bookmark"
+                            styleClass="mr-1 mb-1"
+                          />
+                        }
+                      </div>
+                    }
+                  </div>
+
+                  <!-- Content -->
+                  <div class="blog-content">
+                    <!-- Meta -->
+                    @if (news.publishedDate) {
+                      <div class="blog-meta">
+                        <p-tag
+                          [value]="formatDate(news.publishedDate)"
+                          icon="pi pi-calendar"
+                          severity="secondary"
+                          styleClass="mr-2"
+                        />
+                        <p-tag
+                          [value]="
+                            (news.totalViewCount || 0).toString() + ' views'
+                          "
+                          icon="pi pi-eye"
+                          severity="info"
+                          styleClass="mr-2"
+                        />
+                      </div>
+                    }
+
+                    <!-- Title -->
+                    <h3 class="blog-title">
+                      <a [routerLink]="['/news', news.id]">{{ news.title }}</a>
+                    </h3>
+
+                    <!-- Excerpt -->
+                    <!-- <div
+                      class="blog-excerpt"
+                      [innerHTML]="
+                        (news.content
+                          | cleanHtml: { stripClasses: false }
+                          | slice: 0 : 100) + '...'
+                      "
+                    ></div> -->
+
+                    <!-- Tags -->
+                    @if (hasTags(news)) {
+                      <div class="blog-tags">
+                        @for (tag of getVisibleTags(news); track tag.id) {
+                          <p-tag
+                            [value]="tag.name"
+                            severity="info"
+                            [rounded]="true"
+                            styleClass="mr-1 mb-1"
+                          />
+                        }
+                      </div>
+                    }
+
+                    <!-- Footer -->
+                    <div class="blog-footer">
+                      <p-button
+                        label="Read More"
+                        icon="pi pi-arrow-right"
+                        iconPos="right"
+                        [outlined]="true"
+                        [routerLink]="['/news', news.id]"
+                        styleClass="p-button-sm"
+                      />
+                    </div>
+                  </div>
+                </article>
+              }
+            </div>
+
+            <!-- Pagination (PrimeNG Paginator) -->
+            @if (showPagination()) {
+              <div class="mt-4 pagination-wrapper">
+                <p-paginator
+                  [first]="first()"
+                  [rows]="pageSize()"
+                  [totalRecords]="totalRecords()"
+                  [showCurrentPageReport]="true"
+                  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} articles"
+                  (onPageChange)="onPageChange($event)"
+                  styleClass="justify-content-center"
+                />
+              </div>
+            }
+          } @else {
+            <!-- No Results -->
+            <div class="text-center py-5 no-results">
+              <i class="mb-4 text-6xl text-gray-400 pi pi-search"></i>
+              <h4 class="mb-3">No news found</h4>
+              <p class="text-muted mb-4">
+                Try selecting a different category or check back later for new
+                content.
+              </p>
+              <p-button
+                label="View All News"
+                icon="pi pi-list"
+                (onClick)="onCategoryChange('all')"
+                [outlined]="true"
               />
-              <!-- Categories Badges -->
-              @if (hasCategories(news)) {
-              <div class="blog-categories-badges">
-                @for (cat of getItemCategories(news); track cat.id) {
-
-                <p-tag
-                  [value]="cat.name"
-                  severity="info"
-                  icon="pi pi-bookmark"
-                  styleClass="mr-1 mb-1"
-                />
-                }
-              </div>
-              }
             </div>
-
-            <!-- Content -->
-            <div class="blog-content">
-              <!-- Meta -->
-              @if(news.publishedDate){
-              <div class="blog-meta">
-                <p-tag
-                  [value]="formatDate(news.publishedDate)"
-                  icon="pi pi-calendar"
-                  severity="secondary"
-                  styleClass="mr-2"
-                />
-              </div>
-              }
-
-              <!-- Title -->
-              <h3 class="blog-title">
-                <a [routerLink]="['/news', news.id]">{{ news.title }}</a>
-              </h3>
-
-              <!-- Excerpt -->
-              <div
-                class="blog-excerpt"
-                [innerHTML]="(news.content| cleanHtml: {stripClasses: false,} | slice :0:100) + '...'"
-              ></div>
-
-              <!-- Tags -->
-              @if (hasTags(news)) {
-              <div class="blog-tags">
-                @for (tag of getVisibleTags(news); track tag.id) {
-                <p-tag
-                  [value]="tag.name"
-                  severity="info"
-                  [rounded]="true"
-                  styleClass="mr-1 mb-1"
-                />
-                }
-              </div>
-              }
-
-              <!-- Footer -->
-              <div class="blog-footer">
-                <p-button
-                  label="Read More"
-                  icon="pi pi-arrow-right"
-                  iconPos="right"
-                  [outlined]="true"
-                  [routerLink]="['/news', news.id]"
-                  styleClass="p-button-sm"
-                />
-              </div>
-            </div>
-          </article>
           }
         </div>
-
-        <!-- Pagination (PrimeNG Paginator) -->
-        @if (showPagination()) {
-        <div class="mt-4 pagination-wrapper">
-          <p-paginator
-            [first]="first()"
-            [rows]="rows()"
-            [totalRecords]="totalRecords()"
-            [showCurrentPageReport]="true"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} articles"
-            (onPageChange)="onPageChange($event)"
-            styleClass="justify-content-center"
-          />
-        </div>
-        } } @else {
-        <!-- No Results -->
-        <div class="text-center py-5 no-results">
-          <i class="mb-4 text-6xl text-gray-400 pi pi-search"></i>
-          <h4 class="mb-3">No news found</h4>
-          <p class="text-muted mb-4">
-            Try selecting a different category or check back later for new
-            content.
-          </p>
-          <p-button
-            label="View All News"
-            icon="pi pi-list"
-            (onClick)="onCategoryChange('all')"
-            [outlined]="true"
-          />
-        </div>
-        }
       </div>
-    </div>
     }
   </div>
 </section>

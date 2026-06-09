@@ -27,6 +27,7 @@ export interface News {
   postCategories: PostCategory[];
   postAttachments: PostAttachment[];
   tags: Tag[];
+  totalViewCount: number;
 }
 
 export interface PostCategory {

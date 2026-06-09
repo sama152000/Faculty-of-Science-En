@@ -17,11 +17,11 @@ import { NewsService } from '../../../Services/real-services/news.service';
 import { News } from '../../../model/news.model';
 import { PageRequest } from '../../../model/real model/page-request.model';
 import { NewsTypeEnum } from '../../../../../enums/newsType.enum';
-import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
 
 @Component({
   selector: 'app-upcoming-events',
-  imports: [CommonModule, RouterModule, CleanHtmlPipe],
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './upcoming-events.component.html',
   styleUrls: ['./upcoming-events.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,7 +34,7 @@ export class UpcomingEventsComponent extends BaseComponent implements OnInit {
   protected events = signal<News[]>([]);
   paged: PageRequest = {
     pageNumber: 1,
-    pageSize: 5,
+    pageSize: 4,
     filter: {
       status: 'Published',
       type: NewsTypeEnum.EVENTS,
@@ -70,7 +70,7 @@ export class UpcomingEventsComponent extends BaseComponent implements OnInit {
    */
   formatDate(date: string | Date): string {
     if (!date) return '';
-    return new Date(date).toLocaleDateString('en-US', {
+    return new Date(date).toLocaleDateString('ar-EG', {
       year: 'numeric',
       month: 'short',
       day: 'numeric',

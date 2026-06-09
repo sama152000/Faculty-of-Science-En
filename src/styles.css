@@ -558,3 +558,7 @@ a {
 ul {
   list-style-type: none !important;
 }
+
+.container-fluid {
+  padding-inline: 6rem !important;
+}

@@ -11,12 +11,16 @@ import { LoadingService } from '../../core/services/loading.service';
   imports: [CommonModule],
   template: `
     @if (loadingService.isLoading()) {
-    <div class="loading-overlay">
-      <div class="loading-container">
-        <img src="assets/logo.jpg" alt="Loading..." class="loading-logo" />
-        <div class="loading-ring"></div>
+      <div class="loading-overlay">
+        <div class="loading-container">
+          <img
+            src="./assets/faculty-of-science-luxor-university-logo.jpg"
+            alt="Loading..."
+            class="loading-logo"
+          />
+          <div class="loading-ring"></div>
+        </div>
       </div>
-    </div>
     }
   `,
   styles: `
@@ -77,7 +81,8 @@ import { LoadingService } from '../../core/services/loading.service';
     }
 
     @keyframes pulse {
-      0%, 100% {
+      0%,
+      100% {
         transform: scale(1);
         box-shadow: 0 0 20px rgba(212, 168, 83, 0.4);
       }

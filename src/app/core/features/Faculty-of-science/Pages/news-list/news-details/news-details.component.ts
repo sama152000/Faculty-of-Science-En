@@ -29,6 +29,7 @@ import {
   Tag as NewsTag,
 } from '../../../model/news.model';
 import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
+import { PageRequest } from '../../../model/real model/page-request.model';
 
 // Types for better type safety
 type SocialPlatform = 'facebook' | 'twitter' | 'linkedin' | 'whatsapp';
@@ -194,18 +195,40 @@ export class NewsDetailsComponent extends BaseComponent implements OnInit {
   }
 
   /**
-   * Load related news items
-   * WHY: Encapsulated related news logic
+   * Load related news items using server-side pagination.
+   * Requests a small page filtered by the same category as the current item.
    */
   private loadRelatedNews(currentItem: News): void {
+    const categoryId = currentItem.postCategories?.[0]?.categoryId;
+    const maxItems = 3;
+
+    // Build a small page request filtered by category
+    const request: PageRequest = {
+      pageNumber: 1,
+      pageSize: maxItems + 1, // +1 to account for excluding current item
+      filter: {
+        isDeleted: false,
+        ...(categoryId ? { categoryId } : {}),
+      },
+      orderByValue: [{ colId: 'publishedDate', sort: 'desc' }],
+    };
+
     this.newsService
-      .getAll()
+      .getPaged(request)
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
           if (response.success && response.data) {
-            const related = this.filterRelatedNews(response.data, currentItem);
-            this.relatedItems.set(related);
+            const related = response.data
+              .filter((item) => item.id !== currentItem.id)
+              .slice(0, maxItems);
+
+            // Fallback: if no related by category, load latest without filter
+            if (related.length === 0 && categoryId) {
+              this.loadFallbackRelatedNews(currentItem.id, maxItems);
+            } else {
+              this.relatedItems.set(related);
+            }
           }
         },
         error: (error: Error) => {
@@ -215,26 +238,33 @@ export class NewsDetailsComponent extends BaseComponent implements OnInit {
   }
 
   /**
-   * Filter related news by category
-   * WHY: Pure function for filtering logic - testable and predictable
+   * Fallback: load latest news without category filter.
    */
-  private filterRelatedNews(allNews: News[], currentItem: News): News[] {
-    const currentCategoryId = currentItem.postCategories?.[0]?.categoryId;
-    const maxItems = 3;
+  private loadFallbackRelatedNews(excludeId: string, maxItems: number): void {
+    const request: PageRequest = {
+      pageNumber: 1,
+      pageSize: maxItems + 1,
+      filter: { isDeleted: false },
+      orderByValue: [{ colId: 'publishedDate', sort: 'desc' }],
+    };
 
-    // Filter by same category, exclude current
-    let related = allNews.filter(
-      (item) =>
-        item.id !== currentItem.id &&
-        item.postCategories?.some((cat) => cat.categoryId === currentCategoryId)
-    );
-
-    // Fallback: get latest news if no related by category
-    if (related.length === 0) {
-      related = allNews.filter((item) => item.id !== currentItem.id);
-    }
-
-    return related.slice(0, maxItems);
+    this.newsService
+      .getPaged(request)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response) => {
+          if (response.success && response.data) {
+            this.relatedItems.set(
+              response.data
+                .filter((item) => item.id !== excludeId)
+                .slice(0, maxItems),
+            );
+          }
+        },
+        error: (error: Error) => {
+          console.error('Failed to load fallback related news:', error.message);
+        },
+      });
   }
 
   // ============================================
@@ -325,7 +355,7 @@ export class NewsDetailsComponent extends BaseComponent implements OnInit {
   private buildShareUrl(
     platform: SocialPlatform,
     url: string,
-    title: string
+    title: string,
   ): string {
     const shareUrls: Record<SocialPlatform, string> = {
       facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
@@ -344,7 +374,6 @@ export class NewsDetailsComponent extends BaseComponent implements OnInit {
     try {
       await navigator.clipboard.writeText(window.location.href);
       // TODO: Replace with PrimeNG Toast notification
-      // console.log('Link copied to clipboard');
     } catch (error) {
       console.error('Failed to copy link:', error);
     }

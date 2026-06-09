@@ -11,14 +11,19 @@ import {
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { forkJoin } from 'rxjs';
 
 // Services
 import { ContactsService } from '../../../Services/real-services/contacts.service';
+import { VisitorsService } from '../../../Services/real-services/visitors.service';
 import {
   DepartmentsService,
   Department,
 } from '../../../Services/real-services/departments';
-import { MenusService, MenuItem } from '../../../Services/real-services/menus.service';
+import {
+  MenusService,
+  MenuItem,
+} from '../../../Services/real-services/menus.service';
 
 // Models
 import { ContactInfo, SocialLink } from '../../../model/contact.model';
@@ -50,6 +55,7 @@ export class FooterComponent implements OnInit, OnDestroy {
   private readonly aboutService = inject(AboutService);
   private readonly departmentsService = inject(DepartmentsService);
   private readonly menusService = inject(MenusService);
+  private readonly visitorsService = inject(VisitorsService);
   private readonly destroyRef = inject(DestroyRef);
 
   // ============================================
@@ -60,6 +66,10 @@ export class FooterComponent implements OnInit, OnDestroy {
   protected readonly departments = signal<Department[]>([]);
   protected readonly menuItems = signal<MenuItem[]>([]);
   protected readonly showScrollTop = signal<boolean>(false);
+  protected readonly todayVisitors = signal<number>(0);
+  protected readonly monthVisitors = signal<number>(0);
+  protected readonly totalVisitors = signal<number>(0);
+  protected readonly visitorsLoaded = signal<boolean>(false);
   protected readonly currentYear = new Date().getFullYear();
 
   // Scroll listener reference
@@ -78,7 +88,7 @@ export class FooterComponent implements OnInit, OnDestroy {
   protected readonly visionText = computed<string>(() => {
     return (
       this.aboutData()?.vision ||
-      "Luxor University's Faculty of Science is committed to excellence in teaching, research, and innovation for a better future."
+      'Faculty of Science at Luxor University is committed to excellence in education, scientific research, and innovation for a better future. 🎓✨'
     );
   });
 
@@ -159,6 +169,7 @@ export class FooterComponent implements OnInit, OnDestroy {
     this.loadAboutData();
     this.loadDepartments();
     this.loadMenus();
+    this.loadVisitorStats();
     this.setupScrollListener();
   }
 
@@ -186,7 +197,7 @@ export class FooterComponent implements OnInit, OnDestroy {
         error: (error: Error) => {
           console.error(
             'Failed to load contact info for footer:',
-            error.message
+            error.message,
           );
         },
       });
@@ -195,7 +206,6 @@ export class FooterComponent implements OnInit, OnDestroy {
   /**
    * Load about data (vision) from API
    */
-
   private loadAboutData(): void {
     this.aboutService
       .getAboutFaculty()
@@ -226,7 +236,7 @@ export class FooterComponent implements OnInit, OnDestroy {
         error: (error: Error) => {
           console.error(
             'Failed to load departments for footer:',
-            error.message
+            error.message,
           );
         },
       });
@@ -246,8 +256,8 @@ export class FooterComponent implements OnInit, OnDestroy {
               .filter(
                 (item) =>
                   (item.menuType?.toLowerCase() === 'main' ||
-                    item.menuType === 'رئيسية') &&
-                  item.parentId === null
+                    item.menuType === 'Main') &&
+                  item.parentId === null,
               )
               .sort((a, b) => a.order - b.order);
             this.menuItems.set(mainMenus);
@@ -255,6 +265,34 @@ export class FooterComponent implements OnInit, OnDestroy {
         },
         error: (error: Error) => {
           console.error('Failed to load menus for footer:', error.message);
+        },
+      });
+  }
+
+  /**
+   * Load visitor statistics from API
+   */
+  private loadVisitorStats(): void {
+    forkJoin({
+      today: this.visitorsService.getToday(),
+      month: this.visitorsService.getMonth(),
+      total: this.visitorsService.getTotal(),
+    })
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (stats) => {
+          this.todayVisitors.set(stats.today.todayViews ?? 0);
+          this.monthVisitors.set(stats.month.monthViews ?? 0);
+          this.totalVisitors.set(stats.total.totalViews ?? 0);
+          console.log(stats);
+
+          this.visitorsLoaded.set(true);
+        },
+        error: (error: Error) => {
+          console.error(
+            'Failed to load visitor stats for footer:',
+            error.message,
+          );
         },
       });
   }

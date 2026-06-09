@@ -1,6 +1,6 @@
 .quick-nav-sidebar {
   position: fixed;
-  right: 20px;
+  right: 5px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 1000;

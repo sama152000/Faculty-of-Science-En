@@ -4,215 +4,320 @@
     <!-- LOADING STATE - Using PrimeNG Skeleton -->
     <!-- ============================================ -->
     @if (isLoading()) {
-    <div class="row">
-      <!-- Main Content Skeleton -->
-      <div class="col-lg-8 col-md-7">
-        <p-card styleClass="mb-4">
-          <!-- Title skeleton -->
-          <p-skeleton height="2rem" width="80%" styleClass="mb-3" />
-          <!-- Meta skeleton -->
-          <div class="flex mb-3 gap-2">
-            <p-skeleton width="6rem" height="1.5rem" />
-            <p-skeleton width="8rem" height="1.5rem" />
-          </div>
-          <!-- Image skeleton -->
-          <p-skeleton height="400px" styleClass="mb-4" />
-          <!-- Content skeleton -->
-          <p-skeleton styleClass="mb-2" />
-          <p-skeleton width="95%" styleClass="mb-2" />
-          <p-skeleton width="90%" styleClass="mb-2" />
-          <p-skeleton width="85%" />
-        </p-card>
+      <div class="row">
+        <!-- Main Content Skeleton -->
+        <div class="col-lg-8 col-md-7">
+          <p-card styleClass="mb-4">
+            <!-- Title skeleton -->
+            <p-skeleton height="2rem" width="80%" styleClass="mb-3" />
+            <!-- Meta skeleton -->
+            <div class="flex mb-3 gap-2">
+              <p-skeleton width="6rem" height="1.5rem" />
+              <p-skeleton width="8rem" height="1.5rem" />
+            </div>
+            <!-- Image skeleton -->
+            <p-skeleton height="400px" styleClass="mb-4" />
+            <!-- Content skeleton -->
+            <p-skeleton styleClass="mb-2" />
+            <p-skeleton width="95%" styleClass="mb-2" />
+            <p-skeleton width="90%" styleClass="mb-2" />
+            <p-skeleton width="85%" />
+          </p-card>
+        </div>
+        <!-- Sidebar Skeleton -->
+        <div class="col-lg-4 col-md-5">
+          <p-card styleClass="mb-4">
+            <p-skeleton height="2rem" width="60%" styleClass="mb-3" />
+            <p-skeleton height="3rem" styleClass="mb-2" />
+            <p-skeleton height="3rem" />
+          </p-card>
+          <p-card>
+            <p-skeleton height="200px" />
+          </p-card>
+        </div>
       </div>
-      <!-- Sidebar Skeleton -->
-      <div class="col-lg-4 col-md-5">
-        <p-card styleClass="mb-4">
-          <p-skeleton height="2rem" width="60%" styleClass="mb-3" />
-          <p-skeleton height="3rem" styleClass="mb-2" />
-          <p-skeleton height="3rem" />
-        </p-card>
-        <p-card>
-          <p-skeleton height="200px" />
-        </p-card>
-      </div>
-    </div>
     }
 
     <!-- ============================================ -->
     <!-- ERROR STATE -->
     <!-- ============================================ -->
     @if (hasError()) {
-    <div class="text-center py-5 error-container">
-      <i class="mb-4 text-6xl text-yellow-500 pi pi-exclamation-triangle"></i>
-      <h3 class="mb-3">Article Not Found</h3>
-      <p class="text-muted mb-4">{{ error() }}</p>
-      <p-button label="Back to News" icon="pi pi-arrow-left" (onClick)="goBack()" styleClass="p-button-primary" />
-    </div>
+      <div class="text-center py-5 error-container">
+        <i class="mb-4 text-6xl text-yellow-500 pi pi-exclamation-triangle"></i>
+        <h3 class="mb-3">Article Not Found</h3>
+        <p class="text-muted mb-4">{{ error() }}</p>
+        <p-button
+          label="Back to News"
+          icon="pi pi-arrow-left"
+          (onClick)="goBack()"
+          styleClass="p-button-primary"
+        />
+      </div>
     }
 
     <!-- ============================================ -->
     <!-- MAIN CONTENT -->
     <!-- ============================================ -->
     @if (isSuccess() && newsItem(); as article) {
-    <div class="row">
-      <!-- Article Content -->
-      <div class="col-lg-8 col-md-7">
-        <article class="news-article card-custom">
-          <!-- Article Header -->
-          <header class="article-header">
-            <!-- Meta Information -->
-            <div class="article-meta">
-              <p-tag [value]="primaryCategory()" icon="pi pi-bookmark" styleClass="mr-2" />
-              <p-tag [value]="formattedDate()" icon="pi pi-calendar" severity="secondary" styleClass="mr-2" />
-            </div>
-
-            <!-- Title -->
-            <h1 class="article-title">{{ article.title }}</h1>
-
-            <!-- Tags -->
-            @if (hasTags()) {
-            <div class="article-tags">
-              @for (tag of tags(); track tag.id) {
-              <p-tag [value]="tag.name" severity="info" [rounded]="true" styleClass="mr-1 mb-1" />
-              }
-            </div>
-            }
-          </header>
-
-          <!-- Featured Image -->
-          @if (featuredImage(); as image) {
-          <div class="article-image-container">
-            <img [src]="image" [alt]="article.title" class="article-image" loading="lazy" />
-          </div>
-          }
-
-          <!-- Article Body -->
-          <div class="article-content">
-            <div class="article-body" [innerHTML]="article.content | cleanHtml: {stripClasses: false,}"></div>
-          </div>
-
-          <!-- Gallery (PrimeNG Galleria) -->
-          @if (hasGallery()) {
-          <div class="article-gallery">
-            <h5 class="gallery-title">
-              <i class="mr-2 pi pi-images"></i>
-              Gallery
-            </h5>
-            <p-galleria [value]="galleriaImages()" [responsiveOptions]="galleriaResponsiveOptions" [numVisible]="5"
-              [showThumbnails]="true" [showIndicators]="true" [showItemNavigators]="true"
-              [containerStyle]="{ 'max-width': '100%' }">
-              <ng-template pTemplate="item" let-item>
-                <img [src]="item.itemImageSrc" [alt]="item.alt" class="gallery-main-img" />
-              </ng-template>
-              <ng-template pTemplate="thumbnail" let-item>
-                <img [src]="item.thumbnailImageSrc" [alt]="item.alt" class="gallery-thumb-img" />
-              </ng-template>
-            </p-galleria>
-          </div>
-          }
-
-          <!-- Article Footer - Share Buttons -->
-          <footer class="article-footer">
-            <div class="share-buttons">
-              <h6>Share this article:</h6>
-              <div class="social-share">
-                <p-button icon="pi pi-facebook" [rounded]="true" severity="info" pTooltip="Share on Facebook"
-                  tooltipPosition="top" (onClick)="shareOnSocial('facebook')" styleClass="mr-2" />
-                <p-button icon="pi pi-twitter" [rounded]="true" severity="info" pTooltip="Share on Twitter"
-                  tooltipPosition="top" (onClick)="shareOnSocial('twitter')" styleClass="mr-2" />
-                <p-button icon="pi pi-linkedin" [rounded]="true" severity="info" pTooltip="Share on LinkedIn"
-                  tooltipPosition="top" (onClick)="shareOnSocial('linkedin')" styleClass="mr-2" />
-                <p-button icon="pi pi-whatsapp" [rounded]="true" severity="success" pTooltip="Share on WhatsApp"
-                  tooltipPosition="top" (onClick)="shareOnSocial('whatsapp')" styleClass="mr-2" />
-                <p-button icon="pi pi-link" [rounded]="true" severity="secondary" pTooltip="Copy Link"
-                  tooltipPosition="top" (onClick)="copyLink()" />
+      <div class="row">
+        <!-- Article Content -->
+        <div class="col-lg-8 col-md-7">
+          <article class="news-article card-custom">
+            <!-- Article Header -->
+            <header class="article-header">
+              <!-- Meta Information -->
+              <div class="article-meta">
+                <p-tag
+                  [value]="primaryCategory()"
+                  icon="pi pi-bookmark"
+                  styleClass="mr-2"
+                />
+                <p-tag
+                  [value]="formattedDate()"
+                  icon="pi pi-calendar"
+                  severity="secondary"
+                  styleClass="mr-2"
+                />
+                <p-tag
+                  [value]="(article.totalViewCount || 0).toString() + ' مشاهدة'"
+                  icon="pi pi-eye"
+                  severity="info"
+                  styleClass="mr-2"
+                />
               </div>
-            </div>
-          </footer>
-        </article>
-      </div>
 
-      <!-- Sidebar -->
-      <div class="col-lg-4 col-md-5">
-        <aside class="news-sidebar">
-          <!-- Navigation -->
-          <p-card header="Navigation" styleClass="mb-4">
-            <div class="nav-buttons">
-              <p-button label="Back to All News" icon="pi pi-arrow-left" [outlined]="true" styleClass="w-full mb-2"
-                (onClick)="goBack()" />
-              <!-- <p-button
+              <!-- Title -->
+              <h1 class="article-title">{{ article.title }}</h1>
+
+              <!-- Tags -->
+              @if (hasTags()) {
+                <div class="article-tags">
+                  @for (tag of tags(); track tag.id) {
+                    <p-tag
+                      [value]="tag.name"
+                      severity="info"
+                      [rounded]="true"
+                      styleClass="mr-1 mb-1"
+                    />
+                  }
+                </div>
+              }
+            </header>
+
+            <!-- Featured Image -->
+            @if (featuredImage(); as image) {
+              <div class="article-image-container">
+                <img
+                  [src]="image"
+                  [alt]="article.title"
+                  class="article-image"
+                  loading="lazy"
+                />
+              </div>
+            }
+
+            <!-- Article Body -->
+            <div class="article-content">
+              <div
+                class="article-body"
+                [innerHTML]="
+                  article.content | cleanHtml: { stripClasses: false }
+                "
+              ></div>
+            </div>
+
+            <!-- Gallery (PrimeNG Galleria) -->
+            @if (hasGallery()) {
+              <div class="article-gallery">
+                <h5 class="gallery-title">
+                  <i class="mr-2 pi pi-images"></i>
+                  Gallery
+                </h5>
+                <p-galleria
+                  [value]="galleriaImages()"
+                  [responsiveOptions]="galleriaResponsiveOptions"
+                  [numVisible]="5"
+                  [showThumbnails]="true"
+                  [showIndicators]="true"
+                  [showItemNavigators]="true"
+                  [circular]="true"
+                  [containerStyle]="{ 'max-width': '100%' }"
+                >
+                  <ng-template #item let-item>
+                    <img
+                      [src]="item.itemImageSrc"
+                      [alt]="item.alt"
+                      style="width: 100%; display: block"
+                      class="gallery-main-img"
+                    />
+                  </ng-template>
+                  <ng-template #thumbnail let-item>
+                    <img
+                      [src]="item.thumbnailImageSrc"
+                      [alt]="item.alt"
+                      style="display: block"
+                      class="gallery-thumb-img"
+                    />
+                  </ng-template>
+                </p-galleria>
+              </div>
+            }
+
+            <!-- Article Footer - Share Buttons -->
+            <footer class="article-footer">
+              <div class="share-buttons">
+                <h6>Share this article:</h6>
+                <div class="social-share">
+                  <p-button
+                    icon="pi pi-facebook"
+                    [rounded]="true"
+                    severity="info"
+                    pTooltip="Share on Facebook"
+                    tooltipPosition="top"
+                    (onClick)="shareOnSocial('facebook')"
+                    styleClass="mr-2"
+                  />
+                  <p-button
+                    icon="pi pi-twitter"
+                    [rounded]="true"
+                    severity="info"
+                    pTooltip="Share on Twitter"
+                    tooltipPosition="top"
+                    (onClick)="shareOnSocial('twitter')"
+                    styleClass="mr-2"
+                  />
+                  <p-button
+                    icon="pi pi-linkedin"
+                    [rounded]="true"
+                    severity="info"
+                    pTooltip="Share on LinkedIn"
+                    tooltipPosition="top"
+                    (onClick)="shareOnSocial('linkedin')"
+                    styleClass="mr-2"
+                  />
+                  <p-button
+                    icon="pi pi-whatsapp"
+                    [rounded]="true"
+                    severity="success"
+                    pTooltip="Share on WhatsApp"
+                    tooltipPosition="top"
+                    (onClick)="shareOnSocial('whatsapp')"
+                    styleClass="mr-2"
+                  />
+                  <p-button
+                    icon="pi pi-link"
+                    [rounded]="true"
+                    severity="secondary"
+                    pTooltip="Copy Link"
+                    tooltipPosition="top"
+                    (onClick)="copyLink()"
+                  />
+                </div>
+              </div>
+            </footer>
+          </article>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4 col-md-5">
+          <aside class="news-sidebar">
+            <!-- Navigation -->
+            <p-card header="Navigation" styleClass="mb-4">
+              <div class="nav-buttons">
+                <p-button
+                  label="Back to All News"
+                  icon="pi pi-arrow-left"
+                  [outlined]="true"
+                  styleClass="w-full mb-2"
+                  (onClick)="goBack()"
+                />
+                <!-- <p-button
                 [label]="'Back to ' + primaryCategory()"
                 icon="pi pi-folder"
                 [outlined]="true"
                 styleClass="w-full"
                 (onClick)="goBackToCategory()"
               /> -->
-            </div>
-          </p-card>
+              </div>
+            </p-card>
 
-          <!-- Related News -->
-          @if (hasRelatedItems()) {
-          <p-card header="Related News" styleClass="mb-4">
-            <div class="related-items">
-              @for (item of relatedItems(); track item.id) {
-              <div class="related-item">
-                <div class="related-image">
-                  <img [src]="getRelatedItemImage(item)" [alt]="item.title" class="img-cover" loading="lazy" />
-                  <!-- <p-tag
+            <!-- Related News -->
+            @if (hasRelatedItems()) {
+              <p-card header="Related News" styleClass="mb-4">
+                <div class="related-items">
+                  @for (item of relatedItems(); track item.id) {
+                    <div class="related-item">
+                      <div class="related-image">
+                        <img
+                          [src]="getRelatedItemImage(item)"
+                          [alt]="item.title"
+                          class="img-cover"
+                          loading="lazy"
+                        />
+                        <!-- <p-tag
                     value=""
                     icon="pi pi-bookmark"
                     severity="info"
                     styleClass="related-type-badge"
                   /> -->
-                </div>
-                <div class="related-content">
-                  <h6 class="related-title">
-                    <a [routerLink]="['/news', item.id]">{{ item.title }}</a>
-                  </h6>
-                  @if (item.publishedDate ) {
-                  <p class="related-date">
-                    <i class="mr-1 pi pi-calendar"></i>
-                    {{ formatDateValue(item.publishedDate) }}
-                  </p>
+                      </div>
+                      <div class="related-content">
+                        <h6 class="related-title">
+                          <a [routerLink]="['/news', item.id]">{{
+                            item.title
+                          }}</a>
+                        </h6>
+                        @if (item.publishedDate) {
+                          <p class="related-date">
+                            <i class="mr-1 pi pi-calendar"></i>
+                            {{ formatDateValue(item.publishedDate) }}
+                          </p>
+                        }
+
+                        <div
+                          class="related-excerpt"
+                          [innerHTML]="
+                            (item.content
+                              | cleanHtml: { stripClasses: false }
+                              | slice: 0 : 80) +
+                            '&nbsp;' +
+                            '...'
+                          "
+                        ></div>
+                      </div>
+                    </div>
                   }
-
-                  <div class="related-excerpt"
-                    [innerHTML]="(item.content| cleanHtml: {stripClasses: false,} | slice :0:80) + '&nbsp;' + '...'">
-                  </div>
                 </div>
-              </div>
-              }
-            </div>
-          </p-card>
-          }
+              </p-card>
+            }
 
-          <!-- Article Information -->
-          <p-card header="Article Information">
-            <div class="article-info">
-              <div class="info-item">
-                <strong>Category:</strong>
-                <span class="me-2">{{ primaryCategory() }}</span>
+            <!-- Article Information -->
+            <p-card header="Article Information">
+              <div class="article-info">
+                <div class="info-item">
+                  <strong>Category:</strong>
+                  <span class="me-2">{{ primaryCategory() }}</span>
+                </div>
+                @if (article.pageTittle) {
+                  <div class="info-item">
+                    <strong>Page:</strong>
+                    <span class="me-2">{{ article.pageTittle }}</span>
+                  </div>
+                }
+                <!--  -->
+                @if (article.publishedDate) {
+                  <div class="info-item">
+                    <strong>Published Date:</strong>
+                    <span class="me-2">{{
+                      formatDateValue(article.publishedDate)
+                    }}</span>
+                  </div>
+                }
               </div>
-              @if (article.pageTittle) {
-              <div class="info-item">
-                <strong>Page:</strong>
-                <span class="me-2">{{ article.pageTittle }}</span>
-              </div>
-              }
-              <!--  -->
-              @if (article.publishedDate) {
-              <div class="info-item">
-                <strong>Published Date:</strong>
-                <span class="me-2">{{
-                  formatDateValue(article.publishedDate)
-                  }}</span>
-              </div>
-              }
-            </div>
-          </p-card>
-        </aside>
+            </p-card>
+          </aside>
+        </div>
       </div>
-    </div>
     }
   </div>
 </section>

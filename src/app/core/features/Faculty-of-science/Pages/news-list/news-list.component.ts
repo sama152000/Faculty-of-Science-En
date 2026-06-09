@@ -24,19 +24,17 @@ import { BaseComponent } from '../../../../../shared/components/base.component';
 import { NewsService } from '../../Services/real-services/news.service';
 import { News, Category } from '../../model/news.model';
 import { CleanHtmlPipe } from '../../../../pipes/clean-html.pipe';
-import { filter, map } from 'rxjs';
+import { PageRequest } from '../../model/real model/page-request.model';
 
 // Constants
-const DEFAULT_ITEMS_PER_PAGE = 6;
+const DEFAULT_PAGE_SIZE = 6;
 const MAX_VISIBLE_TAGS = 3;
-const EXCERPT_MAX_LENGTH = 150;
 
 @Component({
   selector: 'app-news-list',
   imports: [
     CommonModule,
     RouterModule,
-    // PrimeNG
     SkeletonModule,
     TagModule,
     ButtonModule,
@@ -55,107 +53,97 @@ export class NewsListComponent extends BaseComponent implements OnInit {
   private readonly newsService = inject(NewsService);
 
   // ============================================
-  // STATE SIGNALS (Single Source of Truth)
+  // STATE SIGNALS
   // ============================================
-  protected readonly allNews = signal<News[]>([]);
+
+  /** Current page news items (from server) */
+  protected readonly newsItems = signal<News[]>([]);
+
+  /** Available categories */
   protected readonly categories = signal<Category[]>([]);
+
+  /** Currently selected category ID */
   protected readonly selectedCategory = signal<string>('all');
-  protected readonly first = signal<number>(0);
-  protected readonly rows = signal<number>(DEFAULT_ITEMS_PER_PAGE);
+
+  /** Current page number (1-based, matches API) */
+  protected readonly currentPage = signal<number>(1);
+
+  /** Items per page */
+  protected readonly pageSize = signal<number>(DEFAULT_PAGE_SIZE);
+
+  /** Total records count (from server) */
+  protected readonly totalRecords = signal<number>(0);
 
   // ============================================
-  // COMPUTED SIGNALS (Derived State)
+  // COMPUTED SIGNALS
   // ============================================
 
-  /** Filtered news by selected category */
-  protected readonly filteredNews = computed<News[]>(() => {
-    const category = this.selectedCategory();
-    const news = this.allNews();
+  /** PrimeNG Paginator first index (0-based) */
+  protected readonly first = computed<number>(
+    () => (this.currentPage() - 1) * this.pageSize(),
+  );
 
-    if (category === 'all') {
-      return news;
-    }
+  /** Whether there are news items to display */
+  protected readonly hasNews = computed<boolean>(
+    () => this.newsItems().length > 0,
+  );
 
-    return news.filter((item) =>
-      item.postCategories?.some(
-        (cat) => cat.categoryId === category || cat.categoryName === category
-      )
-    );
-  });
+  /** Whether to show the paginator */
+  protected readonly showPagination = computed<boolean>(
+    () => this.totalRecords() > this.pageSize(),
+  );
 
-  /** Total records for paginator */
-  protected readonly totalRecords = computed<number>(() => {
-    return this.filteredNews().length;
-  });
-
-  /** Paginated news items */
-  protected readonly paginatedNews = computed<News[]>(() => {
-    const start = this.first();
-    const end = start + this.rows();
-    return this.filteredNews().slice(start, end);
-  });
-
-  /** Has news items to display */
-  protected readonly hasNews = computed<boolean>(() => {
-    return this.paginatedNews().length > 0;
-  });
-
-  /** Show pagination */
-  protected readonly showPagination = computed<boolean>(() => {
-    return this.totalRecords() > this.rows();
-  });
-
-  /** Total news count */
-  protected readonly totalNewsCount = computed<number>(() => {
-    return this.allNews().length;
-  });
-
-  /** Selected category display name */
+  /** Display name for selected category */
   protected readonly selectedCategoryName = computed<string>(() => {
     const categoryId = this.selectedCategory();
-    if (categoryId === 'all') return 'All News & Articles';
+    if (categoryId === 'all') return 'News & Events';
     const category = this.categories().find((c) => c.id === categoryId);
-    return category?.name ?? 'Category';
+    return category?.name ?? 'News & Events';
+  });
+
+  /** Display text for results count */
+  protected readonly resultsText = computed<string>(() => {
+    const start = this.first() + 1;
+    const end = Math.min(
+      this.first() + this.newsItems().length,
+      this.totalRecords(),
+    );
+    const total = this.totalRecords();
+    return `Showing ${start} to ${end} of ${total} news`;
   });
 
   // ============================================
-  // LIFECYCLE HOOKS
+  // LIFECYCLE
   // ============================================
+
   ngOnInit(): void {
-    this.loadNews();
     this.loadCategories();
+    this.loadNews();
   }
 
   // ============================================
-  // PRIVATE METHODS - DATA LOADING
+  // PRIVATE METHODS — DATA LOADING
   // ============================================
 
   /**
-   * Load all news articles
-   * WHY: Separation of data loading logic
+   * Load news from server using paginated endpoint.
+   * Called on init, page change, and category change.
    */
   private loadNews(): void {
     this.setLoading();
 
+    const request = this.buildPageRequest();
+
     this.newsService
-      .getAll()
-      .pipe(
-        takeUntilDestroyed(this.destroyRef),
-
-        // تأكد إن فيه داتا
-        filter((response) => response.success && Array.isArray(response.data)),
-
-        // فلترة Published + ترتيب بالتاريخ
-        map((response) =>
-          this.sortNewsByDate(
-            response.data.filter((news) => news.status === 'Published')
-          )
-        )
-      )
+      .getPaged(request)
+      .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
-        next: (publishedNews) => {
-          this.allNews.set(publishedNews);
-          this.setSuccess();
+        next: (response) => {
+          if (response.success) {
+            this.newsItems.set(response.data ?? []);
+            this.totalRecords.set(response.totalCount ?? 0);
+            this.setSuccess();
+          }
         },
         error: (error: Error) => {
           this.handleError(error, 'Failed to load news');
@@ -164,8 +152,28 @@ export class NewsListComponent extends BaseComponent implements OnInit {
   }
 
   /**
-   * Load all categories
-   * WHY: Separation of data loading logic
+   * Build the PageRequest object from current state.
+   */
+  private buildPageRequest(): PageRequest {
+    const filter: Record<string, any> = {
+      isDeleted: false,
+    };
+
+    // Add category filter when a specific category is selected
+    if (this.selectedCategory() !== 'all') {
+      filter['categoryId'] = this.selectedCategory();
+    }
+
+    return {
+      pageNumber: this.currentPage(),
+      pageSize: this.pageSize(),
+      filter,
+      orderByValue: [{ colId: 'publishedDate', sort: 'desc' }],
+    };
+  }
+
+  /**
+   * Load categories for the sidebar filter.
    */
   private loadCategories(): void {
     this.newsService
@@ -183,72 +191,49 @@ export class NewsListComponent extends BaseComponent implements OnInit {
       });
   }
 
-  /**
-   * Sort news by date (newest first)
-   * WHY: Pure function for sorting - testable and predictable
-   */
-  private sortNewsByDate(news: News[]): News[] {
-    return [...news].sort(
-      (a, b) =>
-        new Date(b.publishedDate || b.createdDate).getTime() -
-        new Date(a.publishedDate || a.createdDate).getTime()
-    );
-  }
-
   // ============================================
-  // PROTECTED METHODS - UI ACTIONS
+  // PROTECTED METHODS — UI ACTIONS
   // ============================================
 
   /**
-   * Handle category selection
-   * WHY: Reset pagination when category changes
+   * Handle category selection — resets to page 1 and reloads.
    */
   protected onCategoryChange(category: string): void {
+    if (this.selectedCategory() === category) return; // Avoid duplicate calls
     this.selectedCategory.set(category);
-    this.first.set(0); // Reset to first page
+    this.currentPage.set(1);
+    this.loadNews();
   }
 
   /**
-   * Handle paginator page change
-   * WHY: Unified handler for PrimeNG Paginator
+   * Handle paginator page change — loads new page from server.
    */
   protected onPageChange(event: PaginatorState): void {
-    this.first.set(event.first ?? 0);
-    this.rows.set(event.rows ?? DEFAULT_ITEMS_PER_PAGE);
+    const newPage =
+      Math.floor((event.first ?? 0) / (event.rows ?? DEFAULT_PAGE_SIZE)) + 1;
+    const newSize = event.rows ?? DEFAULT_PAGE_SIZE;
+
+    // Avoid reload if nothing changed
+    if (newPage === this.currentPage() && newSize === this.pageSize()) return;
+
+    this.currentPage.set(newPage);
+    this.pageSize.set(newSize);
+    this.loadNews();
+    this.scrollToTop();
   }
 
   /**
-   * Check if category is selected
-   * WHY: Template helper for active state
+   * Check if a category is currently selected.
    */
   protected isCategorySelected(categoryId: string): boolean {
     return this.selectedCategory() === categoryId;
   }
 
   // ============================================
-  // PROTECTED METHODS - UTILITIES
+  // PROTECTED METHODS — UTILITIES
   // ============================================
 
-  /**
-   * Get count of news in a category
-   * WHY: Pure utility function for category counts
-   */
-  protected getCategoryCount(categoryId: string): number {
-    if (categoryId === 'all') {
-      return this.allNews().length;
-    }
-    return this.allNews().filter((item) =>
-      item.postCategories?.some(
-        (cat) =>
-          cat.categoryId === categoryId || cat.categoryName === categoryId
-      )
-    ).length;
-  }
-
-  /**
-   * Format date for display
-   * WHY: Centralized date formatting
-   */
+  /** Format date for display (Arabic locale) */
   protected formatDate(date: string | Date): string {
     if (!date) return '';
     return new Intl.DateTimeFormat('en-US', {
@@ -258,18 +243,12 @@ export class NewsListComponent extends BaseComponent implements OnInit {
     }).format(new Date(date));
   }
 
-  /**
-   * Get primary category name from news item
-   * WHY: Encapsulate category extraction logic
-   */
+  /** Get primary category name */
   protected getPrimaryCategory(news: News): string {
     return news.postCategories?.[0]?.categoryName ?? 'Uncategorized';
   }
 
-  /**
-   * Get all categories for a news item
-   * WHY: Display all categories when item has multiple
-   */
+  /** Get all categories for a news item */
   protected getItemCategories(news: News): { id: string; name: string }[] {
     return (
       news.postCategories?.map((cat) => ({
@@ -279,18 +258,12 @@ export class NewsListComponent extends BaseComponent implements OnInit {
     );
   }
 
-  /**
-   * Check if item has categories
-   * WHY: Template helper for conditional rendering
-   */
+  /** Check if news item has categories */
   protected hasCategories(item: News): boolean {
     return (item.postCategories?.length ?? 0) > 0;
   }
 
-  /**
-   * Get featured image URL
-   * WHY: Encapsulate image resolution logic
-   */
+  /** Get featured image URL with fallback */
   protected getFeaturedImage(item: News): string {
     return (
       item.featuredImagePath ??
@@ -299,28 +272,19 @@ export class NewsListComponent extends BaseComponent implements OnInit {
     );
   }
 
-  /**
-   * Get visible tags (limited to MAX_VISIBLE_TAGS)
-   * WHY: Control tag display in template
-   */
+  /** Get visible tags (limited) */
   protected getVisibleTags(item: News): typeof item.tags {
     return item.tags?.slice(0, MAX_VISIBLE_TAGS) ?? [];
   }
 
-  /**
-   * Check if item has tags
-   * WHY: Template helper for conditional rendering
-   */
+  /** Check if news item has tags */
   protected hasTags(item: News): boolean {
     return (item.tags?.length ?? 0) > 0;
   }
 
-  /**
-   * Get status severity for PrimeNG Tag
-   * WHY: Map status to PrimeNG severity
-   */
+  /** Get PrimeNG severity for status */
   protected getStatusSeverity(
-    status: string | undefined
+    status: string | undefined,
   ): 'success' | 'warn' | 'info' {
     switch (status) {
       case 'Published':
@@ -332,13 +296,19 @@ export class NewsListComponent extends BaseComponent implements OnInit {
     }
   }
 
+  /** Smooth scroll to top of section */
+  private scrollToTop(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
   // ============================================
   // ABSTRACT IMPLEMENTATION
   // ============================================
 
-  /** Retry loading data */
+  /** Retry loading data from server */
   protected override retry(): void {
-    this.loadNews();
+    this.currentPage.set(1);
     this.loadCategories();
+    this.loadNews();
   }
 }

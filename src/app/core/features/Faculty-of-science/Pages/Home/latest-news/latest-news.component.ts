@@ -22,6 +22,7 @@ import { CleanHtmlPipe } from '../../../../../pipes/clean-html.pipe';
 
 @Component({
   selector: 'app-latest-news',
+  standalone: true,
   imports: [CommonModule, RouterModule, CleanHtmlPipe, SlicePipe],
   templateUrl: './latest-news.component.html',
   styleUrls: ['./latest-news.component.css'],
@@ -56,7 +57,7 @@ export class LatestNewsComponent
 
   paged: PageRequest = {
     pageNumber: 1,
-    pageSize: 5,
+    pageSize: 10,
     filter: { status: 'Published', type: NewsTypeEnum.NEWS, isDeleted: false },
     orderByValue: [{ colId: 'publishedDate', sort: 'desc' }],
   };
@@ -76,17 +77,19 @@ export class LatestNewsComponent
 
   // Computed: Should show navigation buttons
   protected showNavButtons = computed(
-    () => this.newsList().length > this.visibleSlides()
+    () => this.newsList().length > this.visibleSlides(),
   );
 
   // Computed: Get slide transform style
   protected getSlideTransform = computed(() => {
     if (this.isMobile()) {
       // On mobile, each slide is 100% width + gap
-      return `translateX(-${this.currentIndex() * 100}%)`;
+      // RTL context: Translate positive X to reveal items on the left
+      return `translateX(${this.currentIndex() * 100}%)`;
     } else {
       // On desktop, each slide is 320px + 1rem gap (16px) = 336px
-      return `translateX(-${this.currentIndex() * 336}px)`;
+      // RTL context: Translate positive X to reveal items on the left
+      return `translateX(${this.currentIndex() * 336}px)`;
     }
   });
 
@@ -217,6 +220,15 @@ export class LatestNewsComponent
       month: 'short',
       day: 'numeric',
     });
+  }
+
+  /**
+   * Get excerpt from content
+   */
+  getExcerpt(content: string, maxLength: number = 100): string {
+    if (!content) return '';
+    if (content.length <= maxLength) return content;
+    return content.substring(0, maxLength).trim() + '...';
   }
 
   /**

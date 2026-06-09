@@ -5,15 +5,18 @@
       <div class="mb-4 col-lg-3 col-md-6">
         <div class="footer-col">
           <h5 class="text-dark-blue mb-3 footer-title">Faculty of Science</h5>
-          <p class="text-muted" [innerHTML]="
+          <p
+            class="text-muted"
+            [innerHTML]="
               visionText()
                 | cleanHtml
                   : {
                       stripStyles: true,
                       stripClasses: true,
-                      preserveLineBreaks: true
+                      preserveLineBreaks: true,
                     }
-            "></p>
+            "
+          ></p>
         </div>
       </div>
 
@@ -23,11 +26,14 @@
           <h5 class="text-dark-blue mb-3 footer-title">Quick Links</h5>
           <ul class="list-unstyled footer-links footer-menu-links">
             @for (item of menuItems(); track item.id) {
-            <li>
-              <a [routerLink]="'/' + item.titleEn.toLowerCase()" class="text-muted">
-                {{ item.title }}
-              </a>
-            </li>
+              <li>
+                <a
+                  [routerLink]="'/' + item.titleEn.toLowerCase()"
+                  class="text-muted"
+                >
+                  {{ item.title }}
+                </a>
+              </li>
             }
           </ul>
         </div>
@@ -39,17 +45,17 @@
           <h5 class="text-dark-blue mb-3 footer-title">Departments</h5>
           <ul class="list-unstyled footer-links">
             @for (dept of footerDepartments(); track dept.id) {
-            <li>
-              <a routerLink="/departments" class="text-muted">
-                {{ dept.name }}
-              </a>
-            </li>
+              <li>
+                <a routerLink="/departments" class="text-muted">
+                  {{ dept.name }}
+                </a>
+              </li>
             } @empty {
-            <li>
-              <a routerLink="/departments" class="text-muted">
-                View All Departments
-              </a>
-            </li>
+              <li>
+                <a routerLink="/departments" class="text-muted">
+                  View All Departments
+                </a>
+              </li>
             }
           </ul>
         </div>
@@ -61,100 +67,176 @@
           <h5 class="text-dark-blue mb-3 footer-title">Contact</h5>
 
           @if (hasContactInfo()) {
-          <address class="text-muted mb-3">
-            <!-- Address -->
-            @if (contactInfo()?.address) {
-            <div class="mb-2 contact-item">
-              <i class="text-primary-custom pi pi-map-marker me-2"></i>
-              {{ contactInfo()?.address }}
-            </div>
-            }
+            <address class="text-muted mb-3">
+              <!-- Address -->
+              @if (contactInfo()?.address) {
+                <div class="mb-2 contact-item">
+                  <i class="text-primary-custom pi pi-map-marker me-2"></i>
+                  {{ contactInfo()?.address }}
+                </div>
+              }
 
-            <!-- Phone -->
-            @if (contactInfo()?.phone) {
-            <div class="mb-2 contact-item">
-              <i class="pi pi-phone me-2"></i>
-              <a [href]="'tel:' + contactInfo()?.phone" class="text-muted">
-                {{ contactInfo()?.phone }}
-              </a>
-            </div>
-            }
+              <!-- Phone -->
+              @if (contactInfo()?.phone) {
+                <div class="mb-2 contact-item">
+                  <i class="pi pi-phone me-2"></i>
+                  <a [href]="'tel:' + contactInfo()?.phone" class="text-muted">
+                    {{ contactInfo()?.phone }}
+                  </a>
+                </div>
+              }
 
-            <!-- Fax -->
-            @if (contactInfo()?.fax) {
-            <div class="mb-2 contact-item">
-              <i class="pi pi-print me-2"></i>
-              Fax: {{ contactInfo()?.fax }}
-            </div>
-            }
+              <!-- Email -->
+              @if (contactInfo()?.email) {
+                <div class="mb-2 contact-item">
+                  <i class="pi pi-envelope me-2"></i>
+                  <a [href]="'mailto:' + contactInfo()?.email" class="">
+                    {{ contactInfo()?.email }}
+                  </a>
+                </div>
+              }
 
-            <!-- Email -->
-            @if (contactInfo()?.email) {
-            <div class="mb-2 contact-item">
-              <i class="pi pi-envelope me-2"></i>
-              <a [href]="'mailto:' + contactInfo()?.email" class="">
-                {{ contactInfo()?.email }}
-              </a>
-            </div>
-            }
+              <!-- Fax -->
+              @if (contactInfo()?.fax) {
+                <div class="mb-2 contact-item">
+                  <i class="text-muted pi pi-globe ms-2"></i>
+                  <a
+                    [href]="contactInfo()?.fax"
+                    target="_blank"
+                    class="text-muted"
+                  >
+                    University Website
+                  </a>
+                </div>
+              }
 
-            <!-- Website -->
-            @if (contactInfo()?.webSite) {
-            <div class="mb-2 contact-item">
-              <i class="pi pi-globe me-2"></i>
-              <a [href]="contactInfo()?.webSite" target="_blank" class="">
-                Visit Website
-              </a>
-            </div>
-            }
-          </address>
+              <!-- Website -->
+              @if (contactInfo()?.webSite) {
+                <div class="mb-2 contact-item">
+                  <i class="pi pi-globe me-2"></i>
+                  <a [href]="contactInfo()?.webSite" target="_blank" class="">
+                    Visit Website
+                  </a>
+                </div>
+              }
+            </address>
           } @else {
-          <!-- Fallback if API fails -->
-          <address class="text-muted mb-3">
-            <div class="mb-2 contact-item">
-              <i class="pi pi-map-marker me-2"></i>
-              Luxor University, Egypt
-            </div>
-            <div class="mb-2 contact-item">
-              <i class="pi pi-envelope me-2"></i>
-              <a href="mailto:info@luxorsci.edu.eg" class="text-primary-custom">
-                info&#64;luxorsci.edu.eg
-              </a>
-            </div>
-          </address>
+            <!-- Fallback if API fails -->
+            <address class="text-muted mb-3">
+              <div class="mb-2 contact-item">
+                <i class="pi pi-map-marker me-2"></i>
+                Luxor University, Egypt
+              </div>
+              <div class="mb-2 contact-item">
+                <i class="pi pi-envelope me-2"></i>
+                <a
+                  href="mailto:info@luxorsci.edu.eg"
+                  class="text-primary-custom"
+                >
+                  info&#64;luxorsci.edu.eg
+                </a>
+              </div>
+            </address>
           }
 
           <!-- Social Icons (Dynamic from API) -->
           @if (hasSocialLinks()) {
-          <div class="social-icons">
-            @for (link of socialLinks(); track link.platform) {
-            <a [href]="link.url" target="_blank" rel="noopener noreferrer" class="social-link me-2"
-              [title]="link.platform" [style.color]="link.color">
-              <i [class]="link.icon"></i>
-            </a>
-            }
-          </div>
+            <div class="social-icons">
+              @for (link of socialLinks(); track link.platform) {
+                <a
+                  [href]="link.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="social-link me-2"
+                  [title]="link.platform"
+                  [style.color]="link.color"
+                >
+                  <i [class]="link.icon"></i>
+                </a>
+              }
+            </div>
           } @else {
-          <!-- Fallback social icons -->
-          <div class="social-icons">
-            <a href="#" class="text-dark-blue social-link me-3" title="Facebook">
-              <i class="pi pi-facebook"></i>
-            </a>
-            <a href="#" class="text-dark-blue social-link me-3" title="Twitter">
-              <i class="pi pi-twitter"></i>
-            </a>
-            <a href="#" class="text-dark-blue social-link me-3" title="Instagram">
-              <i class="pi pi-instagram"></i>
-            </a>
-            <a href="#" class="text-dark-blue social-link" title="LinkedIn">
-              <i class="pi pi-linkedin"></i>
-            </a>
-          </div>
+            <!-- Fallback social icons -->
+            <div class="social-icons">
+              <a
+                href="#"
+                class="text-dark-blue social-link me-3"
+                title="Facebook"
+              >
+                <i class="pi pi-facebook"></i>
+              </a>
+              <a
+                href="#"
+                class="text-dark-blue social-link me-3"
+                title="Twitter"
+              >
+                <i class="pi pi-twitter"></i>
+              </a>
+              <a
+                href="#"
+                class="text-dark-blue social-link me-3"
+                title="Instagram"
+              >
+                <i class="pi pi-instagram"></i>
+              </a>
+              <a href="#" class="text-dark-blue social-link" title="LinkedIn">
+                <i class="pi pi-linkedin"></i>
+              </a>
+            </div>
           }
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Visitors Statistics Bar -->
+  @if (visitorsLoaded()) {
+    <div class="visitors-stats-bar">
+      <div class="container">
+        <div class="visitors-stats-row">
+          <div class="visitor-stat-item">
+            <div class="visitor-stat-icon">
+              <i class="pi pi-calendar"></i>
+            </div>
+            <div class="visitor-stat-content">
+              <span class="visitor-stat-value">{{
+                todayVisitors() | number
+              }}</span>
+              <span class="visitor-stat-label">Today's Visitors</span>
+            </div>
+          </div>
+
+          <div class="visitor-stat-divider"></div>
+
+          <div class="visitor-stat-item">
+            <div class="visitor-stat-icon">
+              <i class="pi pi-chart-bar"></i>
+            </div>
+            <div class="visitor-stat-content">
+              <span class="visitor-stat-value">{{
+                monthVisitors() | number
+              }}</span>
+              <span class="visitor-stat-label">Monthly Visitors</span>
+            </div>
+          </div>
+
+          <div class="visitor-stat-divider"></div>
+
+          <div class="visitor-stat-item">
+            <div class="visitor-stat-icon">
+              <i class="pi pi-users"></i>
+            </div>
+            <div class="visitor-stat-content">
+              <span class="visitor-stat-value">{{
+                totalVisitors() | number
+              }}</span>
+              <span class="visitor-stat-label">Total Visitors</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
 
   <!-- Footer Bottom -->
   <div class="bg-primary-custom text-white py-3 footer-bottom">
@@ -171,9 +253,13 @@
 
   <!-- Scroll to Top Button -->
   @if (showScrollTop()) {
-  <button class="rounded-circle scroll-to-top btn btn-primary position-fixed" (click)="scrollToTop()" title="Go to top"
-    type="button">
-    <i class="pi pi-chevron-up"></i>
-  </button>
+    <button
+      class="rounded-circle scroll-to-top btn btn-primary position-fixed"
+      (click)="scrollToTop()"
+      title="Go to top"
+      type="button"
+    >
+      <i class="pi pi-chevron-up"></i>
+    </button>
   }
 </footer>
